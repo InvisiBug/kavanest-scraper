@@ -4,11 +4,12 @@ import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
 const conn = mongoose.createConnection("mongodb://localhost:27017/devices");
 
-const plugSchema = new mongoose.Schema({
+const radiatorSchema = new mongoose.Schema({
   id: { type: String },
-  state: { type: String },
+  inlet: { type: Number },
+  outlet: { type: Number },
 });
 
-const PlugStore = conn.model("plug", plugSchema);
+const RadiatorStore = conn.model("radiator", radiatorSchema);
 
-export default PlugStore;
+export default RadiatorStore;

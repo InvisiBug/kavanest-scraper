@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // Mongo Connection
 mongoose.Promise = global.Promise;
-const conn = mongoose.createConnection("mongodb://localhost:27017/sun");
+const conn = mongoose.createConnection("mongodb://localhost:27017/devices");
 
 const sunSchema = new mongoose.Schema({
   id: { type: String },
