@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { PlugStore, options } from "../database/";
+import { FloodlightStore, options } from "../database/";
 
 export default class Floodlight {
   client: MqttClient;
@@ -11,7 +11,7 @@ export default class Floodlight {
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === "Plug") {
       const payload = JSON.parse(rawPayload.toString());
-      await PlugStore.findOneAndUpdate({ id: 5 }, { state: payload.state }, options);
+      await FloodlightStore.findOneAndUpdate({ id: "ourRoom" }, { state: payload.state }, options);
     }
   }
 }

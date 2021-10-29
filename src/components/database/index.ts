@@ -1,4 +1,4 @@
-export { default as PlugStore } from "./plug";
+export { default as FloodlightStore } from "./floodlight";
 export { default as SunStore } from "./Sun";
 export { default as RadiatorStore } from "./Radiator";
 

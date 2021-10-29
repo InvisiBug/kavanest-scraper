@@ -1,9 +1,12 @@
 import mqtt from "mqtt";
 import { Floodlight, Radiator, Sun } from "./components/devices";
 import { allowedDevices } from "./components/types";
+require("dotenv").config();
+
+const MQTT: string = process.env.MQTT ?? "";
 
 // Connect to MQTT networks
-let client: mqtt.MqttClient = mqtt.connect("mqtt://kavanet.io");
+let client: mqtt.MqttClient = mqtt.connect(MQTT);
 // let intClient: mqtt.MqttClient;
 
 const devices: Array<allowedDevices> = [];
