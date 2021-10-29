@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: device-scraper:latest
+    image: device-scraper
     networks:
       - proxynet
     environment:
