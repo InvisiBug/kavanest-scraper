@@ -3,7 +3,7 @@ import { Floodlight, Radiator, Sun } from "./components/devices";
 import { allowedDevices } from "./components/types";
 require("dotenv").config();
 
-// console.log(process.env.URI ?? "");
+console.log(process.env.URI ?? "");
 
 const MQTT: string = process.env.MQTT ?? "";
 

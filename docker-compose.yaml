@@ -1,6 +1,16 @@
 version: "3.1"
 
 services:
+  mongo:
+    container_name: graphql-mongo
+    image: mongo
+    networks:
+      - proxynet
+    # volumes:
+    # - ./data:/data/db
+    ports:
+      - "27017:27017"
+
   device-scraper:
     container_name: device-scraper
     build:
@@ -10,7 +20,7 @@ services:
     networks:
       - proxynet
     environment:
-      - URI=mongodb://graphql-mongo
+      - URI=mongodb://mongo:27017/devices
       - MQTT=mqtt://kavanet.io
 
 networks:
