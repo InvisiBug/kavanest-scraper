@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": false, // ! Turn this back on later
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "outDir": "dist/"
+  },
+  "include": [
+    "src/*"
+, "src/components/weather.ts", "src/components/valves.ts", "src/components/radiatorMonitor.ts"  ]
+}
