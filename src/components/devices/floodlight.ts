@@ -11,7 +11,7 @@ export default class Floodlight {
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === "Plug") {
       const payload = JSON.parse(rawPayload.toString());
-      console.log(await PlugStore.findOneAndUpdate({ id: 5 }, { state: payload.state }, options));
+      await PlugStore.findOneAndUpdate({ id: 5 }, { state: payload.state }, options);
     }
   }
 }

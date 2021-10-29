@@ -14,16 +14,10 @@ export default class RadiatorMonitor {
 
   async handleIncoming(topic: String, payload: Object) {
     if (topic === "Radiator Monitor") {
-      console.log("here");
+      const inlet = parseFloat((JSON.parse(payload.toString()).inlet - 0.56).toFixed(2));
+      const outlet = parseFloat((JSON.parse(payload.toString()).outlet - 0).toFixed(2));
 
-      await RadiatorStore.findOneAndUpdate(
-        { id: 5 },
-        {
-          inlet: parseFloat((JSON.parse(payload.toString()).inlet - 0.56).toFixed(2)),
-          outlet: parseFloat((JSON.parse(payload.toString()).outlet - 0).toFixed(2)),
-        },
-        options,
-      );
+      await RadiatorStore.findOneAndUpdate({ room: "ourRoom" }, { inlet, outlet }, options);
     }
   }
 }
