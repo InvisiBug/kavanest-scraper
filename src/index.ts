@@ -3,14 +3,16 @@ import { Floodlight, Radiator, Sun } from "./components/devices";
 import { allowedDevices } from "./components/types";
 require("dotenv").config();
 
+// console.log(process.env.URI ?? "");
+
 const MQTT: string = process.env.MQTT ?? "";
 
 // Connect to MQTT networks
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
-// let intClient: mqtt.MqttClient;
 
 const devices: Array<allowedDevices> = [];
 
+// Devices that are being monitored
 devices.push(new Floodlight(client));
 devices.push(new Sun(client));
 devices.push(new Radiator(client));

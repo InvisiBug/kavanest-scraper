@@ -9,6 +9,10 @@ services:
     image: device-scraper:latest
     networks:
       - proxynet
+    environment:
+      - URI=mongodb://graphql-mongo
+      - MQTT=mqtt://kavanet.io
+
 networks:
   proxynet:
     name: kavanest-network
