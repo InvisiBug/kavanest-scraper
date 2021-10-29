@@ -1,0 +1,19 @@
+import mongoose from "mongoose";
+import { Floodlight, Sun, Radiator } from "./schemas";
+require("dotenv").config();
+
+const connection = mongoose.createConnection(process.env.URI ?? "");
+
+connection.on("connected", () => {
+  console.log("Mongoose connected to " + process.env.URI ?? "");
+});
+
+connection.on("error", (err) => {
+  console.log("Mongoose connection error" + err);
+});
+
+export const FloodlightStore = connection.model("floodlight", Floodlight);
+export const RadiatorStore = connection.model("radiator", Radiator);
+export const SunStore = connection.model("sun", Sun);
+
+export const options = { new: true, upsert: true };

@@ -8,11 +8,14 @@
   "scripts": {
     "dev": "nodemon --exec \"ts-node \" ./src/index.ts",
     "start": "ts-node ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start-container": "./bin/start-container.sh"
   },
   "dependencies": {
     "@types/node": "^16.11.6",
+    "@types/ws": "^8.2.0",
     "dotenv": "^10.0.0",
+    "mongoose": "^6.0.12",
     "mqtt": "^4.2.8",
     "prettier": "^2.4.1",
     "ts-node": "^10.4.0",

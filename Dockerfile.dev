@@ -17,7 +17,5 @@ COPY ./dist ./
 ENV NODE_ENV production
 RUN npm install
 
-EXPOSE 1883
-EXPOSE 9001
 # CMD ["npm", "start"]
 CMD ["node","index.js"]
