@@ -1,25 +1,26 @@
 import mqtt from "mqtt";
-import { Floodlight, Radiator, Sun } from "./components/devices";
+import { Floodlight, Radiator, Sun, Sensors } from "./components/devices";
 import { allowedDevices } from "./components/types";
 require("dotenv").config();
 
-console.log(process.env.URI ?? "");
-
 const MQTT: string = process.env.MQTT ?? "";
+console.log(MQTT);
 
 // Connect to MQTT networks
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
 
-const devices: Array<allowedDevices> = [];
+const devices: Array<any> = [];
+const sensors: Array<string> = ["livingRoom", "kitchen", "liamsRoom", "study", "ourRoom"];
 
 // Devices that are being monitored
 devices.push(new Floodlight(client));
 devices.push(new Sun(client));
 devices.push(new Radiator(client));
+devices.push(new Sensors(client, sensors));
 
 client.subscribe("#", (error: Error) => {
   if (error) console.log(error);
-  else console.log("Subscribed to all");
+  else console.log("📡 Listening to MQTT");
 });
 
 client.on("message", (topic: String, payload: Object) => {
