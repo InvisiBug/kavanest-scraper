@@ -16,7 +16,6 @@ const sensors: Array<string> = ["livingRoom", "kitchen", "liamsRoom", "study", "
   This app needs to know whether its running connected to the simulator or the production network
   instead of having a seperate object for the sun, floodlight and radiator, make them all the same onject as theyre all the same phisical device
   maybe treat the speaker relay as a plug too
-
 */
 
 // Devices that are being monitored
