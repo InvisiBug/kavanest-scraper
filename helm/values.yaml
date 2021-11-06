@@ -1,0 +1,15 @@
+name: kavanest-scraper
+
+namespace: kavanest
+
+deployment:
+  - name: kavanest-scraper
+    image: 192.168.1.61:5000/kavanest-scraper
+    ports:
+    - port: 27017
+    env:
+    - name: URI
+      value: mongodb://localhost:27017/devices
+    - name: MQTT
+      value: mqtt://192.168.1.46
+
