@@ -14,7 +14,7 @@ const MQTT: string = process.env.MQTT ?? "";
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
 
 const devices: Array<any> = [];
-const sensors: Array<string> = ["livingRoom", "kitchen", "liamsRoom", "study", "ourRoom"];
+const sensors: Array<string> = ["livingRoom", "liamsRoom", "study", "ourRoom"];
 
 /*
   This app needs to know whether its running connected to the simulator or the production network

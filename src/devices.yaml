@@ -11,25 +11,25 @@
   topic: Plug
   type: plug
 
-- name: livingRoom
-  topic: Living Room Heating Sensor
-  type: heatingSensor
+# - name: livingRoom
+#   topic: Living Room Heating Sensor
+#   type: heatingSensor
 
 - name: kitchen
   topic: Kitchen Heating Sensor
   type: heatingSensor
 
-- name: liamsRoom
-  topic: Liams Room Heating Sensor
-  type: heatingSensor
+# - name: liamsRoom
+#   topic: Liams Room Heating Sensor
+#   type: heatingSensor
 
-- name: study
-  topic: Study Heating Sensor
-  type: heatingSensor
+# - name: study
+#   topic: Study Heating Sensor
+#   type: heatingSensor
 
-- name: ourRoom
-  topic: Our Room Heating Sensor
-  type: heatingSensor
+# - name: ourRoom
+#   topic: Our Room Heating Sensor
+#   type: heatingSensor
 
 # - name: radiatorFan
 #   topic: Radiator Fan

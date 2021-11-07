@@ -1,14 +1,13 @@
 import { MqttClient } from "mqtt";
-import { plug } from "./devices/index";
+import { plug, heatingSensor } from "./devices/index";
 
 export default (client: MqttClient, deviceConfig: any) => {
   switch (deviceConfig.type) {
     case "plug":
       return new plug(client, deviceConfig);
-      break;
 
-    case "moon":
-      console.log("moon");
+    case "heatingSensor":
+      return new heatingSensor(client, deviceConfig);
   }
   console.log(deviceConfig.type);
 };
