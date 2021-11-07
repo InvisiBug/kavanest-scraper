@@ -1,5 +1,5 @@
 import mqtt from "mqtt";
-import { Floodlight, Radiator, Sun, Sensors } from "./components/devices";
+import { Radiator } from "./components/devices";
 import { allowedDevices } from "./types";
 require("dotenv").config();
 import path from "path";
@@ -26,14 +26,11 @@ const sensors: Array<string> = ["livingRoom", "liamsRoom", "study", "ourRoom"];
 // devices.push(new Floodlight(client));
 // devices.push(new Sun(client));
 devices.push(new Radiator(client));
-devices.push(new Sensors(client, sensors));
+// devices.push(new Sensors(client, sensors));
 
-// console.log(fs.open("./devices.json", "r"));
+const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
 
-const typeDefs: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
-// console.log(typeDefs.nodes[0].name);
-typeDefs.forEach((node: any) => {
-  console.log(node);
+deviceConfig.forEach((node: any) => {
   devices.push(DeviceCreator(client, node));
 });
 
