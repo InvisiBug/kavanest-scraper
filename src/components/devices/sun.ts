@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { SunStore, options } from "../database";
-import { setDisconnected, disconnectWatchdog } from "../helpers";
+import { disconnectWatchdog } from "../helpers";
 import { sunData } from "../types";
 
 export default class Sun {
@@ -14,7 +14,7 @@ export default class Sun {
   constructor(client: MqttClient) {
     this.client = client;
     this.data.connected = false;
-    this.timer = disconnectWatchdog(this.data, writeToMongo);
+    this.timer = disconnectWatchdog(this.data, "Sun Disconnect", writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -29,7 +29,7 @@ export default class Sun {
       writeToMongo(this.data);
 
       clearTimeout(this.timer);
-      this.timer = disconnectWatchdog(this.data, writeToMongo);
+      this.timer = disconnectWatchdog(this.data, "Sun Disconnect", writeToMongo);
     }
   }
 }

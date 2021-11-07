@@ -1,7 +1,14 @@
-import { floodlightData, sunData } from "../types";
+import { floodlightData, sunData, sensorData } from "../types";
 
-export const setDisconnected = (data: floodlightData | sunData): floodlightData | sunData => {
-  console.log("Disconnected");
+export const disconnectWatchdog = (data: floodlightData | sunData | sensorData, msg: string, writeToMongo: any) => {
+  return setTimeout(() => {
+    data = setDisconnected(data, msg);
+    writeToMongo(data);
+  }, 10 * 1000);
+};
+
+export const setDisconnected = (data: floodlightData | sunData | sensorData, msg: string): floodlightData | sunData | sensorData => {
+  console.log(msg);
   data = {
     ...data,
     connected: false,
@@ -9,9 +16,7 @@ export const setDisconnected = (data: floodlightData | sunData): floodlightData 
   return data;
 };
 
-export const disconnectWatchdog = (data: floodlightData | sunData, writeToMongo: any) => {
-  return setTimeout(() => {
-    data = setDisconnected(data);
-    writeToMongo(data);
-  }, 10 * 1000);
+export const camelRoomName = (text: string) => {
+  text = text.replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ""));
+  return text.substr(0, 1).toLowerCase() + text.substr(1);
 };
