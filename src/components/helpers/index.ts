@@ -8,7 +8,7 @@ export const disconnectWatchdog = (data: floodlightData | sunData | sensorData, 
 };
 
 export const setDisconnected = (data: floodlightData | sunData | sensorData, msg: string): floodlightData | sunData | sensorData => {
-  console.log(msg);
+  // console.log(msg); // TODO remove this, will need to alter all calls
   data = {
     ...data,
     connected: false,

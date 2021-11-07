@@ -40,7 +40,7 @@ export default class Plug {
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
       } catch (error) {
-        console.log(error);
+        console.log(`${this.name} disconnected`);
       }
     }
   }

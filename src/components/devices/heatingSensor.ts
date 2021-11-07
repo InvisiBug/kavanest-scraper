@@ -46,7 +46,7 @@ export default class heatingSensor {
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, writeToMongo);
       } catch (error) {
-        console.log(error);
+        console.log(console.log`${this.data.room} sensor disconnected`);
       }
     }
   }
