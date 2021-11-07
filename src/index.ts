@@ -1,10 +1,14 @@
 import mqtt from "mqtt";
 import { Floodlight, Radiator, Sun, Sensors } from "./components/devices";
-import { allowedDevices } from "./components/types";
+import { allowedDevices } from "./types";
 require("dotenv").config();
+import path from "path";
+import { readFileSync } from "fs";
+import { load } from "js-yaml";
+import DeviceCreator from "./components/deviceCreator";
 
 const MQTT: string = process.env.MQTT ?? "";
-console.log(MQTT);
+// console.log(MQTT);
 
 // Connect to MQTT networks
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
@@ -19,10 +23,19 @@ const sensors: Array<string> = ["livingRoom", "kitchen", "liamsRoom", "study", "
 */
 
 // Devices that are being monitored
-devices.push(new Floodlight(client));
-devices.push(new Sun(client));
+// devices.push(new Floodlight(client));
+// devices.push(new Sun(client));
 devices.push(new Radiator(client));
 devices.push(new Sensors(client, sensors));
+
+// console.log(fs.open("./devices.json", "r"));
+
+const typeDefs: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
+// console.log(typeDefs.nodes[0].name);
+typeDefs.forEach((node: any) => {
+  console.log(node);
+  devices.push(DeviceCreator(client, node));
+});
 
 client.subscribe("#", (error: Error) => {
   if (error) console.log(error);

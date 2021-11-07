@@ -1,7 +1,7 @@
 import { MqttClient } from "mqtt";
-import { SunStore, options } from "../database";
+import { sunStore, options } from "../database";
 import { disconnectWatchdog } from "../helpers";
-import { sunData } from "../types";
+import { sunData } from "../../types";
 
 export default class Sun {
   client: MqttClient;
@@ -35,7 +35,7 @@ export default class Sun {
 }
 
 const writeToMongo = async (data: sunData) => {
-  await SunStore.findOneAndUpdate(
+  await sunStore.findOneAndUpdate(
     { id: 5 },
     {
       state: data.state,

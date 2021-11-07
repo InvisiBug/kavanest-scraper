@@ -1,4 +1,4 @@
-import { Floodlight, Sun, Radiator } from "./devices";
+import { Floodlight, Sun, Radiator } from "./components/devices";
 
 export type allowedDevices = Floodlight | Sun | Radiator;
 

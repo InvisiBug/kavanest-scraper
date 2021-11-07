@@ -1,4 +1,4 @@
-import { floodlightData, sunData, sensorData } from "../types";
+import { floodlightData, sunData, sensorData } from "../../types";
 
 export const disconnectWatchdog = (data: floodlightData | sunData | sensorData, msg: string, writeToMongo: any) => {
   return setTimeout(() => {
