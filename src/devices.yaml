@@ -1,16 +1,14 @@
-# nodes:
-# - name: floodlight
-#   topic: Plug
-#   type: plug
-
-- name: sun
-  topic: Sun
-  type: plug
-
-- name: floodlight
-  topic: Plug
-  type: plug
-
+########################################################################
+#
+#  #     #                                         #####
+#  #     # ######   ##   ##### # #    #  ####     #     # ###### #    #  ####   ####  #####   ####
+#  #     # #       #  #    #   # ##   # #    #    #       #      ##   # #      #    # #    # #
+#  ####### #####  #    #   #   # # #  # #          #####  #####  # #  #  ####  #    # #    #  ####
+#  #     # #      ######   #   # #  # # #  ###          # #      #  # #      # #    # #####       #
+#  #     # #      #    #   #   # #   ## #    #    #     # #      #   ## #    # #    # #   #  #    #
+#  #     # ###### #    #   #   # #    #  ####      #####  ###### #    #  ####   ####  #    #  ####
+#
+########################################################################
 - name: livingRoom
   topic: Living Room Heating Sensor
   type: heatingSensor
@@ -31,23 +29,60 @@
   topic: Our Room Heating Sensor
   type: heatingSensor
 
+########################################################################
+#
+#  ######
+#  #     # #      #    #  ####   ####
+#  #     # #      #    # #    # #
+#  ######  #      #    # #       ####
+#  #       #      #    # #  ###      #
+#  #       #      #    # #    # #    #
+#  #       ######  ####   ####   ####
+#
+########################################################################
+- name: sun
+  topic: Sun
+  type: plug
+
+- name: floodlight
+  topic: Plug
+  type: plug
+
 - name: radiatorFan
   topic: Radiator Fan
   type: plug
 
-  # - name: sun
-  #   topic: Computer Audio
-  #   control: Computer Audio Control
-  #   type: Audio
-  # - name: Liams Room Heating Sensor
-  #   topic: Liams Room Heating Sensor
-  #   type: Heating
-  # - name: Living Room Heating Sensor
-  #   topic: Living Room Heating Sensor
-  #   type: Heating
-  # - name: Our Room Heating Sensor
-  #   topic: Living Room Heating Sensor
-  #   type: Heating
-  # - name: Kitchen Heating Sensor
-  #   topic: Kitchen Heating Sensor
-  #   type: Heating
+- name: heating
+  topic: Heating
+  type: plug
+
+########################################################################
+#
+#  #     #
+#  #     #   ##   #      #    # ######  ####
+#  #     #  #  #  #      #    # #      #
+#  #     # #    # #      #    # #####   ####
+#   #   #  ###### #      #    # #           #
+#    # #   #    # #       #  #  #      #    #
+#     #    #    # ######   ##   ######  ####
+#
+########################################################################
+- name: livingRoom
+  topic: Living Room Radiator Valve
+  type: valve
+
+- name: kitchen
+  topic: Kitchen Radiator Valve
+  type: valve
+
+- name: liamsRoom
+  topic: Liams Room Radiator Valve
+  type: valve
+
+- name: study
+  topic: Study Radiator Valve
+  type: valve
+
+- name: ourRoom
+  topic: Our Room Radiator Valve
+  type: valve
