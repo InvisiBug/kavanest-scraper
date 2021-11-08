@@ -12,6 +12,5 @@
     "outDir": "dist/"
   },
   "include": [
-    "src/*"
-, "src/components/weather.ts", "src/components/valves.ts", "src/components/radiatorMonitor.ts", "src/components/devices"  ]
+    "src/*"  ]
 }
