@@ -1,24 +1,24 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../helpers";
-import { sensorStore, options } from "../database";
+import { sensorStore, options, offsetStore } from "../database";
 
 export default class heatingSensor {
-  temperature: number | undefined = undefined;
-  humidity: number | undefined = undefined;
-  pressure: number | undefined = undefined;
+  temperature: number | null = null;
+  humidity: number | null = null;
+  pressure: number | null = null;
   timer: NodeJS.Timeout;
   client: MqttClient;
   topic: string;
 
   data: sensorData = {
-    room: null,
+    room: "",
+    rawTemperature: null,
     temperature: null,
     humidity: null,
-    connected: null,
+    connected: false,
   };
 
   offset: number = 0;
-  room: string = "";
 
   constructor(client: MqttClient, deviceConfig: any) {
     this.client = client;
@@ -26,17 +26,18 @@ export default class heatingSensor {
     this.data.room = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
     this.timer = disconnectWatchdog(this.data, "sensor disconnect", writeToMongo);
   }
 
-  handleIncoming(topic: string, rawPayload: any) {
+  async handleIncoming(topic: string, rawPayload: any) {
     if (topic === this.topic) {
       try {
         const payload = JSON.parse(rawPayload.toString());
+
         this.data = {
           ...this.data,
-          temperature: payload.temperature,
+          rawTemperature: payload.temperature,
+          temperature: (payload.temperature + (await getOffsets(this.data.room))).toFixed(2),
           humidity: payload.humidity,
           connected: true,
         };
@@ -46,7 +47,7 @@ export default class heatingSensor {
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, writeToMongo);
       } catch (error) {
-        console.log(console.log`${this.data.room} sensor disconnected`);
+        console.log(`${this.data.room} sensor disconnected`);
       }
     }
   }
@@ -56,8 +57,18 @@ const writeToMongo = async (data: sensorData) => {
   await sensorStore.findOneAndUpdate({ room: data.room }, data, options);
 };
 
+const getOffsets = async (room: string) => {
+  try {
+    const test: any = await offsetStore.findOne({ name: "roomOffsets" });
+    return test[room];
+  } catch {
+    return 0;
+  }
+};
+
 interface sensorData {
-  room: string | null;
+  room: string;
+  rawTemperature: number | null;
   temperature: number | null;
   humidity: number | null;
   connected: Boolean | null;

@@ -1,6 +1,6 @@
-import { Floodlight, Sun, Radiator } from "./components/devices";
+import { Radiator } from "./components/devices";
 
-export type allowedDevices = Floodlight | Sun | Radiator;
+export type allowedDevices = Radiator;
 
 export interface sunData {
   state: Boolean | null;

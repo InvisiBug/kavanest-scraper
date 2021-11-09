@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 const SensorSchema = new mongoose.Schema({
   room: { type: String },
-  temperature: { type: String },
-  humidity: { type: String },
+  rawTemperature: { type: Number },
+  temperature: { type: Number },
+  humidity: { type: Number },
   connected: { type: Boolean },
 });
 
