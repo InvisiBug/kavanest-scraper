@@ -8,7 +8,6 @@ import { load } from "js-yaml";
 import DeviceCreator from "./components/deviceCreator";
 
 const MQTT: string = process.env.MQTT ?? "";
-// console.log(MQTT);
 
 // Connect to MQTT networks
 let client: mqtt.MqttClient = mqtt.connect(MQTT);

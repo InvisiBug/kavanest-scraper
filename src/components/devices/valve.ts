@@ -1,5 +1,6 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options } from "../database";
+// import { valveStore, options } from "../database";
+import { valveStore, options } from "kavanest-store";
 import { disconnectWatchdog } from "../helpers";
 
 export default class Valve {
