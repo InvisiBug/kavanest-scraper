@@ -1,7 +1,7 @@
 import { MqttClient } from "mqtt";
-import { SensorStore, options } from "../database";
+import { sensorStore, options } from "../database";
 import { camelRoomName, disconnectWatchdog } from "../helpers";
-import { sensorData } from "../types";
+import { sensorData } from "../../types";
 
 export default class Sensors {
   client: MqttClient;
@@ -70,5 +70,5 @@ class sensor {
 }
 
 const writeToMongo = async (data: sensorData) => {
-  await SensorStore.findOneAndUpdate({ room: data.room }, data, options);
+  await sensorStore.findOneAndUpdate({ room: data.room }, data, options);
 };

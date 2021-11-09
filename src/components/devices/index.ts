@@ -1,4 +1,5 @@
-export { default as Floodlight } from "./floodlight";
+export { default as heatingSensor } from "./heatingSensor";
 export { default as Radiator } from "./radiator";
-export { default as Sensors } from "./sensors";
-export { default as Sun } from "./sun";
+export { default as plug } from "./plug";
+export { default as valve } from "./valve";
+export { default as offset } from "./offsets";

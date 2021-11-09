@@ -1,4 +1,4 @@
-import { floodlightData, sunData, sensorData } from "../types";
+import { floodlightData, sunData, sensorData } from "../../types";
 
 export const disconnectWatchdog = (data: floodlightData | sunData | sensorData, msg: string, writeToMongo: any) => {
   return setTimeout(() => {
@@ -8,7 +8,7 @@ export const disconnectWatchdog = (data: floodlightData | sunData | sensorData, 
 };
 
 export const setDisconnected = (data: floodlightData | sunData | sensorData, msg: string): floodlightData | sunData | sensorData => {
-  console.log(msg);
+  // console.log(msg); // TODO remove this, will need to alter all calls
   data = {
     ...data,
     connected: false,

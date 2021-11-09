@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
-const sunSchema = new mongoose.Schema({
+const valveSchema = new mongoose.Schema({
+  name: { type: String },
   id: { type: String },
   state: { type: Boolean },
   connected: { type: Boolean },
 });
 
-export default sunSchema;
+export default valveSchema;

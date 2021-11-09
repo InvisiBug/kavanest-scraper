@@ -1,5 +1,5 @@
+import { radiator, sensor, plug, valve, offset } from "./schemas";
 import mongoose from "mongoose";
-import { Floodlight, Sun, Radiator, Sensor } from "./schemas";
 require("dotenv").config();
 
 const connection = mongoose.createConnection(process.env.URI ?? "");
@@ -13,9 +13,10 @@ connection.on("error", (err) => {
 });
 
 //* Mongoose store models
-export const FloodlightStore = connection.model("floodlight", Floodlight);
-export const RadiatorStore = connection.model("radiator", Radiator);
-export const SensorStore = connection.model("sensor", Sensor);
-export const SunStore = connection.model("sun", Sun);
+export const radiatorStore = connection.model("radiator", radiator);
+export const offsetStore = connection.model("offset", offset);
+export const sensorStore = connection.model("sensor", sensor);
+export const valveStore = connection.model("valve", valve);
+export const plugStore = connection.model("plug", plug);
 
 export const options = { new: true, upsert: true };

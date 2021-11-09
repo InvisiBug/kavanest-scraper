@@ -1,29 +1,38 @@
 import mqtt from "mqtt";
-import { Floodlight, Radiator, Sun, Sensors } from "./components/devices";
-import { allowedDevices } from "./components/types";
+import { Radiator, offset } from "./components/devices";
+import { allowedDevices } from "./types";
 require("dotenv").config();
+import path from "path";
+import { readFileSync } from "fs";
+import { load } from "js-yaml";
+import DeviceCreator from "./components/deviceCreator";
 
 const MQTT: string = process.env.MQTT ?? "";
-console.log(MQTT);
+// console.log(MQTT);
 
 // Connect to MQTT networks
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
 
 const devices: Array<any> = [];
-const sensors: Array<string> = ["livingRoom", "kitchen", "liamsRoom", "study", "ourRoom"];
 
+//? Initial device configuration
 /*
   This app needs to know whether its running connected to the simulator or the production network
   instead of having a seperate object for the sun, floodlight and radiator, make them all the same onject as theyre all the same phisical device
   maybe treat the speaker relay as a plug too
 */
-
-// Devices that are being monitored
-devices.push(new Floodlight(client));
-devices.push(new Sun(client));
+// * Special devices
 devices.push(new Radiator(client));
-devices.push(new Sensors(client, sensors));
+devices.push(new offset(client)); //! This will need to be removed in the final version
 
+//* Config'd devices
+const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
+
+deviceConfig.forEach((node: any) => {
+  devices.push(DeviceCreator(client, node));
+});
+
+//? MQTT messages
 client.subscribe("#", (error: Error) => {
   if (error) console.log(error);
   else console.log(`📡 Listening to ${process.env.MQTT ?? ""}`);
