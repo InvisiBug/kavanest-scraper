@@ -13,7 +13,8 @@
     "up": "clear && ./bin/start-container.sh",
     "down": "docker-compose down",
     "logs": "docker logs kavanest-scraper -f",
-    "push": "./bin/push.sh"
+    "push": "./bin/push.sh",
+    "deploy":"./bin/deploy.sh"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.4",
