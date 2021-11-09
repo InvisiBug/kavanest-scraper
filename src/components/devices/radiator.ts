@@ -1,5 +1,4 @@
 import { MqttClient } from "mqtt";
-// import { radiatorStore, options } from "../database";
 import { radiatorStore, options } from "kavanest-store";
 
 export default class RadiatorMonitor {

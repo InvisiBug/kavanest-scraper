@@ -1,5 +1,4 @@
 import { MqttClient } from "mqtt";
-// import { plugStore, options } from "../database";
 import { plugStore, options } from "kavanest-store";
 import { disconnectWatchdog } from "../helpers";
 

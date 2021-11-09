@@ -1,6 +1,5 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../helpers";
-// import { sensorStore, options, offsetStore } from "../database";
 import { sensorStore, options, offsetStore } from "kavanest-store";
 
 export default class heatingSensor {
