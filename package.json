@@ -13,7 +13,8 @@
     "up": "clear && ./bin/start-container.sh",
     "down": "docker-compose down",
     "logs": "docker logs kavanest-scraper -f",
-    "push": "./bin/push.sh"
+    "push": "./bin/push.sh",
+    "deploy": "./bin/deploy.sh"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.4",
@@ -22,6 +23,7 @@
     "config": "^3.3.6",
     "dotenv": "^10.0.0",
     "js-yaml": "^4.1.0",
+    "kavanest-store": "https://github.com/InvisiBug/kavanest-store.git",
     "mongoose": "^6.0.12",
     "mqtt": "^4.2.8",
     "prettier": "^2.4.1",
