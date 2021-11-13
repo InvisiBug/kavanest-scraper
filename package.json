@@ -9,12 +9,12 @@
     "dev": "nodemon --exec \"ts-node \" ./src/index.ts",
     "start": "ts-node ./src/index.ts",
     "build": "tsc && cp ./src/devices.yaml ./dist",
+    "push": "./bin/push.sh",
+    "deploy": "yarn push && ./bin/deploy.sh",
     "start-container": "./bin/start-container.sh",
     "up": "clear && ./bin/start-container.sh",
     "down": "docker-compose down",
-    "logs": "docker logs kavanest-scraper -f",
-    "push": "./bin/push.sh",
-    "deploy": "./bin/deploy.sh"
+    "logs": "docker logs kavanest-scraper -f"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.4",

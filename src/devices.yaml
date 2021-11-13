@@ -86,3 +86,15 @@
 - name: ourRoom
   topic: Our Room Radiator Valve
   type: valve
+
+- name: deskLEDs
+  topic: Desk LEDs
+  type: rgbLight
+
+- name: tableLamp
+  topic: Table Lamp
+  type: rgbLight
+
+- name: screenLEDs
+  topic: Screen LEDs
+  type: rgbLight

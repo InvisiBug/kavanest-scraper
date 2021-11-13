@@ -382,7 +382,7 @@ kareem@2.3.2:
 
 "kavanest-store@https://github.com/InvisiBug/kavanest-store.git":
   version "1.0.0"
-  resolved "https://github.com/InvisiBug/kavanest-store.git#f750a903af0ed70d160d0c76a31b626482fe33e9"
+  resolved "https://github.com/InvisiBug/kavanest-store.git#e3c6e2e727cc9dc2e7e713580d9640b6245e5b89"
   dependencies:
     "@types/js-yaml" "^4.0.4"
     "@types/node" "^16.11.6"

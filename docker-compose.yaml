@@ -3,14 +3,21 @@ version: "3.1"
 services:
   kavanest-scraper:
     container_name: kavanest-scraper
+    image: kavanest-scraper
     build:
       context: .
       dockerfile: Dockerfile
     networks:
       - proxynet
     environment:
-      - URI=mongodb://kavanest-mongo:27017/devices
+      # Use this to get data from live system
       - MQTT=mqtt://kavanet.io
+
+      # Use this to get data from simulator
+      # - MQTT=mqtt://kavanest-sim-mqtt
+
+      # The mongo name is the same on kavanetes and docker
+      - URI=mongodb://kavanest-mongo:27017/devices
 
 networks:
   proxynet:

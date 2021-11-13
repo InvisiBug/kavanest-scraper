@@ -9,6 +9,7 @@
     "noUnusedParameters": false,
     "resolveJsonModule": true,
     "strict": true,
+    "declaration": true,
     "outDir": "dist/"
   },
   "include": [
