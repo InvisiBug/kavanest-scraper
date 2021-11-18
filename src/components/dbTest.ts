@@ -21,18 +21,3 @@ export const connectToDB = async (uri: string, database: string, collection: str
 
 // test.findOneAndUpdate({ a: 1 });
 // TODO add one doc to events
-
-export class mongo {
-  client: MongoClient = new MongoClient(process.env.URI ?? "");
-  db: Db;
-  collection: Collection;
-
-  constructor() {
-    console.log("Con");
-    (async () => {
-      await this.client.connect();
-    })();
-    this.db = this.client.db("myMongo");
-    this.collection = this.db.collection("test");
-  }
-}

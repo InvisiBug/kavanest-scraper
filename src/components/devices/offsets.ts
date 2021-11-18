@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { offsetStore, options } from "kavanest-store";
+import { offsetStore, options } from "../database";
 
 export default class Offsets {
   client: MqttClient;
@@ -18,12 +18,14 @@ export default class Offsets {
       await offsetStore.findOneAndUpdate(
         { name: "roomOffsets" },
         {
-          name: "roomOffsets",
-          livingRoom: payload.livingRoom,
-          kitchen: payload.kitchen,
-          liamsRoom: payload.liamsRoom,
-          study: payload.study,
-          ourRoom: payload.ourRoom,
+          $set: {
+            name: "roomOffsets",
+            livingRoom: payload.livingRoom,
+            kitchen: payload.kitchen,
+            liamsRoom: payload.liamsRoom,
+            study: payload.study,
+            ourRoom: payload.ourRoom,
+          },
         },
         options,
       );

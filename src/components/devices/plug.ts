@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "kavanest-store";
+import { plugStore, options } from "../database";
 import { disconnectWatchdog } from "../helpers";
 
 export default class Plug {
@@ -50,8 +50,10 @@ const writeToMongo = async (data: plugData) => {
   await plugStore.findOneAndUpdate(
     { name: data.name },
     {
-      state: data.state,
-      connected: data.connected,
+      $set: {
+        state: data.state,
+        connected: data.connected,
+      },
     },
     options,
   );

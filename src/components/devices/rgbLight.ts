@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { rgbLightStore, options } from "kavanest-store";
+import { rgbLightStore, options } from "../database";
 import { disconnectWatchdog } from "../helpers";
 import { rgbLightData } from "../../types";
 
@@ -55,7 +55,7 @@ const writeToMongo = async (data: rgbLightData) => {
   await rgbLightStore.findOneAndUpdate(
     { name: data.name },
     {
-      ...data,
+      $set: { ...data },
     },
     options,
   );

@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../helpers";
-import { sensorStore, options, offsetStore } from "kavanest-store";
+import { sensorStore, options, offsetStore } from "../database";
 
 export default class heatingSensor {
   temperature: number | null = null;
@@ -54,7 +54,7 @@ export default class heatingSensor {
 }
 
 const writeToMongo = async (data: sensorData) => {
-  await sensorStore.findOneAndUpdate({ room: data.room }, data, options);
+  await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options);
 };
 
 const getOffsets = async (room: string) => {
