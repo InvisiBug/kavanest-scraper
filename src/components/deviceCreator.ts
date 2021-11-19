@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { plug, heatingSensor, valve } from "./devices/index";
+import { plug, heatingSensor, valve, rgbLight } from "./devices/index";
 
 export default (client: MqttClient, deviceConfig: any) => {
   switch (deviceConfig.type) {
@@ -11,6 +11,10 @@ export default (client: MqttClient, deviceConfig: any) => {
 
     case "valve":
       return new valve(client, deviceConfig);
+
+    case "rgbLight":
+      return new rgbLight(client, deviceConfig);
+      break;
   }
   console.log(deviceConfig.type);
 };

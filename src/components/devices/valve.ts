@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options } from "kavanest-store";
+import { valveStore, options } from "../database";
 import { disconnectWatchdog } from "../helpers";
 
 export default class Valve {
@@ -50,8 +50,10 @@ const writeToMongo = async (data: valveData) => {
   await valveStore.findOneAndUpdate(
     { name: data.name },
     {
-      state: data.state,
-      connected: data.connected,
+      $set: {
+        state: data.state,
+        connected: data.connected,
+      },
     },
     options,
   );

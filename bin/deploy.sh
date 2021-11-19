@@ -6,7 +6,7 @@ EXITCODE=$?
 if [ "$EXITCODE" -ne "0" ];
 then
 echo "
-The above error created because the deployment doesn't exist.
+The above error was created because the deployment doesn't exist.
 Creating deployment now...
 "
 helm install kavanest-scraper . --namespace kavanest --create-namespace

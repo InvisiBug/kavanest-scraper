@@ -1,11 +1,10 @@
-import mqtt from "mqtt";
 import { Radiator, offset } from "./components/devices";
-import { allowedDevices } from "./types";
-require("dotenv").config();
-import path from "path";
+import DeviceCreator from "./components/deviceCreator";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
-import DeviceCreator from "./components/deviceCreator";
+import mqtt from "mqtt";
+import path from "path";
+require("dotenv").config();
 
 const MQTT: string = process.env.MQTT ?? "";
 
