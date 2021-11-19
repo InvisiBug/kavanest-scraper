@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../helpers";
-import { sensorStore, options, offsetStore } from "../database";
+import { sensorStore, options } from "../database";
 
 export default class heatingSensor {
   temperature: number | null = null;
@@ -58,12 +58,13 @@ const writeToMongo = async (data: sensorData) => {
 };
 
 const getOffsets = async (room: string) => {
-  try {
-    const test: any = await offsetStore.findOne({ name: "roomOffsets" });
-    return test[room];
-  } catch {
-    return 0;
-  }
+  // try {
+  //   const test: any = await offsetStore.findOne({ name: "roomOffsets" });
+  //   return test[room];
+  // } catch {
+  //   return 0;
+  // }
+  return 0;
 };
 
 interface sensorData {

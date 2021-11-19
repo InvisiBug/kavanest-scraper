@@ -1,4 +1,5 @@
 import { Collection, Db, MongoClient } from "mongodb";
+require("dotenv").config();
 
 /*
   Create the mongo client then connect with it,
@@ -14,8 +15,8 @@ export default class Mongo {
     (async () => {
       //! Think this await is still needed
       await this.client.connect((err) => {
-        if (err) {
-          console.log("Could not connect to collection ", collection);
+        if (!err) {
+          console.log("🔗 Connection made to", collection);
         }
       });
     })();
@@ -23,3 +24,5 @@ export default class Mongo {
     this.collection = this.db.collection(collection);
   }
 }
+
+// TODO add a time out and an error if the mongo connection isnt made within a few seconds
