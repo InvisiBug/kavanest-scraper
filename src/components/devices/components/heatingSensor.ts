@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
-import { disconnectWatchdog, camelRoomName } from "../helpers";
-import { sensorStore, options } from "../database";
+import { disconnectWatchdog, camelRoomName } from "../../helpers";
+import { sensorStore, options } from "../../database";
 
 export default class heatingSensor {
   temperature: number | null = null;

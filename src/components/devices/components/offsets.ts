@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { offsetStore, options } from "../database";
+import { offsetStore, options } from "../../database";
 
 export default class Offsets {
   client: MqttClient;

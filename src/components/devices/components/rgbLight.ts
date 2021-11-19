@@ -1,17 +1,21 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "../database";
-import { disconnectWatchdog } from "../helpers";
+import { rgbLightStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
+import { rgbLightData } from "../../../types";
 
-export default class Plug {
+export default class RGBLight {
   client: MqttClient;
   timer: NodeJS.Timeout;
   topic: string;
   name: string;
 
-  data: plugData = {
+  data: rgbLightData = {
     name: null,
-    state: null,
-    connected: null,
+    red: null,
+    green: null,
+    blue: null,
+    mode: null,
+    connected: false,
   };
 
   constructor(client: MqttClient, deviceConfig: any) {
@@ -28,15 +32,16 @@ export default class Plug {
     if (topic === this.topic) {
       try {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
-
         this.data = {
           name: this.name,
-          state: payload.state,
+          red: payload.red,
+          green: payload.green,
+          blue: payload.blue,
+          mode: payload.mode,
           connected: true,
         };
 
         writeToMongo(this.data);
-
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
       } catch (error) {
@@ -46,14 +51,11 @@ export default class Plug {
   }
 }
 
-const writeToMongo = async (data: plugData) => {
-  await plugStore.findOneAndUpdate(
+const writeToMongo = async (data: rgbLightData) => {
+  await rgbLightStore.findOneAndUpdate(
     { name: data.name },
     {
-      $set: {
-        state: data.state,
-        connected: data.connected,
-      },
+      $set: { ...data },
     },
     options,
   );
@@ -61,10 +63,8 @@ const writeToMongo = async (data: plugData) => {
 
 interface MQTTpalyoad {
   node: String;
-  state: boolean;
-}
-interface plugData {
-  name: string | null;
-  state: boolean | null;
-  connected: boolean | null;
+  red: number;
+  green: number;
+  blue: number;
+  mode: number;
 }
