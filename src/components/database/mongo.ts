@@ -12,14 +12,12 @@ export default class Mongo {
   collection: Collection;
 
   constructor(db: string, collection: string) {
-    (async () => {
-      //! Think this await is still needed
-      await this.client.connect((err) => {
-        if (!err) {
-          console.log("🔗 Connection made to", collection);
-        }
-      });
-    })();
+    this.client.connect((err) => {
+      if (!err) {
+        console.log("🔗 Connection made to", collection);
+      }
+    });
+
     this.db = this.client.db(db);
     this.collection = this.db.collection(collection);
   }
