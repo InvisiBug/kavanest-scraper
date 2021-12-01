@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options } from "../database";
-import { disconnectWatchdog } from "../helpers";
+import { valveStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 
 export default class Valve {
   client: MqttClient;

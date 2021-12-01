@@ -1,102 +1,54 @@
-########################################################################
-#
-#  #     #                                         #####
-#  #     # ######   ##   ##### # #    #  ####     #     # ###### #    #  ####   ####  #####   ####
-#  #     # #       #  #    #   # ##   # #    #    #       #      ##   # #      #    # #    # #
-#  ####### #####  #    #   #   # # #  # #          #####  #####  # #  #  ####  #    # #    #  ####
-#  #     # #      ######   #   # #  # # #  ###          # #      #  # #      # #    # #####       #
-#  #     # #      #    #   #   # #   ## #    #    #     # #      #   ## #    # #    # #   #  #    #
-#  #     # ###### #    #   #   # #    #  ####      #####  ###### #    #  ####   ####  #    #  ####
-#
-########################################################################
-# - name: livingRoom
-#   topic: Living Room Heating Sensor
-#   type: heatingSensor
+heatingSensors:
+  - name: livingRoom
+    topic: Living Room Heating Sensor
 
-# - name: kitchen
-#   topic: Kitchen Heating Sensor
-#   type: heatingSensor
+  - name: kitchen
+    topic: Kitchen Heating Sensor
 
-# - name: liamsRoom
-#   topic: Liams Room Heating Sensor
-#   type: heatingSensor
+  - name: liamsRoom
+    topic: Liams Room Heating Sensor
 
-# - name: study
-#   topic: Study Heating Sensor
-#   type: heatingSensor
+  - name: study
+    topic: Study Heating Sensor
 
-# - name: ourRoom
-#   topic: Our Room Heating Sensor
-#   type: heatingSensor
+  - name: ourRoom
+    topic: Our Room Heating Sensor
 
-########################################################################
-#
-#  ######
-#  #     # #      #    #  ####   ####
-#  #     # #      #    # #    # #
-#  ######  #      #    # #       ####
-#  #       #      #    # #  ###      #
-#  #       #      #    # #    # #    #
-#  #       ######  ####   ####   ####
-#
-########################################################################
-- name: sun
-  topic: Sun
-  type: plug
+plugs:
+  - name: sun
+    topic: Sun
 
-- name: floodlight
-  topic: Plug
-  type: plug
+  - name: floodlight
+    topic: Plug
 
-- name: radiatorFan
-  topic: Radiator Fan
-  type: plug
+  - name: radiatorFan
+    topic: Radiator Fan
 
-- name: heating
-  topic: Heating
-  type: plug
+  - name: heating
+    topic: Heating
 
-########################################################################
-#
-#  #     #
-#  #     #   ##   #      #    # ######  ####
-#  #     #  #  #  #      #    # #      #
-#  #     # #    # #      #    # #####   ####
-#   #   #  ###### #      #    # #           #
-#    # #   #    # #       #  #  #      #    #
-#     #    #    # ######   ##   ######  ####
-#
-########################################################################
-- name: livingRoom
-  topic: Living Room Radiator Valve
-  type: valve
+valves:
+  - name: livingRoom
+    topic: Living Room Radiator Valve
 
-- name: kitchen
-  topic: Kitchen Radiator Valve
-  type: valve
+  - name: kitchen
+    topic: Kitchen Radiator Valve
 
-- name: liamsRoom
-  topic: Liams Room Radiator Valve
-  type: valve
+  - name: liamsRoom
+    topic: Liams Room Radiator Valve
 
-- name: study
-  topic: Study Radiator Valve
-  type: valve
+  - name: study
+    topic: Study Radiator Valve
 
-- name: ourRoom
-  topic: Our Room Radiator Valve
-  type: valve
+  - name: ourRoom
+    topic: Our Room Radiator Valve
 
+rgbLights:
+  - name: deskLEDs
+    topic: Desk LEDs
 
-# RGB Lights
-- name: deskLEDs
-  topic: Desk LEDs
-  type: rgbLight
+  - name: tableLamp
+    topic: Table Lamp
 
-- name: tableLamp
-  topic: Table Lamp
-  type: rgbLight
-
-- name: screenLEDs
-  topic: Screen LEDs
-  type: rgbLight
+  - name: screenLEDs
+    topic: Screen LEDs

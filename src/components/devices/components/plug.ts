@@ -1,21 +1,17 @@
 import { MqttClient } from "mqtt";
-import { rgbLightStore, options } from "../database";
-import { disconnectWatchdog } from "../helpers";
-import { rgbLightData } from "../../types";
+import { plugStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 
-export default class RGBLight {
+export default class Plug {
   client: MqttClient;
   timer: NodeJS.Timeout;
   topic: string;
   name: string;
 
-  data: rgbLightData = {
+  data: plugData = {
     name: null,
-    red: null,
-    green: null,
-    blue: null,
-    mode: null,
-    connected: false,
+    state: null,
+    connected: null,
   };
 
   constructor(client: MqttClient, deviceConfig: any) {
@@ -32,16 +28,15 @@ export default class RGBLight {
     if (topic === this.topic) {
       try {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
+
         this.data = {
           name: this.name,
-          red: payload.red,
-          green: payload.green,
-          blue: payload.blue,
-          mode: payload.mode,
+          state: payload.state,
           connected: true,
         };
 
         writeToMongo(this.data);
+
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
       } catch (error) {
@@ -51,11 +46,14 @@ export default class RGBLight {
   }
 }
 
-const writeToMongo = async (data: rgbLightData) => {
-  await rgbLightStore.findOneAndUpdate(
+const writeToMongo = async (data: plugData) => {
+  await plugStore.findOneAndUpdate(
     { name: data.name },
     {
-      $set: { ...data },
+      $set: {
+        state: data.state,
+        connected: data.connected,
+      },
     },
     options,
   );
@@ -63,8 +61,10 @@ const writeToMongo = async (data: rgbLightData) => {
 
 interface MQTTpalyoad {
   node: String;
-  red: number;
-  green: number;
-  blue: number;
-  mode: number;
+  state: boolean;
+}
+interface plugData {
+  name: string | null;
+  state: boolean | null;
+  connected: boolean | null;
 }

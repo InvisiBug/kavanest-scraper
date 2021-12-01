@@ -10,6 +10,12 @@ deployment:
     env:
     - name: URI
       value: mongodb://kavanest-mongo:27017/devices
+
+    #* Use this to connect to KavaNest
     - name: MQTT
       value: mqtt://192.168.1.46
+
+    #* Use this to connect to the simulator
+    # - name: MQTT
+    #   value: mqtt://mosquitto
 

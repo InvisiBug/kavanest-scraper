@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
-import { disconnectWatchdog, camelRoomName } from "../helpers";
-import { sensorStore, options } from "../database";
+import { disconnectWatchdog, camelRoomName } from "../../helpers";
+import { sensorStore, options } from "../../database";
 
 export default class heatingSensor {
   temperature: number | null = null;
@@ -37,7 +37,7 @@ export default class heatingSensor {
         this.data = {
           ...this.data,
           rawTemperature: payload.temperature,
-          temperature: (payload.temperature + (await getOffsets(this.data.room))).toFixed(2),
+          temperature: parseFloat((payload.temperature + (await getOffsets(this.data.room))).toFixed(2)),
           humidity: payload.humidity,
           connected: true,
         };
@@ -58,12 +58,13 @@ const writeToMongo = async (data: sensorData) => {
 };
 
 const getOffsets = async (room: string) => {
-  // try {
-  //   const test: any = await offsetStore.findOne({ name: "roomOffsets" });
-  //   return test[room];
-  // } catch {
-  //   return 0;
-  // }
+  try {
+    const sensoData: any = await sensorStore.findOne({ room });
+    // console.log(sensoData.offset);
+    return sensoData.offset;
+  } catch {
+    return 0;
+  }
   return 0;
 };
 
