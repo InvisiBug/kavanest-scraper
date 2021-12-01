@@ -6,9 +6,8 @@ import mqtt from "mqtt";
 import path from "path";
 require("dotenv").config();
 
-const MQTT: string = process.env.MQTT ?? "";
-
 // Connect to MQTT networks
+const MQTT: string = process.env.MQTT ?? "";
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
 
 const devices: Array<any> = [];
@@ -26,9 +25,11 @@ devices.push(new offset(client)); //! This will need to be removed in the final 
 //* Config'd devices
 const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
 
-deviceConfig.forEach((node: any) => {
-  devices.push(DeviceCreator(client, node));
-});
+for (let deviceType in deviceConfig) {
+  deviceConfig[deviceType].forEach((node: any) => {
+    devices.push(DeviceCreator(client, node, deviceType));
+  });
+}
 
 //? MQTT messages
 client.subscribe("#", (error: Error) => {
