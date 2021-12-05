@@ -1,0 +1,38 @@
+name: kavanest-scraper
+
+namespace: kavanest
+
+deployment:
+  - name: kavanest-scraper
+    image: 192.168.1.61:5000/kavanest-scraper
+    ports:
+    - port: 27017
+    env:
+    - name: ENVIRONMENT
+      value: live
+
+    - name: MONGO_LIVE
+      value: mongodb://kavanest-mongo:27017
+
+    - name: MQTT_LIVE
+      value: mqtt://192.168.1.46
+
+  - name: kavanest-mongo
+    image: mongo:bionic
+    ports:
+    - port: 27017
+    volumes:
+    - type: pvc
+      name: mongo-store
+      path: /data/db
+
+pvc:
+  - name: mongo-store
+    storage: 100Mi
+
+service:
+  loadBalancer:
+    - name: kavanest-mongo
+      selector: kavanest-mongo
+      port: 27017
+      containerPort: 27017
