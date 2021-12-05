@@ -11,7 +11,7 @@ export default class Offsets {
   }
 
   async handleIncoming(topic: String, rawPayload: Object) {
-    if (topic === "roomOffsets") {
+    if (topic === "Room Offsets") {
       const payload = JSON.parse(rawPayload.toString());
 
       for (const room in payload) {
