@@ -10,14 +10,9 @@ services:
     networks:
       - proxynet
     environment:
-      # Use this to get data from live system
-      - MQTT=mqtt://kavanet.io
-
-      # Use this to get data from simulator
-      # - MQTT=mqtt://mosquitto
-
-      # The mongo name is the same on kavanetes and docker
-      - URI=mongodb://kavanest-mongo:27017/devices
+      - ENVIRONMENT=docker
+      - MQTT_DOCKER=mqtt://mosquitto
+      - MONGO_DOCKER=mongodb://kavanest-mongo:27017
 
 networks:
   proxynet:

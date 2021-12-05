@@ -24,5 +24,6 @@ switch (environment) {
 
   case "docker":
     log ? console.log("Mongo: running in docker 🐳") : null;
+    mongoUrl = process.env.MONGO_DOCKER ?? "";
     break;
 }

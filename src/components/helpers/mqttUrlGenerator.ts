@@ -18,10 +18,12 @@ switch (environment) {
 
   case "local":
     log ? console.log("MQTT: Running locally on this computer💻") : null;
-    mqttUrl = process.env.MQTT_LOCAL ?? ""; // Development
+    mqttUrl = process.env.MQTT_LOCAL ?? "";
     break;
 
   case "docker":
     log ? console.log("MQTT: Running in docker 🐳") : null;
+    mqttUrl = process.env.MQTT_DOCKER ?? "";
+    console.log(mqttUrl);
     break;
 }
