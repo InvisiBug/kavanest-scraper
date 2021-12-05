@@ -11,6 +11,8 @@
     "build": "tsc && cp ./src/devices.yaml ./dist",
     "push": "./bin/push.sh",
     "deploy": "yarn push && ./bin/deploy.sh",
+    "deploy--live": "./bin/deploy--live.sh",
+    "deploy--test": "./bin/deploy--test.sh",
     "up": "clear && ./bin/start-container.sh",
     "down": "docker compose down",
     "logs": "docker logs kavanest-scraper -f"
