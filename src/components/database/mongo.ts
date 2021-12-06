@@ -1,5 +1,5 @@
 import { Collection, Db, MongoClient } from "mongodb";
-require("dotenv").config();
+import { mongoUrl } from "../helpers";
 
 /*
   Create the mongo client then connect with it,
@@ -7,14 +7,14 @@ require("dotenv").config();
   The collection property will be used as the stores
 */
 export default class Mongo {
-  client: MongoClient = new MongoClient(process.env.URI ?? "");
+  client: MongoClient = new MongoClient(mongoUrl);
   db: Db;
   collection: Collection;
 
   constructor(db: string, collection: string) {
     this.client.connect((err) => {
       if (!err) {
-        console.log("🔗 Connection made to", collection);
+        console.log("🔗 Connection made to", mongoUrl, collection);
       }
     });
 

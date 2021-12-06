@@ -23,3 +23,6 @@ export const camelRoomName = (text: string) => {
   text = text.replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ""));
   return text.substr(0, 1).toLowerCase() + text.substr(1);
 };
+
+export { mqttUrl } from "./mqttUrlGenerator";
+export { mongoUrl } from "./mongoUrlGenerator";

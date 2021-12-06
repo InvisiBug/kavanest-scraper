@@ -1,5 +1,6 @@
 import { MqttClient } from "mqtt";
 import { offsetStore, options, sensorStore } from "../../database";
+import { camelRoomName } from "../../helpers";
 
 export default class Offsets {
   client: MqttClient;
@@ -11,11 +12,12 @@ export default class Offsets {
   }
 
   async handleIncoming(topic: String, rawPayload: Object) {
-    if (topic === "roomOffsets") {
+    if (topic === this.topic) {
       const payload = JSON.parse(rawPayload.toString());
+      console.log(payload);
 
-      for (const room in payload) {
-        await sensorStore.findOneAndUpdate({ room }, { $set: { offset: payload[room] } });
+      for (var room in payload) {
+        await sensorStore.findOneAndUpdate({ room: camelRoomName(room) }, { $set: { offset: payload[room] } });
       }
     }
   }

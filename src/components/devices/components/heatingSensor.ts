@@ -59,13 +59,16 @@ const writeToMongo = async (data: sensorData) => {
 
 const getOffsets = async (room: string) => {
   try {
-    const sensoData: any = await sensorStore.findOne({ room });
-    // console.log(sensoData.offset);
-    return sensoData.offset;
-  } catch {
+    const sensorData: any = await sensorStore.findOne({ room });
+    if (sensorData.offset) {
+      return sensorData.offset;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    // console.log("Sensor object doesnt exist");
     return 0;
   }
-  return 0;
 };
 
 interface sensorData {
