@@ -27,6 +27,9 @@ plugs:
   - name: heating
     topic: Heating
 
+  - name: computerPower
+    topic: Computer Power
+
 valves:
   - name: livingRoom
     topic: Living Room Radiator Valve
