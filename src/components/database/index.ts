@@ -2,7 +2,7 @@ import Mongo from "./mongo";
 import { mongoUrl } from "../helpers";
 
 const db = "devices";
-console.log("🔗 Connecting to ", mongoUrl, "\n🔗 successful database connections to;");
+console.log("🔗 Connecting to ", mongoUrl, "\n🔗 successful database connections made to the following");
 
 export const rgbLightStore = new Mongo(db, "rgbLights").collection;
 export const radiatorStore = new Mongo(db, "radiators").collection;

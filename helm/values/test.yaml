@@ -7,6 +7,7 @@ deployment:
     image: 192.168.1.61:5000/kavanest-scraper
     ports:
     - port: 27017
+    # - port: 80
     env:
     - name: ENVIRONMENT
       value: test
@@ -16,3 +17,17 @@ deployment:
 
     - name: MQTT_TEST
       value: mqtt://kavanest-simulator
+
+# service:
+#   clusterIP:
+#     - name: kavanest-scraper
+#       selector: kavanest-scraper
+#       ports:
+#         - port: 3000
+
+#   ingress:
+#   - name: test.socket.kavanet.io
+#     selector: kavanest-scraper
+#     path: /
+#     port: 80
+#     host: test.socket.kavanet.io
