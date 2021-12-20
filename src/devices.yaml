@@ -34,9 +34,6 @@ valves:
   - name: livingRoom
     topic: Living Room Radiator Valve
 
-  - name: kitchen
-    topic: Kitchen Radiator Valve
-
   - name: liamsRoom
     topic: Liams Room Radiator Valve
 
