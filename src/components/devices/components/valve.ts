@@ -9,7 +9,7 @@ export default class Valve {
   name: string;
 
   data: valveData = {
-    name: null,
+    room: null,
     state: null,
     connected: null,
   };
@@ -30,7 +30,7 @@ export default class Valve {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
 
         this.data = {
-          name: this.name,
+          room: this.name,
           state: payload.state,
           connected: true,
         };
@@ -48,7 +48,7 @@ export default class Valve {
 
 const writeToMongo = async (data: valveData) => {
   await valveStore.findOneAndUpdate(
-    { name: data.name },
+    { room: data.room },
     {
       $set: {
         state: data.state,
@@ -63,8 +63,9 @@ interface MQTTpalyoad {
   node: String;
   state: boolean;
 }
+
 interface valveData {
-  name: string | null;
+  room: string | null;
   state: boolean | null;
   connected: boolean | null;
 }
