@@ -19,7 +19,7 @@ switch (environment) {
   case "local":
     log ? console.log("Mongo: running locally on this computer💻") : null;
     mongoUrl = process.env.MONGO_LOCAL ?? "";
-    console.log(mongoUrl);
+
     break;
 
   case "docker":

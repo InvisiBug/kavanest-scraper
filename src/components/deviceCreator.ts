@@ -16,5 +16,4 @@ export default (client: MqttClient, deviceConfig: any, deviceType: any) => {
       return new rgbLight(client, deviceConfig);
       break;
   }
-  console.log(deviceConfig.type);
 };
