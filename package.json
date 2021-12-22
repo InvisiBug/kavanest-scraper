@@ -23,7 +23,8 @@
     "kavanest-store": "https://github.com/InvisiBug/kavanest-store.git",
     "mongodb": "^4.2.0",
     "mongoose": "^6.0.12",
-    "mqtt": "^4.2.8"
+    "mqtt": "^4.2.8",
+    "socket.io": "^4.4.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.4",
