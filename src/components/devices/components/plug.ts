@@ -1,21 +1,26 @@
 import { MqttClient } from "mqtt";
 import { plugStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
+import { Socket } from "socket.io";
 
 export default class Plug {
   client: MqttClient;
   timer: NodeJS.Timeout;
   topic: string;
   name: string;
+  io: Socket;
+  mongoID: string = "";
 
   data: plugData = {
     name: null,
     state: null,
     connected: null,
+    _id: null,
   };
 
-  constructor(client: MqttClient, deviceConfig: any) {
+  constructor(client: MqttClient, deviceConfig: any, io: any) {
     this.client = client;
+    this.io = io;
 
     this.name = deviceConfig.name;
     this.topic = deviceConfig.topic;
@@ -33,9 +38,14 @@ export default class Plug {
           name: this.name,
           state: payload.state,
           connected: true,
+          _id: this.mongoID,
         };
 
-        writeToMongo(this.data);
+        writeToMongo(this.data).then((id) => {
+          this.mongoID = id;
+        });
+
+        this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
@@ -47,16 +57,28 @@ export default class Plug {
 }
 
 const writeToMongo = async (data: plugData) => {
-  await plugStore.findOneAndUpdate(
-    { name: data.name },
-    {
-      $set: {
-        state: data.state,
-        connected: data.connected,
+  let id: string = "";
+
+  await plugStore
+    .findOneAndUpdate(
+      { name: data.name },
+      {
+        $set: {
+          state: data.state,
+          connected: data.connected,
+        },
       },
-    },
-    options,
-  );
+      options,
+    )
+    .then((mongoDoc) => {
+      if (mongoDoc.value) {
+        if (Object(mongoDoc).constructor !== Promise) {
+          id = mongoDoc.value._id.toString();
+        }
+      }
+    });
+
+  return id;
 };
 
 interface MQTTpalyoad {
@@ -67,4 +89,5 @@ interface plugData {
   name: string | null;
   state: boolean | null;
   connected: boolean | null;
+  _id: string | null;
 }
