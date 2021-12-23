@@ -20,7 +20,7 @@ const io = new Server(socketServer, {
     methods: ["GET", "POST"],
   },
 });
-socketServer.listen(80);
+socketServer.listen(3100);
 
 io.on("connection", () => {});
 

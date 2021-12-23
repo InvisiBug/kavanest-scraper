@@ -7,7 +7,7 @@ export default (client: MqttClient, deviceConfig: any, deviceType: any, io: any)
       return new plug(client, deviceConfig, io);
 
     case "heatingSensors":
-      return new heatingSensor(client, deviceConfig);
+      return new heatingSensor(client, deviceConfig, io);
 
     case "valves":
       return new valve(client, deviceConfig);
