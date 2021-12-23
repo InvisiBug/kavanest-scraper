@@ -18,7 +18,7 @@ export default class Plug {
     _id: null,
   };
 
-  constructor(client: MqttClient, deviceConfig: any, io: any) {
+  constructor(client: MqttClient, deviceConfig: any, io: Socket) {
     this.client = client;
     this.io = io;
 
