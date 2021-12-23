@@ -1,6 +1,7 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../../helpers";
 import { sensorStore, options } from "../../database";
+import { Socket } from "socket.io";
 
 export default class heatingSensor {
   temperature: number | null = null;
@@ -9,6 +10,8 @@ export default class heatingSensor {
   timer: NodeJS.Timeout;
   client: MqttClient;
   topic: string;
+  mongoID: string = "";
+  io: Socket;
 
   data: sensorData = {
     room: "",
@@ -20,8 +23,9 @@ export default class heatingSensor {
 
   offset: number = 0;
 
-  constructor(client: MqttClient, deviceConfig: any) {
+  constructor(client: MqttClient, deviceConfig: any, io: any) {
     this.client = client;
+    this.io = io;
 
     this.data.room = deviceConfig.name;
     this.topic = deviceConfig.topic;
@@ -42,7 +46,11 @@ export default class heatingSensor {
           connected: true,
         };
 
-        writeToMongo(this.data);
+        writeToMongo(this.data).then((id) => {
+          this.mongoID = id;
+        });
+
+        this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, writeToMongo);
@@ -54,7 +62,17 @@ export default class heatingSensor {
 }
 
 const writeToMongo = async (data: sensorData) => {
-  await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options);
+  let id: string = "";
+
+  await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
+    if (mongoDoc.value) {
+      if (Object(mongoDoc).constructor !== Promise) {
+        id = mongoDoc.value._id.toString();
+      }
+    }
+  });
+
+  return id;
 };
 
 const getOffsets = async (room: string) => {
