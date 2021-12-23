@@ -4,21 +4,20 @@ import { sensorStore, options } from "../../database";
 import { Socket } from "socket.io";
 
 export default class heatingSensor {
-  temperature: number | null = null;
-  humidity: number | null = null;
-  pressure: number | null = null;
   timer: NodeJS.Timeout;
   client: MqttClient;
   topic: string;
   mongoID: string = "";
   io: Socket;
+  room: string;
 
-  data: sensorData = {
+  data: any = {
     room: "",
     rawTemperature: null,
     temperature: null,
     humidity: null,
     connected: false,
+    _id: null,
   };
 
   offset: number = 0;
@@ -27,7 +26,7 @@ export default class heatingSensor {
     this.client = client;
     this.io = io;
 
-    this.data.room = deviceConfig.name;
+    this.room = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
     this.timer = disconnectWatchdog(this.data, "sensor disconnect", writeToMongo);
@@ -39,18 +38,22 @@ export default class heatingSensor {
         const payload = JSON.parse(rawPayload.toString());
 
         this.data = {
-          ...this.data,
+          room: this.room,
           rawTemperature: payload.temperature,
           temperature: parseFloat((payload.temperature + (await getOffsets(this.data.room))).toFixed(2)),
           humidity: payload.humidity,
           connected: true,
+          _id: this.mongoID,
         };
 
         writeToMongo(this.data).then((id) => {
           this.mongoID = id;
         });
 
-        this.io.emit(this.mongoID, this.data);
+        this.io.emit(this.mongoID, {
+          ...this.data,
+          offset: await getOffsets(this.data.room),
+        });
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, writeToMongo);
@@ -61,7 +64,9 @@ export default class heatingSensor {
   }
 }
 
-const writeToMongo = async (data: sensorData) => {
+const writeToMongo = async (data: any) => {
+  delete data["_id"];
+
   let id: string = "";
 
   await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
