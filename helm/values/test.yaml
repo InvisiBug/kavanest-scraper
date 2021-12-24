@@ -9,13 +9,10 @@ deployment:
     - port: 27017
     - port: 3100
     env:
-    - name: ENVIRONMENT
-      value: test
-
-    - name: MONGO_TEST
+    - name: MONGO
       value: mongodb://kavanest-test-mongo:27017
 
-    - name: MQTT_TEST
+    - name: MQTT
       value: mqtt://kavanest-simulator
 
 service:

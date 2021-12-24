@@ -24,5 +24,4 @@ export const camelRoomName = (text: string) => {
   return text.substr(0, 1).toLowerCase() + text.substr(1);
 };
 
-export { mqttUrl } from "./mqttUrlGenerator";
-export { mongoUrl } from "./mongoUrlGenerator";
+export { mqttUrl, mongoUrl } from "./urlGenerators";

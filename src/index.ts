@@ -7,7 +7,6 @@ import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import mqtt from "mqtt";
 import path from "path";
-require("dotenv").config();
 
 /////////////
 //* Socket Stuff
@@ -15,7 +14,6 @@ const socketServer = createServer();
 
 const io = new Server(socketServer, {
   cors: {
-    // origin: "http://localhost:3000",
     origin: "*",
     methods: ["GET", "POST"],
   },
