@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "dotenv": "^10.0.0",
+    "dotenv-expand": "^5.1.0",
     "js-yaml": "^4.1.0",
     "kavanest-store": "https://github.com/InvisiBug/kavanest-store.git",
     "mongodb": "^4.2.0",
