@@ -64,7 +64,8 @@ export default class heatingSensor {
   }
 }
 
-const writeToMongo = async (data: any) => {
+const writeToMongo = async (inData: any) => {
+  const data = { ...inData }; //* Original gets modified when using delete so make a copy
   delete data["_id"];
 
   let id: string = "";
