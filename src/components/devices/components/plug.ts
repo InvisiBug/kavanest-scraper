@@ -5,28 +5,26 @@ import { Socket } from "socket.io";
 
 export default class Plug {
   client: MqttClient;
-  timer: NodeJS.Timeout;
-  topic: string;
-  name: string;
   io: Socket;
+  topic: string;
+  data: plugData;
+  timer: NodeJS.Timeout;
   mongoID: string = "";
-
-  data: plugData = {
-    name: null,
-    state: null,
-    connected: null,
-    _id: null,
-  };
 
   constructor(client: MqttClient, deviceConfig: any, io: Socket) {
     this.client = client;
     this.io = io;
 
-    this.name = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
-    this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+    this.data = {
+      name: deviceConfig.name,
+      state: null,
+      connected: null,
+      _id: null,
+    };
+
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -35,7 +33,7 @@ export default class Plug {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
 
         this.data = {
-          name: this.name,
+          ...this.data,
           state: payload.state,
           connected: true,
           _id: this.mongoID,
@@ -48,16 +46,18 @@ export default class Plug {
         this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
       } catch (error) {
-        console.log(`${this.name} disconnected`);
+        console.log(`${this.data.name} disconnected`);
       }
     }
   }
 }
 
-const writeToMongo = async (data: plugData) => {
+const writeToMongo = async (inData: plugData) => {
   let id: string = "";
+  const data = { ...inData }; //* Original gets modified when using delete so make a copy
+  delete data["_id"];
 
   await plugStore
     .findOneAndUpdate(
@@ -89,5 +89,5 @@ interface plugData {
   name: string | null;
   state: boolean | null;
   connected: boolean | null;
-  _id: string | null;
+  _id?: string | null;
 }

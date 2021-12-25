@@ -18,12 +18,3 @@ export interface sensorData {
   humidity: number | null;
   connected: Boolean | null;
 }
-
-export interface rgbLightData {
-  name: string | null;
-  red: number | null;
-  green: number | null;
-  blue: number | null;
-  mode: number | null;
-  connected: boolean;
-}

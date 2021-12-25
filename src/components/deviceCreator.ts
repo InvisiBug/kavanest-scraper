@@ -13,7 +13,7 @@ export default (client: MqttClient, deviceConfig: any, deviceType: any, io: any)
       return new valve(client, deviceConfig);
 
     case "rgbLights":
-      return new rgbLight(client, deviceConfig);
+      return new rgbLight(client, deviceConfig, io);
       break;
   }
 };
