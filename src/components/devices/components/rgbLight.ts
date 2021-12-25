@@ -5,39 +5,38 @@ import { Socket } from "socket.io";
 
 export default class RGBLight {
   client: MqttClient;
-  timer: NodeJS.Timeout;
-  topic: string;
-  name: string;
   io: Socket;
+  topic: string;
+  timer: NodeJS.Timeout;
   mongoID: string = "";
 
-  data: rgbLightData = {
-    name: null,
-    red: null,
-    green: null,
-    blue: null,
-    mode: null,
-    connected: false,
-    _id: null,
-  };
+  data: rgbLightData;
 
   constructor(client: MqttClient, deviceConfig: any, io: Socket) {
     this.client = client;
     this.io = io;
 
-    this.name = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
-    this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+    this.data = {
+      name: deviceConfig.name,
+      red: null,
+      green: null,
+      blue: null,
+      mode: null,
+      connected: false,
+      _id: null,
+    };
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
+
         this.data = {
-          name: this.name,
+          ...this.data,
           red: payload.red,
           green: payload.green,
           blue: payload.blue,
@@ -53,15 +52,18 @@ export default class RGBLight {
         this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
       } catch (error) {
-        console.log(`${this.name} disconnected`);
+        console.log(`${this.data.name} disconnected`);
       }
     }
   }
 }
 
-const writeToMongo = async (data: rgbLightData) => {
+const writeToMongo = async (inData: rgbLightData) => {
+  const data = { ...inData }; //* Original gets modified when using delete so make a copy
+  delete data["_id"];
+
   let id: string = "";
 
   await rgbLightStore
@@ -91,12 +93,12 @@ interface MQTTpalyoad {
   mode: number;
 }
 
-interface rgbLightData {
+export interface rgbLightData {
   name: string | null;
   red: number | null;
   green: number | null;
   blue: number | null;
   mode: number | null;
   connected: boolean;
-  _id: string | null;
+  _id?: string | null;
 }
