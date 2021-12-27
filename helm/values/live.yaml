@@ -8,11 +8,22 @@ deployment:
     ports:
     - port: 27017
     env:
-    - name: ENVIRONMENT
-      value: live
-
-    - name: MONGO_LIVE
+    - name: MONGO
       value: mongodb://kavanest-mongo:27017
 
-    - name: MQTT_LIVE
+    - name: MQTT
       value: mqtt://192.168.1.46
+
+service:
+  clusterIP:
+    - name: kavanest-scraper
+      selector: kavanest-scraper
+      ports:
+        - port: 3100
+
+ingress:
+  - name: socket.kavanet.io
+    selector: kavanest-scraper
+    path: /
+    port: 3100
+    host: socket.kavanet.io

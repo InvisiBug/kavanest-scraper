@@ -1,27 +1,30 @@
 import { MqttClient } from "mqtt";
 import { plugStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
+import { Socket } from "socket.io";
 
 export default class Plug {
   client: MqttClient;
-  timer: NodeJS.Timeout;
+  io: Socket;
   topic: string;
-  name: string;
+  data: plugData;
+  timer: NodeJS.Timeout;
+  mongoID: string = "";
 
-  data: plugData = {
-    name: null,
-    state: null,
-    connected: null,
-  };
-
-  constructor(client: MqttClient, deviceConfig: any) {
+  constructor(client: MqttClient, deviceConfig: any, io: Socket) {
     this.client = client;
+    this.io = io;
 
-    this.name = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
-    this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+    this.data = {
+      name: deviceConfig.name,
+      state: null,
+      connected: null,
+      _id: null,
+    };
+
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -30,33 +33,52 @@ export default class Plug {
         const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
 
         this.data = {
-          name: this.name,
+          ...this.data,
           state: payload.state,
           connected: true,
+          _id: this.mongoID,
         };
 
-        writeToMongo(this.data);
+        writeToMongo(this.data).then((id) => {
+          this.mongoID = id;
+        });
+
+        this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
       } catch (error) {
-        console.log(`${this.name} disconnected`);
+        console.log(`${this.data.name} disconnected`);
       }
     }
   }
 }
 
-const writeToMongo = async (data: plugData) => {
-  await plugStore.findOneAndUpdate(
-    { name: data.name },
-    {
-      $set: {
-        state: data.state,
-        connected: data.connected,
+const writeToMongo = async (inData: plugData) => {
+  let id: string = "";
+  const data = { ...inData }; //* Original gets modified when using delete so make a copy
+  delete data["_id"];
+
+  await plugStore
+    .findOneAndUpdate(
+      { name: data.name },
+      {
+        $set: {
+          state: data.state,
+          connected: data.connected,
+        },
       },
-    },
-    options,
-  );
+      options,
+    )
+    .then((mongoDoc) => {
+      if (mongoDoc.value) {
+        if (Object(mongoDoc).constructor !== Promise) {
+          id = mongoDoc.value._id.toString();
+        }
+      }
+    });
+
+  return id;
 };
 
 interface MQTTpalyoad {
@@ -67,4 +89,5 @@ interface plugData {
   name: string | null;
   state: boolean | null;
   connected: boolean | null;
+  _id?: string | null;
 }

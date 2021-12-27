@@ -1,4 +1,5 @@
-import { floodlightData, sunData, sensorData, rgbLightData } from "../../types";
+import { floodlightData, sunData, sensorData } from "../../types";
+import { rgbLightData } from "../devices";
 
 export const disconnectWatchdog = (data: floodlightData | sunData | sensorData | rgbLightData, msg: string, writeToMongo: any) => {
   return setTimeout(() => {
@@ -24,5 +25,4 @@ export const camelRoomName = (text: string) => {
   return text.substr(0, 1).toLowerCase() + text.substr(1);
 };
 
-export { mqttUrl } from "./mqttUrlGenerator";
-export { mongoUrl } from "./mongoUrlGenerator";
+export { mqttUrl, mongoUrl } from "./urlGenerators";
