@@ -1,6 +1,6 @@
 import { Radiator, offset } from "./components/devices";
 import DeviceCreator from "./components/deviceCreator";
-import { mqttUrl } from "./components/utils";
+import { mqttUrl } from "./components/helpers";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { readFileSync } from "fs";
@@ -53,6 +53,7 @@ devices.push(new offset(client)); //! This will need to be removed in the final 
 
 for (let deviceType in deviceConfig) {
   deviceConfig[deviceType].forEach((node: any) => {
-    devices.push(DeviceCreator(client, node, deviceType, io));
+    const newDevice = DeviceCreator(client, node, deviceType, io);
+    newDevice ? devices.push(newDevice) : null;
   });
 }

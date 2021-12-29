@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { rgbLightStore, options } from "../../database";
-import { disconnectWatchdog } from "../../utils";
+import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 
 export default class RGBLight {

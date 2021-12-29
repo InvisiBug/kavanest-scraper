@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { sensorStore } from "../../database";
-import { camelRoomName } from "../../utils";
+import { camelRoomName } from "../../helpers";
 
 export default class Offsets {
   client: MqttClient;

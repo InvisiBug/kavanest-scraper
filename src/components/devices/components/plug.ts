@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { plugStore, options } from "../../database";
-import { disconnectWatchdog } from "../../utils";
+import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 
 export default class Plug {
@@ -39,11 +39,7 @@ export default class Plug {
           _id: this.mongoID,
         };
 
-        this.writeToMongo(this.data).then((id) => {
-          this.mongoID = id;
-        });
-
-        this.io.emit(this.mongoID, this.data);
+        this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -53,11 +49,7 @@ export default class Plug {
     }
   }
 
-  writeToMongo = async (inData: plugData) => {
-    let id: string = "";
-    const data = { ...inData }; //* Original gets modified when using delete so make a copy
-    delete data["_id"];
-
+  writeToMongo = async (data: plugData) => {
     await plugStore
       .findOneAndUpdate(
         { name: data.name },
@@ -72,12 +64,11 @@ export default class Plug {
       .then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
-            id = mongoDoc.value._id.toString();
+            const id = mongoDoc.value._id.toString();
+            this.io.emit(id, { ...data, _id: id });
           }
         }
       });
-
-    return id;
   };
 }
 

@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { disconnectWatchdog, camelRoomName } from "../../utils";
+import { disconnectWatchdog, camelRoomName } from "../../helpers";
 import { sensorStore, options } from "../../database";
 import { Socket } from "socket.io";
 
