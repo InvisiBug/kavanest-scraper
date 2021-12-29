@@ -3,7 +3,7 @@ name: kavanest-test-scraper
 namespace: kavanest-test
 
 deployment:
-  - name: kavanest-scraper
+  - name: kavanest-test-scraper
     image: 192.168.1.61:5000/kavanest-scraper
     ports:
     - port: 27017
