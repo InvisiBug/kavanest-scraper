@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { plugStore, options } from "../../database";
-import { disconnectWatchdog } from "../../helpers";
+import { disconnectWatchdog } from "../../utils";
 import { Socket } from "socket.io";
 
 export default class Plug {
@@ -24,7 +24,7 @@ export default class Plug {
       _id: null,
     };
 
-    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -39,47 +39,47 @@ export default class Plug {
           _id: this.mongoID,
         };
 
-        writeToMongo(this.data).then((id) => {
+        this.writeToMongo(this.data).then((id) => {
           this.mongoID = id;
         });
 
         this.io.emit(this.mongoID, this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
       } catch (error) {
         console.log(`${this.data.name} disconnected`);
       }
     }
   }
-}
 
-const writeToMongo = async (inData: plugData) => {
-  let id: string = "";
-  const data = { ...inData }; //* Original gets modified when using delete so make a copy
-  delete data["_id"];
+  writeToMongo = async (inData: plugData) => {
+    let id: string = "";
+    const data = { ...inData }; //* Original gets modified when using delete so make a copy
+    delete data["_id"];
 
-  await plugStore
-    .findOneAndUpdate(
-      { name: data.name },
-      {
-        $set: {
-          state: data.state,
-          connected: data.connected,
+    await plugStore
+      .findOneAndUpdate(
+        { name: data.name },
+        {
+          $set: {
+            state: data.state,
+            connected: data.connected,
+          },
         },
-      },
-      options,
-    )
-    .then((mongoDoc) => {
-      if (mongoDoc.value) {
-        if (Object(mongoDoc).constructor !== Promise) {
-          id = mongoDoc.value._id.toString();
+        options,
+      )
+      .then((mongoDoc) => {
+        if (mongoDoc.value) {
+          if (Object(mongoDoc).constructor !== Promise) {
+            id = mongoDoc.value._id.toString();
+          }
         }
-      }
-    });
+      });
 
-  return id;
-};
+    return id;
+  };
+}
 
 interface MQTTpalyoad {
   node: String;

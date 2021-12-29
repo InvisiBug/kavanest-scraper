@@ -1,5 +1,5 @@
 import { Collection, Db, MongoClient } from "mongodb";
-import { mongoUrl } from "../helpers";
+import { mongoUrl } from "../utils";
 
 /*
   Create the mongo client then connect with it,

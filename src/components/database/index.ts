@@ -1,5 +1,5 @@
 import Mongo from "./mongo";
-import { mongoUrl } from "../helpers";
+import { mongoUrl } from "../utils";
 
 const db = "devices";
 console.log("🔗 Connecting to ", mongoUrl, "\n🔗 successful database connections made to the following");
