@@ -7,7 +7,6 @@ deployment:
     image: 192.168.1.61:5000/kavanest-scraper
     ports:
     - port: 27017
-    # - port: 3100
     env:
     - name: MONGO
       value: mongodb://kavanest-test-mongo:27017
@@ -17,14 +16,14 @@ deployment:
 
 service:
   clusterIP:
-    - name: kavanest-scraper
-      selector: kavanest-scraper
+    - name: kavanest-test-scraper
+      selector: kavanest-test-scraper
       ports:
         - port: 3100
 
 ingress:
   - name: test.socket.kavanet.io
-    selector: kavanest-scraper
+    selector: kavanest-test-scraper
     path: /
     port: 3100
     host: test.socket.kavanet.io
