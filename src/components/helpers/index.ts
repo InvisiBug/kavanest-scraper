@@ -1,17 +1,11 @@
-import { floodlightData, sunData, sensorData } from "../../types";
-import { rgbLightData } from "../devices";
-
-export const disconnectWatchdog = (data: floodlightData | sunData | sensorData | rgbLightData, msg: string, writeToMongo: any) => {
+export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any) => {
   return setTimeout(() => {
     data = setDisconnected(data, msg);
     writeToMongo(data);
   }, 10 * 1000);
 };
 
-export const setDisconnected = (
-  data: floodlightData | sunData | sensorData | rgbLightData,
-  msg: string,
-): floodlightData | sunData | sensorData | rgbLightData => {
+export const setDisconnected = (data: any, msg: string): any => {
   // console.log(msg); // TODO remove this, will need to alter all calls
   data = {
     ...data,

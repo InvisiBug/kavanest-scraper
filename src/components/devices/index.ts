@@ -4,5 +4,9 @@ export { default as plug } from "./components/plug";
 export { default as valve } from "./components/valve";
 export { default as offset } from "./components/offsets";
 export { default as rgbLight } from "./components/rgbLight";
+export { default as computerAudio } from "./components/computerAudio";
 
-export { rgbLightData } from "./components/rgbLight";
+export interface DeviceConfig {
+  topic: string;
+  name: string;
+}
