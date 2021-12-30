@@ -2,15 +2,16 @@ import { MqttClient } from "mqtt";
 import { specialsStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class ComputerAudio {
+  timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
   topic: string;
-  data: any;
-  timer: NodeJS.Timeout;
+  data: Data;
 
-  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
     this.topic = deviceConfig.topic;
@@ -30,7 +31,7 @@ export default class ComputerAudio {
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: any = JSON.parse(rawPayload.toString());
+        const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
@@ -51,11 +52,11 @@ export default class ComputerAudio {
     }
   }
 
-  writeToMongo = async (data: plugData) => {
+  writeToMongo = async (data: Data) => {
     await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
         if (Object(mongoDoc).constructor !== Promise) {
-          const id = mongoDoc.value._id.toString();
+          const id: string = mongoDoc.value._id.toString();
           this.socket.emit(id, { ...data, _id: id });
         }
       }
@@ -63,14 +64,19 @@ export default class ComputerAudio {
   };
 }
 
-interface MQTTpalyoad {
-  node: String;
-  state: boolean;
+interface Data {
+  name: string;
+  left: boolean | null;
+  right: boolean | null;
+  sub: boolean | null;
+  mixer: boolean | null;
+  connected: boolean | null;
 }
 
-interface plugData {
-  name: string | null;
-  state: boolean | null;
-  connected: boolean | null;
-  _id?: string | null;
+interface PayloadData {
+  Left: boolean | null;
+  Right: boolean | null;
+  Sub: boolean | null;
+  Mixer: boolean | null;
+  Connected: boolean | null;
 }

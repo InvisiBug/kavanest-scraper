@@ -2,27 +2,25 @@ import { MqttClient } from "mqtt";
 import { valveStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class Valve {
   client: MqttClient;
   socket: Socket;
   timer: NodeJS.Timeout;
   topic: string;
+  data: Data;
 
-  data: valveData = {
-    room: null,
-    state: null,
-    connected: null,
-  };
-
-  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
-
-    this.data.room = deviceConfig.name;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
+    this.data = {
+      room: deviceConfig.name,
+      state: null,
+      connected: false,
+    };
     this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
   }
 
@@ -46,11 +44,11 @@ export default class Valve {
       }
     }
   }
-  writeToMongo = async (data: valveData) => {
+  writeToMongo = async (data: Data) => {
     await valveStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
         if (Object(mongoDoc).constructor !== Promise) {
-          const id = mongoDoc.value._id.toString();
+          const id: string = mongoDoc.value._id.toString();
           this.socket.emit(id, { ...data, _id: id });
         }
       }
@@ -63,7 +61,7 @@ interface MQTTpayload {
   state: boolean;
 }
 
-interface valveData {
+interface Data {
   room: string | null;
   state: boolean | null;
   connected: boolean | null;

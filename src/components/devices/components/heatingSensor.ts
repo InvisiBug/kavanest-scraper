@@ -2,37 +2,37 @@ import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../../helpers";
 import { sensorStore, options } from "../../database";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class heatingSensor {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  topic: string;
   socket: Socket;
-
-  data: any = {
-    room: "",
-    rawTemperature: null,
-    temperature: null,
-    humidity: null,
-    connected: false,
-  };
+  topic: string;
+  data: Data;
 
   offset: number = 0;
 
-  constructor(client: MqttClient, deviceConfig: any, socket: any) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
-
-    this.data.room = deviceConfig.name;
     this.topic = deviceConfig.topic;
+
+    this.data = {
+      room: deviceConfig.name,
+      rawTemperature: null,
+      temperature: null,
+      humidity: null,
+      connected: false,
+    };
 
     this.timer = disconnectWatchdog(this.data, "sensor disconnect", this.writeToMongo);
   }
 
-  async handleIncoming(topic: string, rawPayload: any) {
+  async handleIncoming(topic: string, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload = JSON.parse(rawPayload.toString());
+        const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
@@ -52,11 +52,11 @@ export default class heatingSensor {
     }
   }
 
-  writeToMongo = async (data: any) => {
+  writeToMongo = async (data: Data) => {
     await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
       if (mongoDoc.value) {
         if (Object(mongoDoc).constructor !== Promise) {
-          const id = mongoDoc.value._id.toString();
+          const id: string = mongoDoc.value._id.toString();
           this.socket.emit(id, {
             ...data,
             _id: id,
@@ -82,10 +82,15 @@ const getOffsets = async (room: string) => {
   }
 };
 
-interface SensorData {
+interface Data {
   room: string;
   rawTemperature: number | null;
   temperature: number | null;
   humidity: number | null;
   connected: Boolean | null;
+}
+
+interface PayloadData {
+  temperature: number;
+  humidity: number;
 }

@@ -2,17 +2,16 @@ import { MqttClient } from "mqtt";
 import { rgbLightStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class RGBLight {
+  timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
   topic: string;
-  timer: NodeJS.Timeout;
-  mongoID: string = "";
+  data: Data;
 
-  data: rgbLightData;
-
-  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
 
@@ -54,12 +53,12 @@ export default class RGBLight {
     }
   }
 
-  writeToMongo = async (data: rgbLightData) => {
+  writeToMongo = async (data: Data) => {
     await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
-            const id = mongoDoc.value._id.toString();
+            const id: string = mongoDoc.value._id.toString();
             this.socket.emit(id, { ...data, _id: id });
           }
         }
@@ -76,7 +75,7 @@ interface MQTTpalyoad {
   mode: number;
 }
 
-export interface rgbLightData {
+export interface Data {
   name: string | null;
   red: number | null;
   green: number | null;

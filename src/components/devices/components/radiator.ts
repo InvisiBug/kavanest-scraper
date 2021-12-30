@@ -12,7 +12,7 @@ export default class RadiatorMonitor {
 
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === "Radiator Monitor") {
-      const data = {
+      const data: { inlet: number; outlet: number } = {
         inlet: parseFloat((JSON.parse(rawPayload.toString()).inlet - 0.56).toFixed(2)),
         outlet: parseFloat((JSON.parse(rawPayload.toString()).outlet - 0).toFixed(2)),
       };

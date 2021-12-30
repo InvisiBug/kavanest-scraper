@@ -2,18 +2,18 @@ import { MqttClient } from "mqtt";
 import { plugStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class Plug {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  data: plugData;
+  data: Data;
   topic: string;
   socket: Socket;
 
-  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
-
     this.topic = deviceConfig.topic;
 
     this.data = {
@@ -28,7 +28,7 @@ export default class Plug {
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
+        const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
@@ -46,11 +46,11 @@ export default class Plug {
     }
   }
 
-  writeToMongo = async (data: plugData) => {
+  writeToMongo = async (data: Data) => {
     await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
         if (Object(mongoDoc).constructor !== Promise) {
-          const id = mongoDoc.value._id.toString();
+          const id: string = mongoDoc.value._id.toString();
           this.socket.emit(id, { ...data, _id: id });
         }
       }
@@ -58,12 +58,13 @@ export default class Plug {
   };
 }
 
-interface MQTTpalyoad {
-  node: String;
-  state: boolean;
-}
-interface plugData {
+interface Data {
   name: string | null;
   state: boolean | null;
   connected: boolean | null;
+}
+
+interface PayloadData {
+  node: String;
+  state: boolean;
 }
