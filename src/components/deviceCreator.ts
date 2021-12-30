@@ -10,7 +10,7 @@ export default (client: MqttClient, deviceConfig: any, deviceType: any, socket: 
       return new heatingSensor(client, deviceConfig, socket);
 
     case "valves":
-      return new valve(client, deviceConfig);
+      return new valve(client, deviceConfig, socket);
 
     case "rgbLights":
       return new rgbLight(client, deviceConfig, socket);

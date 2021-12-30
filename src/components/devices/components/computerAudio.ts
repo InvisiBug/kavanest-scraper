@@ -5,16 +5,14 @@ import { Socket } from "socket.io";
 
 export default class ComputerAudio {
   client: MqttClient;
-  io: Socket;
+  socket: Socket;
   topic: string;
   data: any;
   timer: NodeJS.Timeout;
-  mongoID: string = "";
 
-  constructor(client: MqttClient, deviceConfig: any, io: Socket) {
+  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
     this.client = client;
-    this.io = io;
-
+    this.socket = socket;
     this.topic = deviceConfig.topic;
 
     this.data = {
@@ -24,7 +22,6 @@ export default class ComputerAudio {
       sub: null,
       mixer: null,
       connected: null,
-      _id: null,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -42,16 +39,9 @@ export default class ComputerAudio {
           sub: payload.Sub,
           mixer: payload.Mixer,
           connected: true,
-          _id: this.mongoID,
         };
 
-        console.log(this.data);
-
-        this.writeToMongo(this.data).then((id) => {
-          this.mongoID = id;
-        });
-
-        this.io.emit(this.mongoID, this.data);
+        this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -61,22 +51,15 @@ export default class ComputerAudio {
     }
   }
 
-  writeToMongo = async (inData: plugData) => {
-    let id: string = "";
-    const data = { ...inData }; //* Original gets modified when using delete so make a copy
-    delete data["_id"];
-
+  writeToMongo = async (data: plugData) => {
     await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
         if (Object(mongoDoc).constructor !== Promise) {
-          id = mongoDoc.value._id.toString();
+          const id = mongoDoc.value._id.toString();
+          this.socket.emit(id, { ...data, _id: id });
         }
       }
     });
-
-    // this.io.emit(id, this.data);
-
-    return id;
   };
 }
 

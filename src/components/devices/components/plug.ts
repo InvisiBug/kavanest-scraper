@@ -4,16 +4,15 @@ import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 
 export default class Plug {
-  client: MqttClient;
-  io: Socket;
-  topic: string;
-  data: plugData;
   timer: NodeJS.Timeout;
-  mongoID: string = "";
+  client: MqttClient;
+  data: plugData;
+  topic: string;
+  socket: Socket;
 
-  constructor(client: MqttClient, deviceConfig: any, io: Socket) {
+  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
     this.client = client;
-    this.io = io;
+    this.socket = socket;
 
     this.topic = deviceConfig.topic;
 
@@ -21,7 +20,6 @@ export default class Plug {
       name: deviceConfig.name,
       state: null,
       connected: null,
-      _id: null,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -36,7 +34,6 @@ export default class Plug {
           ...this.data,
           state: payload.state,
           connected: true,
-          _id: this.mongoID,
         };
 
         this.writeToMongo(this.data);
@@ -50,25 +47,14 @@ export default class Plug {
   }
 
   writeToMongo = async (data: plugData) => {
-    await plugStore
-      .findOneAndUpdate(
-        { name: data.name },
-        {
-          $set: {
-            state: data.state,
-            connected: data.connected,
-          },
-        },
-        options,
-      )
-      .then((mongoDoc) => {
-        if (mongoDoc.value) {
-          if (Object(mongoDoc).constructor !== Promise) {
-            const id = mongoDoc.value._id.toString();
-            this.io.emit(id, { ...data, _id: id });
-          }
+    await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      if (mongoDoc.value) {
+        if (Object(mongoDoc).constructor !== Promise) {
+          const id = mongoDoc.value._id.toString();
+          this.socket.emit(id, { ...data, _id: id });
         }
-      });
+      }
+    });
   };
 }
 
@@ -80,5 +66,4 @@ interface plugData {
   name: string | null;
   state: boolean | null;
   connected: boolean | null;
-  _id?: string | null;
 }

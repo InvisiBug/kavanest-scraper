@@ -5,16 +5,16 @@ import { Socket } from "socket.io";
 
 export default class RGBLight {
   client: MqttClient;
-  io: Socket;
+  socket: Socket;
   topic: string;
   timer: NodeJS.Timeout;
   mongoID: string = "";
 
   data: rgbLightData;
 
-  constructor(client: MqttClient, deviceConfig: any, io: Socket) {
+  constructor(client: MqttClient, deviceConfig: any, socket: Socket) {
     this.client = client;
-    this.io = io;
+    this.socket = socket;
 
     this.topic = deviceConfig.topic;
 
@@ -25,9 +25,9 @@ export default class RGBLight {
       blue: null,
       mode: null,
       connected: false,
-      _id: null,
     };
-    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
+
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -42,48 +42,31 @@ export default class RGBLight {
           blue: payload.blue,
           mode: payload.mode,
           connected: true,
-          _id: this.mongoID,
         };
 
-        writeToMongo(this.data).then((id) => {
-          this.mongoID = id;
-        });
-
-        this.io.emit(this.mongoID, this.data);
+        this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
       } catch (error) {
         console.log(`${this.data.name} disconnected`);
       }
     }
   }
-}
 
-const writeToMongo = async (inData: rgbLightData) => {
-  const data = { ...inData }; //* Original gets modified when using delete so make a copy
-  delete data["_id"];
-
-  let id: string = "";
-
-  await rgbLightStore
-    .findOneAndUpdate(
-      { name: data.name },
-      {
-        $set: { ...data },
-      },
-      options,
-    )
-    .then((mongoDoc) => {
+  writeToMongo = async (data: rgbLightData) => {
+    await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
       if (mongoDoc.value) {
-        if (Object(mongoDoc).constructor !== Promise) {
-          id = mongoDoc.value._id.toString();
+        if (mongoDoc.value) {
+          if (Object(mongoDoc).constructor !== Promise) {
+            const id = mongoDoc.value._id.toString();
+            this.socket.emit(id, { ...data, _id: id });
+          }
         }
       }
     });
-
-  return id;
-};
+  };
+}
 
 interface MQTTpalyoad {
   node: String;
