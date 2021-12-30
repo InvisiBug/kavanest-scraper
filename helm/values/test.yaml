@@ -7,7 +7,7 @@ deployment:
     image: 192.168.1.61:5000/kavanest-scraper
     ports:
     - port: 27017
-    - port: 3100
+    # - port: 3100
     env:
     - name: MONGO
       value: mongodb://kavanest-test-mongo:27017
