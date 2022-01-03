@@ -52,3 +52,7 @@ rgbLights:
 
   - name: screenLEDs
     topic: Screen LEDs
+
+specials:
+  - name: computerAudio
+    topic: Computer Audio

@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { offsetStore, options, sensorStore } from "../../database";
+import { sensorStore } from "../../database";
 import { camelRoomName } from "../../helpers";
 
 export default class Offsets {
@@ -13,7 +13,7 @@ export default class Offsets {
 
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
-      const payload = JSON.parse(rawPayload.toString());
+      const payload: any = JSON.parse(rawPayload.toString());
       console.log(payload);
 
       for (var room in payload) {
@@ -21,4 +21,12 @@ export default class Offsets {
       }
     }
   }
+}
+
+interface PayloadData {
+  "Living Room": number;
+  Kitchen: number;
+  "Liams Room": number;
+  Study: number;
+  "Our Room": number;
 }

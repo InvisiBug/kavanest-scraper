@@ -1,70 +1,67 @@
 import { MqttClient } from "mqtt";
 import { valveStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
+import { Socket } from "socket.io";
+import { DeviceConfig } from "../";
 
 export default class Valve {
   client: MqttClient;
+  socket: Socket;
   timer: NodeJS.Timeout;
   topic: string;
-  name: string;
+  data: Data;
 
-  data: valveData = {
-    room: null,
-    state: null,
-    connected: null,
-  };
-
-  constructor(client: MqttClient, deviceConfig: any) {
+  constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
-
-    this.name = deviceConfig.name;
+    this.socket = socket;
     this.topic = deviceConfig.topic;
 
-    this.data.connected = false;
-    this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+    this.data = {
+      room: deviceConfig.name,
+      state: null,
+      connected: false,
+    };
+    this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
+        const payload: MQTTpayload = JSON.parse(rawPayload.toString());
 
         this.data = {
-          room: this.name,
+          ...this.data,
           state: payload.state,
           connected: true,
         };
 
-        writeToMongo(this.data);
+        this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.name} disconnected`, writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
       } catch (error) {
-        console.log(`${this.name} disconnected`);
+        console.log(`${this.data.room} disconnected`);
       }
     }
   }
+  writeToMongo = async (data: Data) => {
+    await valveStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
+      if (mongoDoc.value) {
+        if (Object(mongoDoc).constructor !== Promise) {
+          const id: string = mongoDoc.value._id.toString();
+          this.socket.emit(id, { ...data, _id: id });
+        }
+      }
+    });
+  };
 }
 
-const writeToMongo = async (data: valveData) => {
-  await valveStore.findOneAndUpdate(
-    { room: data.room },
-    {
-      $set: {
-        state: data.state,
-        connected: data.connected,
-      },
-    },
-    options,
-  );
-};
-
-interface MQTTpalyoad {
+interface MQTTpayload {
   node: String;
   state: boolean;
 }
 
-interface valveData {
+interface Data {
   room: string | null;
   state: boolean | null;
   connected: boolean | null;

@@ -10,6 +10,18 @@ import path from "path";
 
 /////////////
 //* Socket Stuff
+// const socketServer = createServer();
+
+// const socket = new Server(socketServer, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
+// socketServer.listen(3100);
+
+// socket.on("connection", () => {});
+
 const socketServer = createServer();
 
 const io = new Server(socketServer, {
@@ -20,7 +32,9 @@ const io = new Server(socketServer, {
 });
 socketServer.listen(3100);
 
-io.on("connection", () => {});
+io.on("connection", () => {
+  console.log("Hello socket");
+});
 
 /////////////
 //*  MQTT Stuff
@@ -53,6 +67,7 @@ devices.push(new offset(client)); //! This will need to be removed in the final 
 
 for (let deviceType in deviceConfig) {
   deviceConfig[deviceType].forEach((node: any) => {
-    devices.push(DeviceCreator(client, node, deviceType, io));
+    const newDevice = DeviceCreator(client, node, deviceType, io);
+    newDevice ? devices.push(newDevice) : null;
   });
 }
