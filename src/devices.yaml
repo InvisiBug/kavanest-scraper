@@ -1,18 +1,40 @@
 heatingSensors:
   - name: livingRoom
-    topic: Living Room Heating Sensor
+    topic: Living Room Sensor
 
-  - name: kitchen
-    topic: Kitchen Heating Sensor
+  - name: diningRoom
+    topic: Dining Room Sensor
 
-  - name: liamsRoom
-    topic: Liams Room Heating Sensor
+  - name: frontStudy
+    topic: Front Study Sensor
 
-  - name: study
-    topic: Study Heating Sensor
+  - name: rearStudy
+    topic: Rear Study Sensor
 
-  - name: ourRoom
-    topic: Our Room Heating Sensor
+  - name: frontBedroom
+    topic: Front Bedroom Sensor
+
+  - name: rearBedroom
+    topic: Rear Bedroom Sensor
+
+valves:
+  - name: livingRoom
+    topic: Living Room Valve
+
+  - name: diningRoom
+    topic: Dining Room Valve
+
+  - name: frontStudy
+    topic: Front Study Valve
+
+  - name: rearStudy
+    topic: Rear Study Valve
+
+  - name: frontBedroom
+    topic: Front Bedroom Valve
+
+  - name: rearBedroom
+    topic: Rear Bedroom Valve
 
 plugs:
   - name: sun
@@ -30,18 +52,6 @@ plugs:
   - name: computerPower
     topic: Computer Power
 
-valves:
-  - name: livingRoom
-    topic: Living Room Radiator Valve
-
-  - name: liamsRoom
-    topic: Liams Room Radiator Valve
-
-  - name: study
-    topic: Study Radiator Valve
-
-  - name: ourRoom
-    topic: Our Room Radiator Valve
 
 rgbLights:
   - name: deskLEDs

@@ -12,7 +12,7 @@ deployment:
       value: mongodb://kavanest-test-mongo:27017
 
     - name: MQTT
-      value: mqtt://kavanest-simulator
+      value: mqtt://kavanest-test-simulator
 
 service:
   clusterIP:
