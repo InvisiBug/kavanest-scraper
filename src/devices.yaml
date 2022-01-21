@@ -19,22 +19,22 @@ heatingSensors:
 
 valves:
   - name: livingRoom
-    topic: Living Room Radiator Valve
+    topic: Living Room Valve
 
   - name: diningRoom
-    topic: Dining Room Radiator Valve
+    topic: Dining Room Valve
 
   - name: frontStudy
-    topic: Front Study Radiator Valve
+    topic: Front Study Valve
 
   - name: rearStudy
-    topic: Rear Study Radiator Valve
+    topic: Rear Study Valve
 
   - name: frontBedroom
-    topic: Front Bedroom Radiator Valve
+    topic: Front Bedroom Valve
 
   - name: rearBedroom
-    topic: Rear Bedroom Radiator Valve
+    topic: Rear Bedroom Valve
 
 plugs:
   - name: sun
