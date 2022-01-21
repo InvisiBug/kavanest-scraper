@@ -33,6 +33,7 @@ export default class heatingSensor {
     if (topic === this.topic) {
       try {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
+        console.log(topic);
 
         this.data = {
           ...this.data,
