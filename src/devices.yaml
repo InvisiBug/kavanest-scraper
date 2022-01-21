@@ -1,21 +1,21 @@
-# heatingSensors:
-#   - name: livingRoom
-#     topic: Living Room Heating Sensor
+heatingSensors:
+  - name: livingRoom
+    topic: Living Room Sensor
 
-#   - name: diningRoom
-#     topic: Dining Room Heating Sensor
+  - name: diningRoom
+    topic: Dining Room Sensor
 
-#   - name: frontStudy
-#     topic: Front Study Heating Sensor
+  - name: frontStudy
+    topic: Front Study Sensor
 
-#   - name: rearStudy
-#     topic: Rear Study Heating Sensor
+  - name: rearStudy
+    topic: Rear Study Sensor
 
-#   - name: frontBedroom
-#     topic: Front Bedroom Heating Sensor
+  - name: frontBedroom
+    topic: Front Bedroom Sensor
 
-#   - name: rearBedroom
-#     topic: Rear Bedroom Heating Sensor
+  - name: rearBedroom
+    topic: Rear Bedroom Sensor
 
 valves:
   - name: livingRoom
