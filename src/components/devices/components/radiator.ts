@@ -16,7 +16,7 @@ export default class RadiatorMonitor {
         inlet: parseFloat((JSON.parse(rawPayload.toString()).inlet - 0.56).toFixed(2)),
         outlet: parseFloat((JSON.parse(rawPayload.toString()).outlet - 0).toFixed(2)),
       };
-      await radiatorStore.findOneAndUpdate({ room: "ourRoom" }, { $set: data }, options);
+      await radiatorStore.findOneAndUpdate({ room: "frontStudy" }, { $set: data }, options);
     }
   }
 }
