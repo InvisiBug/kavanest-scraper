@@ -52,6 +52,9 @@ plugs:
   - name: computerPower
     topic: Computer Power
 
+  - name: mattress
+    topic: Mattress
+
 
 rgbLights:
   - name: deskLEDs
