@@ -41,7 +41,7 @@ plugs:
     topic: Sun
 
   - name: floodlight
-    topic: Plug
+    topic: Floodlight
 
   - name: radiatorFan
     topic: Radiator Fan
