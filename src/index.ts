@@ -42,12 +42,18 @@ const MQTT: string = mqttUrl;
 let client: mqtt.MqttClient = mqtt.connect(MQTT);
 
 client.subscribe("#", (error: Error) => {
-  if (error) console.log(error);
-  else console.log(`📡 Listening to ${mqttUrl}`);
+  if (error) {
+    console.log(error);
+    console.log("MQTT error");
+    process.exit();
+  } else {
+    console.log(`📡 Listening to ${mqttUrl}`);
+  }
 });
 
 client.on("message", (topic: String, payload: Object) => {
   try {
+    // console.log(topic, JSON.parse(payload.toString()));
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);
     }

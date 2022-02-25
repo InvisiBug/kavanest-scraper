@@ -2,7 +2,12 @@ export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any) =>
   return setTimeout(() => {
     // console.log("Disconnect watchdog fired by", data.room);
     data = setDisconnected(data, msg);
-    writeToMongo(data);
+    try {
+      writeToMongo(data);
+    } catch (error) {
+      console.log("Disconnected");
+      console.log(error);
+    }
   }, 10 * 1000);
 };
 
