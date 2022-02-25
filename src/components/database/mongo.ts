@@ -7,18 +7,26 @@ import { mongoUrl } from "../helpers";
   The collection property will be used as the stores
 */
 export default class Mongo {
-  client: MongoClient = new MongoClient(mongoUrl);
+  mongo: MongoClient = new MongoClient(mongoUrl);
   db: Db;
   collection: Collection;
 
   constructor(db: string, collection: string) {
-    this.client.connect((err) => {
+    this.mongo.connect((err) => {
       if (!err) {
         console.log("\t 📜", collection);
+      } else {
+        console.log("💥 Mongo connection failed, restarting...");
+        process.exit();
       }
     });
 
-    this.db = this.client.db(db);
+    this.mongo.on("error", (err) => {
+      console.log("oh damn, an error");
+      console.log(err);
+    });
+
+    this.db = this.mongo.db(db);
     this.collection = this.db.collection(collection);
   }
 }

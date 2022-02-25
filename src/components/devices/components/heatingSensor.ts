@@ -53,18 +53,24 @@ export default class heatingSensor {
   }
 
   writeToMongo = async (data: Data) => {
-    await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
-      if (mongoDoc.value) {
-        if (Object(mongoDoc).constructor !== Promise) {
-          const id: string = mongoDoc.value._id.toString();
-          this.socket.emit(id, {
-            ...data,
-            _id: id,
-            offset: await getOffsets(this.data.room),
-          });
+    try {
+      await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
+        if (mongoDoc.value) {
+          if (Object(mongoDoc).constructor !== Promise) {
+            const id: string = mongoDoc.value._id.toString();
+            this.socket.emit(id, {
+              ...data,
+              _id: id,
+              offset: await getOffsets(this.data.room),
+            });
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log("Mongo Connection Dropped, Restarting ...");
+      console.log(error);
+      process.exit();
+    }
   };
 }
 

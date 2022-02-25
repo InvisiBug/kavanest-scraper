@@ -29,7 +29,6 @@ export default class Plug {
     if (topic === this.topic) {
       try {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
-        console.log(payload);
 
         this.data = {
           ...this.data,
@@ -48,14 +47,20 @@ export default class Plug {
   }
 
   writeToMongo = async (data: Data) => {
-    await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
-      if (mongoDoc.value) {
-        if (Object(mongoDoc).constructor !== Promise) {
-          const id: string = mongoDoc.value._id.toString();
-          this.socket.emit(id, { ...data, _id: id });
+    try {
+      await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+        if (mongoDoc.value) {
+          if (Object(mongoDoc).constructor !== Promise) {
+            const id: string = mongoDoc.value._id.toString();
+            this.socket.emit(id, { ...data, _id: id });
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log("Mongo Connection Dropped, Restarting ...");
+      console.log(error);
+      process.exit();
+    }
   };
 }
 
