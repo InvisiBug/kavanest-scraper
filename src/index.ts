@@ -53,6 +53,7 @@ client.subscribe("#", (error: Error) => {
 
 client.on("message", (topic: String, payload: Object) => {
   try {
+    // console.log(topic, JSON.parse(payload.toString()));
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);
     }

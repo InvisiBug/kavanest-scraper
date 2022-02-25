@@ -1,40 +1,40 @@
-# heatingSensors:
-#   - name: livingRoom
-#     topic: Living Room Sensor
+heatingSensors:
+  - name: livingRoom
+    topic: Living Room Sensor
 
-#   - name: diningRoom
-#     topic: Dining Room Sensor
+  - name: diningRoom
+    topic: Dining Room Sensor
 
-#   - name: frontStudy
-#     topic: Front Study Sensor
+  - name: frontStudy
+    topic: Front Study Sensor
 
-#   - name: rearStudy
-#     topic: Rear Study Sensor
+  - name: rearStudy
+    topic: Rear Study Sensor
 
-#   - name: frontBedroom
-#     topic: Front Bedroom Sensor
+  - name: frontBedroom
+    topic: Front Bedroom Sensor
 
-#   - name: rearBedroom
-#     topic: Rear Bedroom Sensor
+  - name: rearBedroom
+    topic: Rear Bedroom Sensor
 
-# valves:
-#   - name: livingRoom
-#     topic: Living Room Valve
+valves:
+  - name: livingRoom
+    topic: Living Room Valve
 
-#   - name: diningRoom
-#     topic: Dining Room Valve
+  - name: diningRoom
+    topic: Dining Room Valve
 
-#   - name: frontStudy
-#     topic: Front Study Valve
+  - name: frontStudy
+    topic: Front Study Valve
 
-#   - name: rearStudy
-#     topic: Rear Study Valve
+  - name: rearStudy
+    topic: Rear Study Valve
 
-#   - name: frontBedroom
-#     topic: Front Bedroom Valve
+  - name: frontBedroom
+    topic: Front Bedroom Valve
 
-#   - name: rearBedroom
-#     topic: Rear Bedroom Valve
+  - name: rearBedroom
+    topic: Rear Bedroom Valve
 
 plugs:
   - name: sun
@@ -56,16 +56,16 @@ plugs:
     topic: Mattress
 
 
-# rgbLights:
-#   - name: deskLEDs
-#     topic: Desk LEDs
+rgbLights:
+  - name: deskLEDs
+    topic: Desk LEDs
 
-#   - name: tableLamp
-#     topic: Table Lamp
+  - name: tableLamp
+    topic: Table Lamp
 
-#   - name: screenLEDs
-#     topic: Screen LEDs
+  - name: screenLEDs
+    topic: Screen LEDs
 
-# specials:
-#   - name: computerAudio
-#     topic: Computer Audio
+specials:
+  - name: computerAudio
+    topic: Computer Audio
