@@ -7,6 +7,8 @@ import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import mqtt from "mqtt";
 import path from "path";
+import { connectToMQTT } from "./components/mqtt/mqttService";
+import { startSocket } from "./components/socket/socketService";
 
 /////////////
 //* Socket Stuff
@@ -22,34 +24,22 @@ import path from "path";
 
 // socket.on("connection", () => {});
 
-const socketServer = createServer();
+// const socketServer = createServer();
 
-const io = new Server(socketServer, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
-socketServer.listen(3100);
+// const io = new Server(socketServer, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
+// socketServer.listen(3100);
 
-io.on("connection", () => {
-  console.log("Hello socket");
-});
+// io.on("connection", () => {
+//   console.log("Hello socket");
+// });
 
-/////////////
-//*  MQTT Stuff
-const MQTT: string = mqttUrl;
-let client: mqtt.MqttClient = mqtt.connect(MQTT, { connectTimeout: 2 * 1000 });
-
-client.subscribe("#", (error: Error) => {
-  if (error) {
-    console.log(error);
-    console.log("MQTT connect error");
-    process.exit();
-  } else {
-    console.log(`📡 Listening to ${mqttUrl}`);
-  }
-});
+const client = connectToMQTT();
+const io = startSocket();
 
 client.on("message", (topic: String, payload: Object) => {
   try {
