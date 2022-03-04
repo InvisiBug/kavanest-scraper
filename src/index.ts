@@ -39,12 +39,12 @@ io.on("connection", () => {
 /////////////
 //*  MQTT Stuff
 const MQTT: string = mqttUrl;
-let client: mqtt.MqttClient = mqtt.connect(MQTT);
+let client: mqtt.MqttClient = mqtt.connect(MQTT, { connectTimeout: 2 * 1000 });
 
 client.subscribe("#", (error: Error) => {
   if (error) {
     console.log(error);
-    console.log("MQTT error");
+    console.log("MQTT connect error");
     process.exit();
   } else {
     console.log(`📡 Listening to ${mqttUrl}`);
