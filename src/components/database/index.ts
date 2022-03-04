@@ -1,5 +1,4 @@
 import Mongo from "./mongo";
-import { mongoUrl } from "../helpers";
 
 const db = "devices";
 
