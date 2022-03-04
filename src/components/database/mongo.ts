@@ -1,25 +1,37 @@
-import { Collection, Db, MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 import { mongoUrl } from "../helpers";
 
-/*
-  Create the mongo client then connect with it,
-  Once connected, connect to the database then the collection.
-  The collection property will be used as the stores
-*/
-export default class Mongo {
-  client: MongoClient = new MongoClient(mongoUrl);
-  db: Db;
-  collection: Collection;
+const options: MongoClientOptions = {
+  directConnection: true,
+  connectTimeoutMS: 1000,
+  socketTimeoutMS: 1000,
+  waitQueueTimeoutMS: 1000,
+  heartbeatFrequencyMS: 1000,
+  keepAlive: true,
+  serverSelectionTimeoutMS: 1000,
+};
 
-  constructor(db: string, collection: string) {
+export default class Mongo {
+  client: MongoClient = new MongoClient(mongoUrl, options);
+
+  constructor() {
+    this.connect();
+  }
+
+  connect() {
     this.client.connect((err) => {
       if (!err) {
-        console.log("\t 📜", collection);
+        console.log(`🔗  Successful mongo connection made to ${mongoUrl}`);
+      } else {
+        console.log("⚠️  Mongo Connection Failed... Restarting");
+        process.exit();
       }
     });
+  }
 
-    this.db = this.client.db(db);
-    this.collection = this.db.collection(collection);
+  newCollection(database: string, collection: string) {
+    const db = this.client.db(database);
+    return db.collection(collection);
   }
 }
 

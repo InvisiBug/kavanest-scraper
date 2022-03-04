@@ -45,14 +45,20 @@ export default class Valve {
     }
   }
   writeToMongo = async (data: Data) => {
-    await valveStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
-      if (mongoDoc.value) {
-        if (Object(mongoDoc).constructor !== Promise) {
-          const id: string = mongoDoc.value._id.toString();
-          this.socket.emit(id, { ...data, _id: id });
+    try {
+      await valveStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
+        if (mongoDoc.value) {
+          if (Object(mongoDoc).constructor !== Promise) {
+            const id: string = mongoDoc.value._id.toString();
+            this.socket.emit(id, { ...data, _id: id });
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log("Mongo Connection Dropped, Restarting ...");
+      console.log(error);
+      process.exit();
+    }
   };
 }
 

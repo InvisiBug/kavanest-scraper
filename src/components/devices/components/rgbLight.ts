@@ -54,16 +54,20 @@ export default class RGBLight {
   }
 
   writeToMongo = async (data: Data) => {
-    await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
-      if (mongoDoc.value) {
+    try {
+      await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
             this.socket.emit(id, { ...data, _id: id });
           }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log("Mongo Connection Dropped, Restarting ...");
+      console.log(error);
+      process.exit();
+    }
   };
 }
 
