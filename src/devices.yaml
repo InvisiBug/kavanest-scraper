@@ -55,6 +55,9 @@ plugs:
   - name: mattress
     topic: Mattress
 
+  - name: lamp
+    topic: Lamp
+
 
 rgbLights:
   - name: deskLEDs
