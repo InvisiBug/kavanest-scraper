@@ -36,6 +36,10 @@ valves:
   - name: rearBedroom
     topic: Rear Bedroom Valve
 
+radiators:
+  - name: frontStudy
+    topic: Front Study Radiator
+
 plugs:
   - name: sun
     topic: Sun

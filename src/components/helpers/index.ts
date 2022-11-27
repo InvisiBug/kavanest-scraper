@@ -11,6 +11,7 @@ export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any) =>
   }, 10 * 1000);
 };
 
+// Sets the disconnected state of a device to false
 export const setDisconnected = (data: any, msg: string): any => {
   // console.log(msg); // TODO remove this, will need to alter all calls
   data = {
