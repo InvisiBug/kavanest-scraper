@@ -20,13 +20,12 @@ devices.push(new offset(client)); //! This will need to be removed in the final 
 for (let deviceType in deviceConfig) {
   deviceConfig[deviceType].forEach((node: any) => {
     const newDevice = DeviceCreator(client, node, deviceType, socket);
-    newDevice ? devices.push(newDevice) : null;
+    newDevice ? devices.push(DeviceCreator(client, node, deviceType, socket)) : null;
   });
 }
 
 client.on("message", (topic: String, payload: Object) => {
   try {
-    // console.log(topic, JSON.parse(payload.toString()));
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);
     }

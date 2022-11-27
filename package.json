@@ -10,7 +10,6 @@
     "run": "yarn build && node ./dist/index.js",
     "build": "tsc && cp ./src/devices.yaml ./dist",
     "push": "./bin/push.sh",
-    "deploy": "yarn push && ./bin/deploy.sh",
     "deploy--live": "./bin/deploy--live.sh",
     "deploy--test": "./bin/deploy--test.sh",
     "up": "clear && ./bin/start-container.sh",
@@ -23,6 +22,7 @@
     "js-yaml": "^4.1.0",
     "mongodb": "^4.2.0",
     "mqtt": "^4.2.8",
+    "nodemon": "^2.0.20",
     "socket.io": "^4.4.0"
   },
   "devDependencies": {
