@@ -25,6 +25,7 @@ for (let deviceType in deviceConfig) {
 }
 
 client.on("message", (topic: String, payload: Object) => {
+  console.log(payload.toString());
   try {
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);
