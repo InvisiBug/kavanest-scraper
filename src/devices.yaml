@@ -24,9 +24,6 @@ valves:
   - name: diningRoom
     topic: Dining Room Valve
 
-  - name: frontStudy
-    topic: Front Study Valve
-
   - name: rearStudy
     topic: Rear Study Valve
 

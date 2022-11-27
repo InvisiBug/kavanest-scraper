@@ -1,22 +1,8 @@
 import { MqttClient } from "mqtt";
 import { radiatorStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
-import { Socket } from "socket.io";
 import { DeviceConfig } from "../";
-
-interface MongoData {
-  name: string | null;
-  valve: boolean | null;
-  fan: boolean | null;
-  temperature: number | null;
-  connected: boolean | null;
-}
-
-interface PayloadData {
-  temperature: number;
-  valve: boolean;
-  fan: boolean;
-}
+import { Socket } from "socket.io";
 
 export default class RadiatorV2 {
   timer: NodeJS.Timeout;
@@ -31,21 +17,20 @@ export default class RadiatorV2 {
     this.topic = deviceConfig.topic;
 
     this.data = {
-      name: deviceConfig.name,
+      room: deviceConfig.name,
       valve: null,
       fan: null,
       temperature: null,
       connected: null,
     };
 
-    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
+    this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
   }
 
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
-        console.log(payload);
 
         const { valve, temperature, fan } = payload;
 
@@ -61,16 +46,16 @@ export default class RadiatorV2 {
 
         clearTimeout(this.timer);
 
-        this.timer = disconnectWatchdog(this.data, `${this.data.name} radiator disconnected`, this.writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.room} radiator disconnected`, this.writeToMongo);
       } catch (error) {
-        console.log(`${this.data.name} radiator disconnected`);
+        console.log(`${this.data.room} radiator disconnected`);
       }
     }
   }
 
   writeToMongo = async (data: MongoData) => {
     try {
-      await radiatorStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await radiatorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -84,4 +69,18 @@ export default class RadiatorV2 {
       process.exit();
     }
   };
+}
+
+interface MongoData {
+  room: string | null;
+  valve: boolean | null;
+  fan: boolean | null;
+  temperature: number | null;
+  connected: boolean | null;
+}
+
+interface PayloadData {
+  temperature: number;
+  valve: boolean;
+  fan: boolean;
 }

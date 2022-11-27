@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options } from "../../database";
+import { valveStore, options, radiatorStore } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../";
@@ -18,9 +18,12 @@ export default class Valve {
 
     this.data = {
       room: deviceConfig.name,
-      state: null,
+      valve: null,
+      fan: null,
+      temperature: null,
       connected: false,
     };
+
     this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
   }
 
@@ -28,10 +31,11 @@ export default class Valve {
     if (topic === this.topic) {
       try {
         const payload: MQTTpayload = JSON.parse(rawPayload.toString());
+        const { state } = payload;
 
         this.data = {
           ...this.data,
-          state: payload.state,
+          valve: state,
           connected: true,
         };
 
@@ -46,7 +50,7 @@ export default class Valve {
   }
   writeToMongo = async (data: Data) => {
     try {
-      await valveStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
+      await radiatorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -69,6 +73,8 @@ interface MQTTpayload {
 
 interface Data {
   room: string | null;
-  state: boolean | null;
+  valve: boolean | null;
+  fan: boolean | null;
+  temperature: number | null;
   connected: boolean | null;
 }
