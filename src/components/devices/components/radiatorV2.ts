@@ -33,11 +33,12 @@ export default class RadiatorV2 {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         const { valve, temperature, fan } = payload;
+        const map = [false, true];
 
         this.data = {
           ...this.data,
-          fan: fan === 0 ? true : false,
-          valve: valve === 0 ? true : false,
+          fan: map[fan],
+          valve: map[valve],
           temperature,
           connected: true,
         };
