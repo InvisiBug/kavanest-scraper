@@ -1,9 +1,11 @@
 #!/bin/sh
 
 REGISTRY_IP=192.168.1.61:5000
+APP_NAME=kavanest-scraper:live
+
 yarn install && \
 yarn build && \
-docker build -f ./Dockerfile.kube -t kavanest-scraper . && \
-docker tag kavanest-scraper-live $REGISTRY_IP/kavanest-scraper-live && \
-docker push $REGISTRY_IP/kavanest-scraper && \
+docker build -f ./Dockerfile.kube -t $APP_NAME . && \
+docker tag $APP_NAME $REGISTRY_IP/$APP_NAME && \
+docker push $REGISTRY_IP/$APP_NAME && \
 rm -r dist
