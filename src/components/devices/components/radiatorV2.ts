@@ -36,8 +36,8 @@ export default class RadiatorV2 {
 
         this.data = {
           ...this.data,
-          fan,
-          valve,
+          fan: fan === 0 ? true : false,
+          valve: valve === 0 ? true : false,
           temperature,
           connected: true,
         };
@@ -81,6 +81,6 @@ interface MongoData {
 
 interface PayloadData {
   temperature: number;
-  valve: boolean;
-  fan: boolean;
+  valve: number;
+  fan: number;
 }
