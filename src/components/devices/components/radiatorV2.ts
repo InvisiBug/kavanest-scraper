@@ -1,15 +1,15 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options, radiatorStore } from "../../database";
+import { radiatorStore, options } from "../../database";
 import { disconnectWatchdog } from "../../helpers";
-import { Socket } from "socket.io";
 import { DeviceConfig } from "../";
+import { Socket } from "socket.io";
 
-export default class Valve {
-  client: MqttClient;
-  socket: Socket;
+export default class RadiatorV2 {
   timer: NodeJS.Timeout;
-  topic: string;
-  data: Data;
+  client: MqttClient;
+  topic: String;
+  socket: Socket;
+  data: MongoData;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
@@ -21,34 +21,40 @@ export default class Valve {
       valve: null,
       fan: null,
       temperature: null,
-      connected: false,
+      connected: null,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
-  handleIncoming(topic: String, rawPayload: Object) {
+  async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: MQTTpayload = JSON.parse(rawPayload.toString());
-        const { state } = payload;
+        const payload: PayloadData = JSON.parse(rawPayload.toString());
+
+        const { valve, temperature, fan } = payload;
+        const map = [false, true];
 
         this.data = {
           ...this.data,
-          valve: state,
+          fan: map[fan],
+          valve: map[valve],
+          temperature,
           connected: true,
         };
 
         this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
+
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} radiator disconnected`, this.writeToMongo);
       } catch (error) {
-        console.log(`${this.data.name} disconnected`);
+        console.log(`${this.data.name} radiator disconnected`);
       }
     }
   }
-  writeToMongo = async (data: Data) => {
+
+  writeToMongo = async (data: MongoData) => {
     try {
       await radiatorStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
@@ -66,15 +72,16 @@ export default class Valve {
   };
 }
 
-interface MQTTpayload {
-  node: String;
-  state: boolean;
-}
-
-interface Data {
+interface MongoData {
   name: string | null;
   valve: boolean | null;
   fan: boolean | null;
   temperature: number | null;
   connected: boolean | null;
+}
+
+interface PayloadData {
+  temperature: number;
+  valve: number;
+  fan: number;
 }

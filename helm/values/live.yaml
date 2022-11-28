@@ -12,7 +12,7 @@ deployment:
       value: mongodb://kavanest-mongo:27017
 
     - name: MQTT
-      value: mqtt://192.168.1.46
+      value: mqtt:mqtt.kavanet.io
 
 service:
   clusterIP:

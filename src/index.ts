@@ -14,7 +14,7 @@ const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.y
 let devices: Array<any> = [];
 
 // * Special devices
-devices.push(new Radiator(client));
+// devices.push(new Radiator(client));
 devices.push(new offset(client)); //! This will need to be removed in the final version
 
 for (let deviceType in deviceConfig) {
@@ -25,8 +25,8 @@ for (let deviceType in deviceConfig) {
 }
 
 client.on("message", (topic: String, payload: Object) => {
+  console.log(payload.toString());
   try {
-    // console.log(topic, JSON.parse(payload.toString()));
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);
     }
