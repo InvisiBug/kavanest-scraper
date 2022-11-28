@@ -17,14 +17,14 @@ export default class Valve {
     this.topic = deviceConfig.topic;
 
     this.data = {
-      room: deviceConfig.name,
+      name: deviceConfig.name,
       valve: null,
       fan: null,
       temperature: null,
       connected: false,
     };
 
-    this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -42,15 +42,15 @@ export default class Valve {
         this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.room} disconnected`, this.writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
       } catch (error) {
-        console.log(`${this.data.room} disconnected`);
+        console.log(`${this.data.name} disconnected`);
       }
     }
   }
   writeToMongo = async (data: Data) => {
     try {
-      await radiatorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then((mongoDoc) => {
+      await radiatorStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -72,7 +72,7 @@ interface MQTTpayload {
 }
 
 interface Data {
-  room: string | null;
+  name: string | null;
   valve: boolean | null;
   fan: boolean | null;
   temperature: number | null;

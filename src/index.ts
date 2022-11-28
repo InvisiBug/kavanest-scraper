@@ -14,13 +14,13 @@ const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.y
 let devices: Array<any> = [];
 
 // * Special devices
-devices.push(new Radiator(client));
+// devices.push(new Radiator(client));
 devices.push(new offset(client)); //! This will need to be removed in the final version
 
 for (let deviceType in deviceConfig) {
   deviceConfig[deviceType].forEach((node: any) => {
     const newDevice = DeviceCreator(client, node, deviceType, socket);
-    newDevice ? devices.push(DeviceCreator(client, node, deviceType, socket)) : null;
+    newDevice ? devices.push(newDevice) : null;
   });
 }
 
