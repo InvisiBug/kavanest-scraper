@@ -34,5 +34,3 @@ export default class Mongo {
     return db.collection(collection);
   }
 }
-
-// TODO add a time out and an error if the mongo connection isnt made within a few seconds

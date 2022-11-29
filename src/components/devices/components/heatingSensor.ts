@@ -4,7 +4,7 @@ import { sensorStore, options } from "../../database";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../";
 
-export default class heatingSensor {
+export default class HeatingSensor {
   timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
