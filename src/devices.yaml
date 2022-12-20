@@ -37,6 +37,11 @@ radiators:
   - name: frontStudy
     topic: Front Study Radiator
 
+  - name: livingRoom
+    topic: Living Room Radiator
+
+
+
 plugs:
   - name: sun
     topic: Sun
