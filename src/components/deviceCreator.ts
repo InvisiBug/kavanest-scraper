@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { plug, heatingSensor, valve, rgbLight, computerAudio, Radiator, radiatorV2 } from "./devices/index";
+import { plug, heatingSensor, valve, rgbLight, computerAudio, Radiator } from "./devices/index";
 import { Socket } from "socket.io";
 
 export default (client: MqttClient, deviceConfig: { name: string; topic: string }, deviceType: string, socket: any) => {
@@ -17,7 +17,7 @@ export default (client: MqttClient, deviceConfig: { name: string; topic: string 
       return new rgbLight(client, deviceConfig, socket);
 
     case "radiators":
-      return new radiatorV2(client, deviceConfig, socket);
+      return new Radiator(client, deviceConfig, socket);
 
     case "specials":
       return new computerAudio(client, deviceConfig, socket);

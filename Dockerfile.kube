@@ -13,7 +13,7 @@ COPY tsconfig.json ./
 # Prevents unnecessary packages from being installed
 # ENV NODE_ENV=production
 ENV NODE_ENV production
-RUN npm install
+RUN yarn install
 
 # Copy across source folder
 COPY ./dist ./
