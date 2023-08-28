@@ -2,43 +2,40 @@ heatingSensors:
   - name: livingRoom
     topic: Living Room Sensor
 
-  - name: diningRoom
-    topic: Dining Room Sensor
+  - name: trainingRoom
+    topic: Training Room Sensor
 
-  - name: frontStudy
-    topic: Front Study Sensor
+  - name: study
+    topic: Study Sensor
 
-  - name: rearStudy
-    topic: Rear Study Sensor
+  - name: printerRoom
+    topic: Printer Room Sensor
 
-  - name: frontBedroom
-    topic: Front Bedroom Sensor
-
-  - name: rearBedroom
-    topic: Rear Bedroom Sensor
+  - name: bedroom
+    topic: Bedroom Sensor
 
 valves:
   - name: livingRoom
     topic: Living Room Valve
+    sort: 1 # Sorting actually happens at the API level, but it's set here
 
-  - name: diningRoom
-    topic: Dining Room Valve
+  - name: trainingRoom
+    topic: Training Room Valve
+    sort: 2
 
-  - name: rearStudy
-    topic: Rear Study Valve
+  - name: printerRoom
+    topic: Printer Room Valve
+    sort: 3
 
-  - name: frontBedroom
-    topic: Front Bedroom Valve
-
-  - name: rearBedroom
-    topic: Rear Bedroom Valve
 
 radiators:
-  - name: frontStudy
-    topic: Front Study Radiator
+  - name: study
+    topic: Study Radiator
+    sort: 4
 
-  - name: livingRoom
-    topic: Living Room Radiator
+  - name: bedroom
+    topic: Bed Room Radiator
+    sort: 5
 
 
 
