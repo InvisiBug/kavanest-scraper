@@ -18,6 +18,7 @@ export default class RadiatorV2 {
 
     this.data = {
       name: deviceConfig.name,
+      sort: deviceConfig.sort || null,
       valve: null,
       fan: null,
       temperature: null,
@@ -33,7 +34,7 @@ export default class RadiatorV2 {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         const { valve, inlet: temperature, fan } = payload;
-        const map = [false, true];
+        const map = [false, true]; //! Devices sens a 0 and 1 instead of true and false
 
         this.data = {
           ...this.data,
@@ -74,6 +75,7 @@ export default class RadiatorV2 {
 
 interface MongoData {
   name: string | null;
+  sort: number | null;
   valve: boolean | null;
   fan: boolean | null;
   temperature: number | null;

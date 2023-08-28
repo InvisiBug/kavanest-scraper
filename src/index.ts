@@ -17,6 +17,9 @@ let devices: Array<any> = [];
 // devices.push(new Radiator(client));
 devices.push(new offset(client)); //! This will need to be removed in the final version
 
+/*
+  Generate devices from the config file
+*/
 for (let deviceType in deviceConfig) {
   deviceConfig[deviceType].forEach((node: any) => {
     const newDevice = DeviceCreator(client, node, deviceType, socket);
@@ -24,6 +27,9 @@ for (let deviceType in deviceConfig) {
   });
 }
 
+/*
+  Handle incoming messages
+*/
 client.on("message", (topic: String, payload: Object) => {
   console.log(payload.toString());
   try {
