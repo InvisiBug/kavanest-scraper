@@ -18,6 +18,7 @@ export default class Valve {
 
     this.data = {
       name: deviceConfig.name,
+      sort: deviceConfig.sort || null,
       valve: null,
       fan: null,
       temperature: null,
@@ -74,6 +75,7 @@ interface MQTTpayload {
 interface Data {
   name: string | null;
   valve: boolean | null;
+  sort: number | null;
   fan: boolean | null;
   temperature: number | null;
   connected: boolean | null;

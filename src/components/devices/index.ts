@@ -9,4 +9,5 @@ export { default as computerAudio } from "./components/computerAudio";
 export interface DeviceConfig {
   topic: string;
   name: string;
+  sort?: number;
 }

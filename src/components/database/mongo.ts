@@ -1,14 +1,16 @@
 import { MongoClient, MongoClientOptions } from "mongodb";
 import { mongoUrl } from "../helpers";
 
+const timeout = 3000;
+
 const options: MongoClientOptions = {
   directConnection: true,
-  connectTimeoutMS: 1000,
-  socketTimeoutMS: 1000,
-  waitQueueTimeoutMS: 1000,
-  heartbeatFrequencyMS: 1000,
+  connectTimeoutMS: timeout,
+  socketTimeoutMS: timeout,
+  waitQueueTimeoutMS: timeout,
+  heartbeatFrequencyMS: timeout,
   keepAlive: true,
-  serverSelectionTimeoutMS: 1000,
+  serverSelectionTimeoutMS: timeout,
 };
 
 export default class Mongo {

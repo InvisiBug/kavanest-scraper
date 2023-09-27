@@ -18,6 +18,7 @@ export default class RadiatorV2 {
 
     this.data = {
       name: deviceConfig.name,
+      sort: deviceConfig.sort || null,
       valve: null,
       fan: null,
       temperature: null,
@@ -74,6 +75,7 @@ export default class RadiatorV2 {
 
 interface MongoData {
   name: string | null;
+  sort: number | null;
   valve: boolean | null;
   fan: boolean | null;
   temperature: number | null;
