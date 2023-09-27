@@ -15,9 +15,9 @@ heatingSensors:
     topic: Bedroom Sensor
 
 valves:
-  - name: livingRoom
-    topic: Living Room Valve
-    sort: 1 # Sorting actually happens at the API level, but it's set here
+  - name: bedroom
+    topic: Bedroom Valve
+    sort: 5 # Sorting actually happens at the API level, but it's set here
 
   - name: trainingRoom
     topic: Training Room Valve
@@ -25,17 +25,17 @@ valves:
 
   - name: printerRoom
     topic: Printer Room Valve
-    sort: 3
+    sort: 4
 
 
 radiators:
   - name: study
     topic: Study Radiator
-    sort: 4
+    sort: 3
 
-  - name: bedroom
-    topic: Bed Room Radiator
-    sort: 5
+  - name: livingRoom
+    topic: Living Room Radiator
+    sort: 1
 
 
 
