@@ -46,6 +46,9 @@ plugs:
   - name: floodlight
     topic: Floodlight
 
+  - name: eggChair
+    topic: Egg Chair
+
   - name: radiatorFan
     topic: Radiator Fan
 
