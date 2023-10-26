@@ -1,6 +1,6 @@
 dependencies:
 - name: library
   repository: https://invisibug.github.io/kavanetes-helm/
-  version: 1.0.0
-digest: sha256:02883cb1a0bf86c6ef77f145fcbfd5fd335e576a8173aad5ae104b4ee65ae586
-generated: "2021-11-05T16:47:43.61661Z"
+  version: 1.1.2
+digest: sha256:19024e64f984e76ed4a8850c7ddbf695e69f1a6c842caee1550a0b944fc5eef5
+generated: "2023-09-27T14:34:35.901935+01:00"
