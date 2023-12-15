@@ -1,6 +1,8 @@
 name: kavanest-test-scraper
 
 namespace: kavanest-test
+env:
+  APP_VERSION: <desired_application_version>
 
 deployment:
   - name: kavanest-test-scraper
