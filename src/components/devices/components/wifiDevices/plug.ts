@@ -1,15 +1,15 @@
 import { MqttClient } from "mqtt";
-import { specialsStore, options } from "../../database";
-import { disconnectWatchdog } from "../../helpers";
+import { plugStore, options } from "../../../database";
+import { disconnectWatchdog } from "../../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../";
+import { DeviceConfig } from "../..";
 
-export default class ComputerAudio {
+export default class Plug {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  socket: Socket;
-  topic: string;
   data: Data;
+  topic: string;
+  socket: Socket;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
@@ -18,10 +18,7 @@ export default class ComputerAudio {
 
     this.data = {
       name: deviceConfig.name,
-      left: null,
-      right: null,
-      sub: null,
-      mixer: null,
+      state: null,
       connected: null,
     };
 
@@ -35,10 +32,7 @@ export default class ComputerAudio {
 
         this.data = {
           ...this.data,
-          left: payload.Left,
-          right: payload.Right,
-          sub: payload.Sub,
-          mixer: payload.Mixer,
+          state: payload.state,
           connected: true,
         };
 
@@ -54,7 +48,7 @@ export default class ComputerAudio {
 
   writeToMongo = async (data: Data) => {
     try {
-      await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -71,18 +65,12 @@ export default class ComputerAudio {
 }
 
 interface Data {
-  name: string;
-  left: boolean | null;
-  right: boolean | null;
-  sub: boolean | null;
-  mixer: boolean | null;
+  name: string | null;
+  state: boolean | null;
   connected: boolean | null;
 }
 
 interface PayloadData {
-  Left: boolean | null;
-  Right: boolean | null;
-  Sub: boolean | null;
-  Mixer: boolean | null;
-  Connected: boolean | null;
+  node: String;
+  state: boolean;
 }

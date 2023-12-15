@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { valveStore, options, radiatorStore } from "../../database";
-import { disconnectWatchdog } from "../../helpers";
+import { valveStore, options, radiatorStore } from "../../../database";
+import { disconnectWatchdog } from "../../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../";
+import { DeviceConfig } from "../..";
 
 export default class Valve {
   client: MqttClient;

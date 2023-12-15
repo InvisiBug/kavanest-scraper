@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { disconnectWatchdog, camelRoomName } from "../../helpers";
-import { sensorStore, options } from "../../database";
+import { disconnectWatchdog, camelRoomName } from "../../../helpers";
+import { sensorStore, options } from "../../../database";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../";
+import { DeviceConfig } from "../..";
 
 export default class HeatingSensor {
   timer: NodeJS.Timeout;
@@ -33,7 +33,8 @@ export default class HeatingSensor {
     if (topic === this.topic) {
       try {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
-        // console.log(payload);
+
+        console.log(payload);
 
         this.data = {
           ...this.data,
@@ -43,7 +44,7 @@ export default class HeatingSensor {
           connected: true,
         };
 
-        this.writeToMongo(this.data);
+        // this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
         this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo);

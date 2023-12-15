@@ -1,15 +1,15 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "../../database";
-import { disconnectWatchdog } from "../../helpers";
+import { specialsStore, options } from "../../../database";
+import { disconnectWatchdog } from "../../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../";
+import { DeviceConfig } from "../..";
 
-export default class Plug {
+export default class ComputerAudio {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  data: Data;
-  topic: string;
   socket: Socket;
+  topic: string;
+  data: Data;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
@@ -18,7 +18,10 @@ export default class Plug {
 
     this.data = {
       name: deviceConfig.name,
-      state: null,
+      left: null,
+      right: null,
+      sub: null,
+      mixer: null,
       connected: null,
     };
 
@@ -32,7 +35,10 @@ export default class Plug {
 
         this.data = {
           ...this.data,
-          state: payload.state,
+          left: payload.Left,
+          right: payload.Right,
+          sub: payload.Sub,
+          mixer: payload.Mixer,
           connected: true,
         };
 
@@ -48,7 +54,7 @@ export default class Plug {
 
   writeToMongo = async (data: Data) => {
     try {
-      await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -65,12 +71,18 @@ export default class Plug {
 }
 
 interface Data {
-  name: string | null;
-  state: boolean | null;
+  name: string;
+  left: boolean | null;
+  right: boolean | null;
+  sub: boolean | null;
+  mixer: boolean | null;
   connected: boolean | null;
 }
 
 interface PayloadData {
-  node: String;
-  state: boolean;
+  Left: boolean | null;
+  Right: boolean | null;
+  Sub: boolean | null;
+  Mixer: boolean | null;
+  Connected: boolean | null;
 }
