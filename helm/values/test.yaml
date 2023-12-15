@@ -29,3 +29,4 @@ ingress:
     path: /
     port: 3100
     host: test.socket.kavanet.io
+
