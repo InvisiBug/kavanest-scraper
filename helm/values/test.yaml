@@ -4,7 +4,7 @@ namespace: kavanest-test
 
 deployment:
   - name: kavanest-test-scraper
-    image: 192.168.1.61:5000/kavanest-scraper:test
+    image: invisibug/kavanest-test-scraper
     ports:
     - port: 27017
     env:

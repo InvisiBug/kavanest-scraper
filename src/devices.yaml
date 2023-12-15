@@ -46,6 +46,9 @@ plugs:
   - name: floodlight
     topic: Floodlight
 
+  - name: eggChair
+    topic: Egg Chair
+
   - name: radiatorFan
     topic: Radiator Fan
 
@@ -61,7 +64,7 @@ plugs:
   - name: lamp
     topic: Lamp
 
-
+#  These lights have alternate modes
 rgbLights:
   - name: deskLEDs
     topic: Desk LEDs
@@ -72,6 +75,16 @@ rgbLights:
   - name: screenLEDs
     topic: Screen LEDs
 
+  - name: hexagons
+    topic: Hexagon Lights
+
 specials:
   - name: computerAudio
     topic: Computer Audio
+
+zigbeeSensors:
+  - name: livingRoom
+    topic: zigbee2mqtt/livingroomSensor
+
+  - name: study
+    topic: zigbee2mqtt/studySensor

@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { rgbLightStore, options } from "../../database";
-import { disconnectWatchdog } from "../../helpers";
+import { rgbLightStore, options } from "../../../database";
+import { disconnectWatchdog } from "../../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../";
+import { DeviceConfig } from "../..";
 
 export default class RGBLight {
   timer: NodeJS.Timeout;
