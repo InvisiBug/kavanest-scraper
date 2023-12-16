@@ -1,46 +1,28 @@
-# Use Node version 14
-FROM arm64v8/node:14 AS base
+## Need a build stage to compile the typescript
 
-# Install app dependencies
-# A wild card is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json yarn*.lock ./
-COPY tsconfig.json ./
-
-# Create app directory within container
-WORKDIR /root/build
-
-# Dependencies ---
-FROM base AS dependencies
-
-COPY package*.json yarn*.lock ./
-COPY tsconfig.json ./
-
-# Install production node_modules
-RUN yarn install --frozen-lockfile --non-interactive --prefer-offline --prod
-
-# rename prod_modules for later
-RUN cp -R node_modules prod_modules
-
-# install dev modules
-RUN yarn install --frozen-lockfile --non-interactive --prefer-offline
-
-
-# Build ---
-FROM base AS builder
+## Build stage
+FROM arm64v8/node:14 as build
 
 COPY . .
-COPY --from=dependencies /root/build/node_modules /root/build/node_modules
 
-# Test ---
-FROM builder AS test
-RUN yarn test
+RUN yarn install
+RUN yarn build
 
-# Release ---
-FROM base AS release
+
+## Deploy stage
+FROM arm64v8/node:14
 
 WORKDIR /usr/src/app
+
+COPY --from=build ./dist ./
+
+COPY package*.json ./
+COPY tsconfig.json ./
+
+ENV NODE_ENV production
+RUN yarn install
 
 EXPOSE 1883
 EXPOSE 9001
 
-CMD ["yarn","start"]
+CMD ["node","index.js"]
