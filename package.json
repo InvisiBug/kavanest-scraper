@@ -6,6 +6,8 @@
   "author": "InvisiBug <matthewjkavanagh@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node ./dist/index.js",
+    "test": "exit 0",
     "dev": "nodemon --exec \"ts-node \" ./src/index.ts --trace-warnings",
     "run": "yarn build && node ./dist/index.js",
     "build": "tsc && cp ./src/devices.yaml ./dist",
