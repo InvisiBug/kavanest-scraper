@@ -1,5 +1,5 @@
 # Use Node version 14
-FROM node:14 as base
+FROM arm64v8/node:14 AS base
 
 # Install app dependencies
 # A wild card is used to ensure both package.json AND package-lock.json are copied
@@ -31,13 +31,8 @@ FROM base AS builder
 COPY . .
 COPY --from=dependencies /root/build/node_modules /root/build/node_modules
 
-
-FROM builder as build
-RUN yarn build
-
 # Test ---
 FROM builder AS test
-
 RUN yarn test
 
 # Release ---
@@ -45,8 +40,7 @@ FROM base AS release
 
 WORKDIR /usr/src/app
 
-COPY --from=dependencies /root/build/package.json   /usr/src/app
-COPY --from=dependencies /root/build/prod_modules   /usr/src/app/node_modules
-COPY --from=build /root/build/dist          /usr/src/app/dist
+EXPOSE 1883
+EXPOSE 9001
 
 CMD ["yarn","start"]

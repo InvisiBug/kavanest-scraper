@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { plug, heatingSensor, valve, rgbLight, computerAudio, Radiator } from "./devices/index";
+import { plug, heatingSensor, valve, rgbLight, computerAudio, Radiator, zigbeeSensor } from "./devices/index";
 import { Socket } from "socket.io";
 
 export default (client: MqttClient, deviceConfig: { name: string; topic: string }, deviceType: string, socket: any) => {
@@ -21,5 +21,8 @@ export default (client: MqttClient, deviceConfig: { name: string; topic: string 
 
     case "specials":
       return new computerAudio(client, deviceConfig, socket);
+
+    case "zigbeeSensors":
+      return new zigbeeSensor(client, deviceConfig, socket);
   }
 };

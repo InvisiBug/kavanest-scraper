@@ -6,16 +6,13 @@
   "author": "InvisiBug <matthewjkavanagh@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node ./dist/index.js",
+    "test": "exit 0",
     "dev": "nodemon --exec \"ts-node \" ./src/index.ts --trace-warnings",
     "run": "yarn build && node ./dist/index.js",
     "build": "tsc && cp ./src/devices.yaml ./dist",
-<<<<<<< HEAD
-    "push": "./bin/push.sh",
-    "push--live": "./bin/push--live.sh",
-=======
     "push--live": "clear && ./bin/push--live.sh",
     "push--test": "clear && ./bin/push--test.sh",
->>>>>>> dev
     "deploy--live": "./bin/deploy--live.sh",
     "deploy--test": "./bin/deploy--test.sh",
     "up": "clear && ./bin/start-container.sh",
