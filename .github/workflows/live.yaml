@@ -1,9 +1,9 @@
-name: CD
+name: Live pipeline
 
 on:
   push:
     branches:
-      - test-release
+      - live-release
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
