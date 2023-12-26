@@ -69,7 +69,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
 
   sync-dev:
-    needs: update-app-version
+    needs: deploy-to-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
