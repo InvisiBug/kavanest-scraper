@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Merge test-release -> test
+      - name: Merge live-release -> master
         uses: devmasx/merge-branch@master
         with:
           type: now
@@ -78,7 +78,7 @@ jobs:
         uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: test
+          from_branch: master
           message: fast-forward dev
           target_branch: dev
           github_token: ${{ secrets.ACCESS_TOKEN }}
