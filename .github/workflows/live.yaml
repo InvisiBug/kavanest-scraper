@@ -35,7 +35,7 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-  tag-branch:
+  deploy-to-live:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
@@ -53,23 +53,23 @@ jobs:
         git push
 
 
-  sync-test:
-    needs: tag-branch
+  sync-master:
+    needs: deploy-to-live
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
-      - name: Merge test-release -> test
+      - name: Merge live-release -> master
         uses: devmasx/merge-branch@master
         with:
           type: now
-          message: fast-forward test
-          from_branch: test-release
-          target_branch: test
+          message: New app version created '${{ github.sha }}'
+          from_branch: live-release
+          target_branch: master
           github_token: ${{ secrets.ACCESS_TOKEN }}
 
   sync-dev:
-    needs: sync-test
+    needs: sync-master
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -78,7 +78,7 @@ jobs:
         uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: test
+          from_branch: master
           message: fast-forward dev
           target_branch: dev
           github_token: ${{ secrets.ACCESS_TOKEN }}
