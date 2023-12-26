@@ -35,7 +35,7 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-  deploy-to-live:
+  update-app-version:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
@@ -53,8 +53,8 @@ jobs:
         git push
 
 
-  sync-master:
-    needs: deploy-to-live
+  deploy-to-live:
+    needs: update-app-version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -69,7 +69,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
 
   sync-dev:
-    needs: sync-master
+    needs: deploy-to-live
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
