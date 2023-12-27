@@ -45,11 +45,11 @@ jobs:
     - name: Update values.yaml
       run: |
         cd helm
-        sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' ./values/test.yaml
+        sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' ./values/live.yaml
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
-        git add ./values/test.yaml
-        git commit -m "Update values.yaml"
+        git add ./values/live.yaml
+        git commit -m "update app version.yaml"
         git push
 
 
