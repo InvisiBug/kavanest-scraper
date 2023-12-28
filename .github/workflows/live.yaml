@@ -8,7 +8,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_KEY: ${{ secrets.DOCKERHUB_KEY }}
-  IMAGE_NAME: kavanest-test-scraper
+  IMAGE_NAME: kavanest-scraper
   DOCKER_DEFAULT_PLATFORM: linux/amd64
 
 jobs:
