@@ -6,7 +6,7 @@ env:
 
 deployment:
   - name: kavanest-scraper
-    image: 192.168.1.61:5000/kavanest-scraper:live
+    image: invisibug/kavanest-test-scraper
     ports:
     - port: 27017
     env:
