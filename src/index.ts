@@ -37,6 +37,6 @@ client.on("message", (topic: String, payload: Object) => {
       devices[i].handleIncoming(topic, payload);
     }
   } catch (error: unknown) {
-    console.log(error);
+    console.log("an error", error);
   }
 });
