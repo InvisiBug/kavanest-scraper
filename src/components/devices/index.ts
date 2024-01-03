@@ -5,7 +5,9 @@ export { default as valve } from "./components/wifiDevices/valve";
 export { default as offset } from "./components/wifiDevices/offsets";
 export { default as rgbLight } from "./components/wifiDevices/rgbLight";
 export { default as computerAudio } from "./components/wifiDevices/computerAudio";
+
 export { default as zigbeeSensor } from "./components/zigbeeDevices/sensor";
+export { default as zigbeePlug } from "./components/zigbeeDevices/plug";
 
 export interface DeviceConfig {
   topic: string;
