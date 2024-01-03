@@ -88,3 +88,7 @@ specials:
 
 #   - name: study
 #     topic: zigbee2mqtt/studySensor
+
+zigbeePlugs:
+  - name: livingroomLamp
+    topic: zigbee2mqtt/livingroomLamp
