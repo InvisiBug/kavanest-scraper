@@ -82,9 +82,9 @@ specials:
   - name: computerAudio
     topic: Computer Audio
 
-zigbeeSensors:
-  - name: livingRoom
-    topic: zigbee2mqtt/livingroomSensor
+# zigbeeSensors:
+#   - name: livingRoom
+#     topic: zigbee2mqtt/livingroomSensor
 
-  - name: study
-    topic: zigbee2mqtt/studySensor
+#   - name: study
+#     topic: zigbee2mqtt/studySensor
