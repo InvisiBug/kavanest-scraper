@@ -1,4 +1,4 @@
-export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any) => {
+export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any, time: number = 10) => {
   return setTimeout(() => {
     // console.log("Disconnect watchdog fired by", data.room);
     data = setDisconnected(data, msg);
@@ -8,7 +8,7 @@ export const disconnectWatchdog = (data: any, msg: string, writeToMongo: any) =>
       console.log("Disconnected");
       console.log(error);
     }
-  }, 10 * 1000);
+  }, time * 1000);
 };
 
 // Sets the disconnected state of a device to false

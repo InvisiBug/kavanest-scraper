@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../../../helpers";
-import { sensorStore, options } from "../../../database";
+import { sensorStore, options, zigbeeSensorStore } from "../../../database";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../..";
 
@@ -20,34 +20,38 @@ export default class HeatingSensor {
 
     this.data = {
       room: deviceConfig.name,
-      rawTemperature: null,
       temperature: null,
+      battery: null,
+      linkquality: null,
       humidity: null,
       connected: false,
+      voltage: null,
     };
 
-    this.timer = disconnectWatchdog(this.data, "sensor disconnect", this.writeToMongo);
+    this.timer = disconnectWatchdog(this.data, "sensor disconnect", this.writeToMongo, 60 /* second timeout */);
   }
 
   async handleIncoming(topic: string, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: PayloadData = JSON.parse(rawPayload.toString());
-
-        console.log(payload);
+        const { temperature, humidity, battery, linkquality, voltage }: PayloadData = JSON.parse(rawPayload.toString());
+        // console.log(topic, temperature, humidity, battery, linkquality);
 
         this.data = {
           ...this.data,
-          rawTemperature: payload.temperature,
-          temperature: parseFloat((payload.temperature + (await getOffsets(this.data.room))).toFixed(2)),
-          humidity: payload.humidity,
+
+          temperature,
+          humidity,
+          linkquality,
+          battery,
+          voltage,
           connected: true,
         };
 
-        // this.writeToMongo(this.data);
+        this.writeToMongo(this.data);
 
-        clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo);
+        // clearTimeout(this.timer);
+        // this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo);
       } catch (error) {
         console.log(`${this.data.room} sensor disconnected`);
       }
@@ -56,14 +60,13 @@ export default class HeatingSensor {
 
   writeToMongo = async (data: Data) => {
     try {
-      await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
+      await zigbeeSensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
             this.socket.emit(id, {
               ...data,
               _id: id,
-              offset: await getOffsets(this.data.room),
             });
           }
         }
@@ -92,13 +95,18 @@ const getOffsets = async (room: string) => {
 
 interface Data {
   room: string;
-  rawTemperature: number | null;
   temperature: number | null;
   humidity: number | null;
   connected: Boolean | null;
+  linkquality: number | null;
+  voltage: number | null;
+  battery: number | null;
 }
 
 interface PayloadData {
-  temperature: number;
+  battery: number;
   humidity: number;
+  linkquality: number;
+  temperature: number;
+  voltage: number;
 }
