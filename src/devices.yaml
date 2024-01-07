@@ -1,97 +1,123 @@
 heatingSensors:
   - name: livingRoom
     topic: Living Room Sensor
+    room: livingRoom
 
   - name: trainingRoom
     topic: Training Room Sensor
+    room: trainingRoom
 
   - name: study
     topic: Study Sensor
+    room: study
 
   - name: printerRoom
     topic: Printer Room Sensor
+    room: printerRoom
 
   - name: bedroom
     topic: Bedroom Sensor
+    room: bedroom
 
 # Sorting actually happens at the API level, but it's set here
 valves:
   - name: bedroom
     topic: Bedroom Valve
     sort: 5
+    room: bedRoom
 
   - name: trainingRoom
     topic: Training Room Valve
     sort: 2
+    room: trainingRoom
 
   - name: printerRoom
     topic: Printer Room Valve
     sort: 4
+    room: printerRoom
 
 
 radiators:
   - name: study
     topic: Study Radiator
     sort: 3
+    room: study
 
   - name: livingRoom
     topic: Living Room Radiator
     sort: 1
+    room: livingRoom
 
 
 plugs:
   - name: bedroomLamp
     topic: bedroomLamp
+    room: bedRoom
 
   - name: floodlight
     topic: Floodlight
+    room: livingRoom
 
   - name: eggChair
     topic: Egg Chair
-
-  - name: radiatorFan
-    topic: Radiator Fan
+    room: study
 
   - name: heating
     topic: Heating
 
-  - name: computerPower
-    topic: Computer Power
+  # - name: computerPower
+  #   topic: Computer Power
+  #   room: study
 
   - name: mattress
     topic: Mattress
+    room: bedRoom
 
-  - name: lamp
-    topic: Lamp
+  - name: studyLamp
+    topic: Study Lamp
+    room: study
+
 
 #  These lights have alternate modes
 rgbLights:
   - name: deskLEDs
     topic: Desk LEDs
+    room: study
 
   - name: tableLamp
     topic: Table Lamp
+    room: livingRoom
 
   - name: screenLEDs
     topic: Screen LEDs
+    room: study
 
-  - name: hexagons
-    topic: Hexagon Lights
+  # - name: hexagons
+  #   topic: Hexagon Lights
+  #   room: study
+
 
 specials:
   - name: computerAudio
     topic: Computer Audio
+    room: study
+
 
 zigbeeSensors:
-  - name: livingroom
+  - name: livingRoom
     topic: zigbee2mqtt/livingRoomSensor
+    room: livingRoom
 
   - name: study
     topic: zigbee2mqtt/studySensor
+    room: study
+
 
 zigbeePlugs:
   - name: livingroomLamp
     topic: zigbee2mqtt/livingroomLamp
+    room: livingRoom
 
   - name: eggChair
     topic: zigbee2mqtt/eggChair
+    room: study

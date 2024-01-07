@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { rgbLightStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
+import { rgbLightStore, options } from "src/components/database";
+import { disconnectWatchdog } from "src/components/helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "src/components/devices";
 
 export default class RGBLight {
   timer: NodeJS.Timeout;
@@ -19,6 +19,7 @@ export default class RGBLight {
 
     this.data = {
       name: deviceConfig.name,
+      room: deviceConfig.room,
       red: null,
       green: null,
       blue: null,
@@ -73,6 +74,7 @@ export default class RGBLight {
 
 interface MQTTpalyoad {
   node: String;
+
   red: number;
   green: number;
   blue: number;
@@ -81,6 +83,7 @@ interface MQTTpalyoad {
 
 export interface Data {
   name: string | null;
+  room: string | undefined;
   red: number | null;
   green: number | null;
   blue: number | null;
