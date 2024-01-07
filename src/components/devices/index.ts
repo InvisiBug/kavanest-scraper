@@ -1,16 +1,21 @@
-export { default as heatingSensor } from "./components/wifiDevices/heatingSensor";
-export { default as Radiator } from "./components/wifiDevices/radiator";
-export { default as plug } from "./components/wifiDevices/plug";
-export { default as valve } from "./components/wifiDevices/valve";
-export { default as offset } from "./components/wifiDevices/offsets";
-export { default as rgbLight } from "./components/wifiDevices/rgbLight";
-export { default as computerAudio } from "./components/wifiDevices/computerAudio";
+/*
+ * WiFi Devices
+ */
+export { default as Radiator } from "./wifiDevices/radiator";
+export { default as plug } from "./wifiDevices/plug";
+export { default as valve } from "./wifiDevices/valve";
+export { default as rgbLight } from "./wifiDevices/rgbLight";
+export { default as computerAudio } from "./wifiDevices/computerAudio";
 
-export { default as zigbeeSensor } from "./components/zigbeeDevices/sensor";
-export { default as zigbeePlug } from "./components/zigbeeDevices/plug";
+/*
+ * Zigbee Devices
+ */
+export { default as zigbeeSensor } from "./zigbeeDevices/sensor";
+export { default as zigbeePlug } from "./zigbeeDevices/plug";
 
 export interface DeviceConfig {
   topic: string;
   name: string;
   sort?: number;
+  room?: string;
 }

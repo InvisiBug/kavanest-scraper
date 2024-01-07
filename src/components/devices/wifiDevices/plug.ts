@@ -1,11 +1,11 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
+import { plugStore, options } from "src/components/database";
+import { disconnectWatchdog } from "src/components/helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "src/components/devices";
 
-export default class InnrPlug {
-  // timer: NodeJS.Timeout;
+export default class Plug {
+  timer: NodeJS.Timeout;
   client: MqttClient;
   data: Data;
   topic: string;
@@ -18,11 +18,12 @@ export default class InnrPlug {
 
     this.data = {
       name: deviceConfig.name,
+      room: deviceConfig.room,
       state: null,
       connected: null,
     };
 
-    // this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
+    this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
   handleIncoming(topic: String, rawPayload: Object) {
@@ -32,14 +33,14 @@ export default class InnrPlug {
 
         this.data = {
           ...this.data,
-          state: payload.state === "ON" ? true : false,
+          state: payload.state,
           connected: true,
         };
 
         this.writeToMongo(this.data);
 
-        // clearTimeout(this.timer);
-        // this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
+        clearTimeout(this.timer);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
       } catch (error) {
         console.log(`${this.data.name} disconnected`);
       }
@@ -66,11 +67,12 @@ export default class InnrPlug {
 
 interface Data {
   name: string | null;
+  room: string | undefined;
   state: boolean | null;
   connected: boolean | null;
 }
 
 interface PayloadData {
   node: String;
-  state: string;
+  state: boolean;
 }

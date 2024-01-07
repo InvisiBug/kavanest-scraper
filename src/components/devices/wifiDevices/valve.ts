@@ -1,13 +1,13 @@
 import { MqttClient } from "mqtt";
-import { specialsStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
+import { valveStore, options, radiatorStore } from "src/components/database";
+import { disconnectWatchdog } from "src/components/helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "src/components/devices";
 
-export default class ComputerAudio {
-  timer: NodeJS.Timeout;
+export default class Valve {
   client: MqttClient;
   socket: Socket;
+  timer: NodeJS.Timeout;
   topic: string;
   data: Data;
 
@@ -18,11 +18,12 @@ export default class ComputerAudio {
 
     this.data = {
       name: deviceConfig.name,
-      left: null,
-      right: null,
-      sub: null,
-      mixer: null,
-      connected: null,
+      room: deviceConfig.room,
+      sort: deviceConfig.sort || null,
+      valve: null,
+      fan: null,
+      temperature: null,
+      connected: false,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -31,14 +32,12 @@ export default class ComputerAudio {
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: PayloadData = JSON.parse(rawPayload.toString());
+        const payload: MQTTpayload = JSON.parse(rawPayload.toString());
+        const { state } = payload;
 
         this.data = {
           ...this.data,
-          left: payload.Left,
-          right: payload.Right,
-          sub: payload.Sub,
-          mixer: payload.Mixer,
+          valve: state,
           connected: true,
         };
 
@@ -51,10 +50,9 @@ export default class ComputerAudio {
       }
     }
   }
-
   writeToMongo = async (data: Data) => {
     try {
-      await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await radiatorStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -70,19 +68,17 @@ export default class ComputerAudio {
   };
 }
 
-interface Data {
-  name: string;
-  left: boolean | null;
-  right: boolean | null;
-  sub: boolean | null;
-  mixer: boolean | null;
-  connected: boolean | null;
+interface MQTTpayload {
+  node: String;
+  state: boolean;
 }
 
-interface PayloadData {
-  Left: boolean | null;
-  Right: boolean | null;
-  Sub: boolean | null;
-  Mixer: boolean | null;
-  Connected: boolean | null;
+interface Data {
+  name: string | null;
+  room: string | undefined;
+  valve: boolean | null;
+  sort: number | null;
+  fan: boolean | null;
+  temperature: number | null;
+  connected: boolean | null;
 }

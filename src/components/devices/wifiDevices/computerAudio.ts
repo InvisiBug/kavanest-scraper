@@ -1,15 +1,15 @@
 import { MqttClient } from "mqtt";
-import { radiatorStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
-import { DeviceConfig } from "../..";
+import { specialsStore, options } from "src/components/database";
+import { disconnectWatchdog } from "src/components/helpers";
 import { Socket } from "socket.io";
+import { DeviceConfig } from "src/components/devices";
 
-export default class RadiatorV2 {
+export default class ComputerAudio {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  topic: String;
   socket: Socket;
-  data: MongoData;
+  topic: string;
+  data: Data;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
@@ -18,46 +18,44 @@ export default class RadiatorV2 {
 
     this.data = {
       name: deviceConfig.name,
-      sort: deviceConfig.sort || null,
-      valve: null,
-      fan: null,
-      temperature: null,
+      room: deviceConfig.room,
+      left: null,
+      right: null,
+      sub: null,
+      mixer: null,
       connected: null,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
 
-  async handleIncoming(topic: String, rawPayload: Object) {
+  handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
         const payload: PayloadData = JSON.parse(rawPayload.toString());
 
-        const { valve, inlet: temperature, fan } = payload;
-        const map = [false, true]; //! Devices sens a 0 and 1 instead of true and false
-
         this.data = {
           ...this.data,
-          fan: map[fan],
-          valve: map[valve],
-          temperature,
+          left: payload.Left,
+          right: payload.Right,
+          sub: payload.Sub,
+          mixer: payload.Mixer,
           connected: true,
         };
 
         this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-
-        this.timer = disconnectWatchdog(this.data, `${this.data.name} radiator disconnected`, this.writeToMongo);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
       } catch (error) {
-        console.log(`${this.data.name} radiator disconnected`);
+        console.log(`${this.data.name} disconnected`);
       }
     }
   }
 
-  writeToMongo = async (data: MongoData) => {
+  writeToMongo = async (data: Data) => {
     try {
-      await radiatorStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -73,17 +71,20 @@ export default class RadiatorV2 {
   };
 }
 
-interface MongoData {
-  name: string | null;
-  sort: number | null;
-  valve: boolean | null;
-  fan: boolean | null;
-  temperature: number | null;
+interface Data {
+  name: string;
+  room: string | undefined;
+  left: boolean | null;
+  right: boolean | null;
+  sub: boolean | null;
+  mixer: boolean | null;
   connected: boolean | null;
 }
 
 interface PayloadData {
-  inlet: number;
-  valve: number;
-  fan: number;
+  Left: boolean | null;
+  Right: boolean | null;
+  Sub: boolean | null;
+  Mixer: boolean | null;
+  Connected: boolean | null;
 }
