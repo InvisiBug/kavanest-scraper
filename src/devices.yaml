@@ -108,9 +108,21 @@ zigbeeSensors:
     topic: zigbee2mqtt/livingRoomSensor
     room: livingRoom
 
+  - name: trainingRoom
+    topic: zigbee2mqtt/trainingRoomSensor
+    room: trainingRoom
+
   - name: study
     topic: zigbee2mqtt/studySensor
     room: study
+
+  - name: printerRoom
+    topic: zigbee2mqtt/printerRoomSensor
+    room: printerRoom
+
+  - name: bedRoom
+    topic: zigbee2mqtt/bedRoomSensor
+    room: bedRoom
 
 
 zigbeePlugs:
