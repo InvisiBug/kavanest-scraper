@@ -14,10 +14,11 @@ heatingSensors:
   - name: bedroom
     topic: Bedroom Sensor
 
+# Sorting actually happens at the API level, but it's set here
 valves:
   - name: bedroom
     topic: Bedroom Valve
-    sort: 5 # Sorting actually happens at the API level, but it's set here
+    sort: 5
 
   - name: trainingRoom
     topic: Training Room Valve
@@ -38,10 +39,9 @@ radiators:
     sort: 1
 
 
-
 plugs:
-  - name: sun
-    topic: Sun
+  - name: bedroomLamp
+    topic: bedroomLamp
 
   - name: floodlight
     topic: Floodlight
@@ -83,8 +83,15 @@ specials:
     topic: Computer Audio
 
 zigbeeSensors:
-  - name: livingRoom
-    topic: zigbee2mqtt/livingroomSensor
+  - name: livingroom
+    topic: zigbee2mqtt/livingRoomSensor
 
   - name: study
     topic: zigbee2mqtt/studySensor
+
+zigbeePlugs:
+  - name: livingroomLamp
+    topic: zigbee2mqtt/livingroomLamp
+
+  - name: eggChair
+    topic: zigbee2mqtt/eggChair
