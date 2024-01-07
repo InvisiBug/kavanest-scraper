@@ -1,6 +1,6 @@
 import { MqttClient } from "mqtt";
-import { radiatorStore, options } from "src/components/database";
-import { disconnectWatchdog } from "src/components/helpers";
+import { radiatorStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 import { DeviceConfig } from "src/components/devices";
 import { Socket } from "socket.io";
 

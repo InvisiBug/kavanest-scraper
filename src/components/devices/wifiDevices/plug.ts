@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "src/components/database";
-import { disconnectWatchdog } from "src/components/helpers";
+import { plugStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "src/components/devices";
+import { DeviceConfig } from "../../devices";
 
 export default class Plug {
   timer: NodeJS.Timeout;
