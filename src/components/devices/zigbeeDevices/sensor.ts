@@ -60,7 +60,7 @@ export default class HeatingSensor {
 
   writeToMongo = async (data: Data) => {
     try {
-      await zigbeeSensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
+      await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
