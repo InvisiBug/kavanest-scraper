@@ -1,4 +1,3 @@
-import { Radiator, offset } from "./components/devices";
 import DeviceCreator from "./components/deviceCreator";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
@@ -12,10 +11,6 @@ const socket = startSocket();
 //* Devices
 const deviceConfig: any = load(readFileSync(path.resolve(__dirname, "./devices.yaml"), "utf-8"));
 let devices: Array<any> = [];
-
-// * Special devices
-// devices.push(new Radiator(client));
-devices.push(new offset(client)); //! This will need to be removed in the final version
 
 /*
   Generate devices from the config file
@@ -31,7 +26,7 @@ for (let deviceType in deviceConfig) {
   Handle incoming messages
 */
 client.on("message", (topic: String, payload: Object) => {
-  // console.log(payload.toString());
+  console.log(topic, payload.toString());
   try {
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);

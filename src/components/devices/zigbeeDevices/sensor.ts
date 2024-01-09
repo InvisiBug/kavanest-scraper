@@ -1,8 +1,8 @@
 import { MqttClient } from "mqtt";
-import { disconnectWatchdog, camelRoomName } from "../../../helpers";
-import { sensorStore, options, zigbeeSensorStore } from "../../../database";
+import { disconnectWatchdog, camelRoomName } from "../../helpers";
+import { sensorStore, options, zigbeeSensorStore } from "../../database";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "..";
 
 export default class HeatingSensor {
   timer: NodeJS.Timeout;
@@ -19,7 +19,7 @@ export default class HeatingSensor {
     this.topic = deviceConfig.topic;
 
     this.data = {
-      room: deviceConfig.name,
+      room: deviceConfig.room,
       temperature: null,
       battery: null,
       linkquality: null,
@@ -40,7 +40,7 @@ export default class HeatingSensor {
         this.data = {
           ...this.data,
 
-          temperature,
+          temperature: Number(temperature.toFixed(1)),
           humidity,
           linkquality,
           battery,
@@ -50,8 +50,8 @@ export default class HeatingSensor {
 
         this.writeToMongo(this.data);
 
-        // clearTimeout(this.timer);
-        // this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo);
+        clearTimeout(this.timer);
+        this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo, 60 /* second timeout */);
       } catch (error) {
         console.log(`${this.data.room} sensor disconnected`);
       }
@@ -60,7 +60,7 @@ export default class HeatingSensor {
 
   writeToMongo = async (data: Data) => {
     try {
-      await zigbeeSensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
+      await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -94,7 +94,7 @@ const getOffsets = async (room: string) => {
 };
 
 interface Data {
-  room: string;
+  room: string | undefined;
   temperature: number | null;
   humidity: number | null;
   connected: Boolean | null;

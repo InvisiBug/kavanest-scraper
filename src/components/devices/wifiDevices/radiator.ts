@@ -1,7 +1,7 @@
 import { MqttClient } from "mqtt";
-import { radiatorStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
-import { DeviceConfig } from "../..";
+import { radiatorStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
+import { DeviceConfig } from "src/components/devices";
 import { Socket } from "socket.io";
 
 export default class RadiatorV2 {
@@ -18,6 +18,7 @@ export default class RadiatorV2 {
 
     this.data = {
       name: deviceConfig.name,
+      room: deviceConfig.room,
       sort: deviceConfig.sort || null,
       valve: null,
       fan: null,
@@ -75,6 +76,7 @@ export default class RadiatorV2 {
 
 interface MongoData {
   name: string | null;
+  room: string | undefined;
   sort: number | null;
   valve: boolean | null;
   fan: boolean | null;

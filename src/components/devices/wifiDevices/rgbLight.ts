@@ -1,25 +1,30 @@
 import { MqttClient } from "mqtt";
-import { plugStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
+import { rgbLightStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "../../devices";
 
-export default class Plug {
+export default class RGBLight {
   timer: NodeJS.Timeout;
   client: MqttClient;
-  data: Data;
-  topic: string;
   socket: Socket;
+  topic: string;
+  data: Data;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
+
     this.topic = deviceConfig.topic;
 
     this.data = {
       name: deviceConfig.name,
-      state: null,
-      connected: null,
+      room: deviceConfig.room,
+      red: null,
+      green: null,
+      blue: null,
+      mode: null,
+      connected: false,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -28,11 +33,14 @@ export default class Plug {
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: PayloadData = JSON.parse(rawPayload.toString());
+        const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
-          state: payload.state,
+          red: payload.red,
+          green: payload.green,
+          blue: payload.blue,
+          mode: payload.mode,
           connected: true,
         };
 
@@ -48,7 +56,7 @@ export default class Plug {
 
   writeToMongo = async (data: Data) => {
     try {
-      await plugStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -64,13 +72,22 @@ export default class Plug {
   };
 }
 
-interface Data {
-  name: string | null;
-  state: boolean | null;
-  connected: boolean | null;
+interface MQTTpalyoad {
+  node: String;
+
+  red: number;
+  green: number;
+  blue: number;
+  mode: number;
 }
 
-interface PayloadData {
-  node: String;
-  state: boolean;
+export interface Data {
+  name: string | null;
+  room: string | undefined;
+  red: number | null;
+  green: number | null;
+  blue: number | null;
+  mode: number | null;
+  connected: boolean;
+  _id?: string | null;
 }

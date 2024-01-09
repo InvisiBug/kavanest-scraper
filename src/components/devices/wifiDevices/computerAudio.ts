@@ -1,10 +1,10 @@
 import { MqttClient } from "mqtt";
-import { rgbLightStore, options } from "../../../database";
-import { disconnectWatchdog } from "../../../helpers";
+import { specialsStore, options } from "../../database";
+import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
-import { DeviceConfig } from "../..";
+import { DeviceConfig } from "../../devices";
 
-export default class RGBLight {
+export default class ComputerAudio {
   timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
@@ -14,16 +14,16 @@ export default class RGBLight {
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
     this.socket = socket;
-
     this.topic = deviceConfig.topic;
 
     this.data = {
       name: deviceConfig.name,
-      red: null,
-      green: null,
-      blue: null,
-      mode: null,
-      connected: false,
+      room: deviceConfig.room,
+      left: null,
+      right: null,
+      sub: null,
+      mixer: null,
+      connected: null,
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -32,14 +32,14 @@ export default class RGBLight {
   handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const payload: MQTTpalyoad = JSON.parse(rawPayload.toString());
+        const payload: PayloadData = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
-          red: payload.red,
-          green: payload.green,
-          blue: payload.blue,
-          mode: payload.mode,
+          left: payload.Left,
+          right: payload.Right,
+          sub: payload.Sub,
+          mixer: payload.Mixer,
           connected: true,
         };
 
@@ -55,7 +55,7 @@ export default class RGBLight {
 
   writeToMongo = async (data: Data) => {
     try {
-      await rgbLightStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
+      await specialsStore.findOneAndUpdate({ name: data.name }, { $set: data }, options).then((mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
             const id: string = mongoDoc.value._id.toString();
@@ -71,20 +71,20 @@ export default class RGBLight {
   };
 }
 
-interface MQTTpalyoad {
-  node: String;
-  red: number;
-  green: number;
-  blue: number;
-  mode: number;
+interface Data {
+  name: string;
+  room: string | undefined;
+  left: boolean | null;
+  right: boolean | null;
+  sub: boolean | null;
+  mixer: boolean | null;
+  connected: boolean | null;
 }
 
-export interface Data {
-  name: string | null;
-  red: number | null;
-  green: number | null;
-  blue: number | null;
-  mode: number | null;
-  connected: boolean;
-  _id?: string | null;
+interface PayloadData {
+  Left: boolean | null;
+  Right: boolean | null;
+  Sub: boolean | null;
+  Mixer: boolean | null;
+  Connected: boolean | null;
 }
