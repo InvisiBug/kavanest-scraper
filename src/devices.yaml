@@ -130,7 +130,7 @@ zigbeeSensors:
 
 zigbeePlugs:
   - name: livingroomLamp
-    topic: zigbee2mqtt/livingroomLamp
+    topic: zigbee2mqtt/livingRoomLamp
     room: livingRoom
 
   - name: eggChair
