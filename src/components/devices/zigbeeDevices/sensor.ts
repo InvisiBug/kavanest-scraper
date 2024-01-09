@@ -40,7 +40,7 @@ export default class HeatingSensor {
         this.data = {
           ...this.data,
 
-          temperature,
+          temperature: Number(temperature.toFixed(1)),
           humidity,
           linkquality,
           battery,
