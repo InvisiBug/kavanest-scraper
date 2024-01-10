@@ -129,7 +129,7 @@ zigbeeSensors:
 
 
 zigbeePlugs:
-  - name: livingroomLamp
+  - name: livingRoomLamp
     topic: zigbee2mqtt/livingRoomLamp
     room: livingRoom
 
@@ -139,4 +139,4 @@ zigbeePlugs:
 
   - name: bedRoomLamp
     topic: zigbee2mqtt/bedRoomLamp
-    room: study
+    room: bedRoom
