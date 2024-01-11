@@ -1,24 +1,3 @@
-heatingSensors:
-  - name: livingRoom
-    topic: Living Room Sensor
-    room: livingRoom
-
-  - name: trainingRoom
-    topic: Training Room Sensor
-    room: trainingRoom
-
-  - name: study
-    topic: Study Sensor
-    room: study
-
-  - name: printerRoom
-    topic: Printer Room Sensor
-    room: printerRoom
-
-  - name: bedroom
-    topic: Bedroom Sensor
-    room: bedroom
-
 # Sorting actually happens at the API level, but it's set here
 valves:
   - name: bedRoom
