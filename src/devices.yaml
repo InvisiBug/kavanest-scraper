@@ -1,7 +1,7 @@
 # Sorting actually happens at the API level, but it's set here
 valves:
   - name: bedRoom
-    topic: Bedroom Valve
+    topic: Bed Room Valve
     sort: 5
     room: bedRoom
 
