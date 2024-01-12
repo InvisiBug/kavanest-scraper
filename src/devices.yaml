@@ -1,28 +1,7 @@
-heatingSensors:
-  - name: livingRoom
-    topic: Living Room Sensor
-    room: livingRoom
-
-  - name: trainingRoom
-    topic: Training Room Sensor
-    room: trainingRoom
-
-  - name: study
-    topic: Study Sensor
-    room: study
-
-  - name: printerRoom
-    topic: Printer Room Sensor
-    room: printerRoom
-
-  - name: bedroom
-    topic: Bedroom Sensor
-    room: bedroom
-
 # Sorting actually happens at the API level, but it's set here
 valves:
   - name: bedRoom
-    topic: Bedroom Valve
+    topic: Bed Room Valve
     sort: 5
     room: bedRoom
 
@@ -77,6 +56,9 @@ plugs:
     topic: Study Lamp
     room: study
 
+  - name: sun
+    topic: Sun
+    room: bedRoom
 
 #  These lights have alternate modes
 rgbLights:
@@ -126,10 +108,14 @@ zigbeeSensors:
 
 
 zigbeePlugs:
-  - name: livingroomLamp
-    topic: zigbee2mqtt/livingroomLamp
+  - name: livingRoomLamp
+    topic: zigbee2mqtt/livingRoomLamp
     room: livingRoom
 
   - name: eggChair
     topic: zigbee2mqtt/eggChair
     room: study
+
+  - name: bedRoomLamp
+    topic: zigbee2mqtt/bedRoomLamp
+    room: bedRoom
