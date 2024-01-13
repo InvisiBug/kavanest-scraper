@@ -119,3 +119,8 @@ zigbeePlugs:
   - name: bedRoomLamp
     topic: zigbee2mqtt/bedRoomLamp
     room: bedRoom
+
+zigbeeRGBStrips:
+  - name: kitchenStrip
+    topic: zigbee2mqtt/kitchenStrip
+    room: kitchen
