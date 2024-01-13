@@ -1,5 +1,5 @@
 import { MqttClient } from "mqtt";
-import { plug, valve, rgbLight, computerAudio, Radiator, zigbeeSensor, zigbeePlug } from "./devices/index";
+import { plug, valve, rgbLight, computerAudio, Radiator, zigbeeSensor, zigbeePlug, zigbeeRGBStrip } from "./devices/index";
 import { Socket } from "socket.io";
 
 export default (client: MqttClient, deviceConfig: { name: string; topic: string }, deviceType: string, socket: any) => {
@@ -24,5 +24,8 @@ export default (client: MqttClient, deviceConfig: { name: string; topic: string 
 
     case "zigbeePlugs":
       return new zigbeePlug(client, deviceConfig, socket);
+
+    case "zigbeeRGBStrips":
+      return new zigbeeRGBStrip(client, deviceConfig, socket);
   }
 };
