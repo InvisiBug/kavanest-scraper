@@ -56,8 +56,8 @@ plugs:
     topic: Study Lamp
     room: study
 
-  - name: sun
-    topic: Sun
+  - name: bedRoomLamp
+    topic: Bed Room Lamp
     room: bedRoom
 
 #  These lights have alternate modes
@@ -115,10 +115,6 @@ zigbeePlugs:
   - name: eggChair
     topic: zigbee2mqtt/eggChair
     room: study
-
-  - name: bedRoomLamp
-    topic: zigbee2mqtt/bedRoomLamp
-    room: bedRoom
 
 zigbeeRGBStrips:
   - name: kitchenStrip
