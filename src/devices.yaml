@@ -37,10 +37,6 @@ plugs:
     topic: Floodlight
     room: livingRoom
 
-  - name: eggChair
-    topic: Egg Chair
-    room: study
-
   - name: heating
     topic: Heating
 
@@ -56,9 +52,19 @@ plugs:
     topic: Study Lamp
     room: study
 
-  - name: bedRoomLamp
-    topic: Bed Room Lamp
-    room: bedRoom
+zigbeePlugs:
+  - name: livingRoomLamp
+    topic: zigbee2mqtt/livingRoomLamp
+    room: livingRoom
+
+  - name: eggChair
+    topic: zigbee2mqtt/eggChair
+    room: study
+
+  - name: trainingRoomLamp
+    topic: zigbee2mqtt/trainingRoomLamp
+    room: study
+
 
 #  These lights have alternate modes
 rgbLights:
@@ -106,15 +112,6 @@ zigbeeSensors:
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
 
-
-zigbeePlugs:
-  - name: livingRoomLamp
-    topic: zigbee2mqtt/livingRoomLamp
-    room: livingRoom
-
-  - name: eggChair
-    topic: zigbee2mqtt/eggChair
-    room: study
 
 zigbeeRGBStrips:
   - name: kitchenStrip

@@ -21,6 +21,7 @@ export default class InnrPlug {
       state: null,
       room: deviceConfig.room,
       connected: null,
+      type:"zigbee"
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -70,6 +71,7 @@ interface Data {
   state: boolean | null;
   connected: boolean | null;
   room: string | undefined;
+  type:string;
 }
 
 interface PayloadData {
