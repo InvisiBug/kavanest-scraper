@@ -30,7 +30,7 @@ radiators:
 
 plugs:
   - name: bedRoomLamp
-    topic: bedroomLamp
+    topic: Bed Room Lamp
     room: bedRoom
 
   - name: floodlight
