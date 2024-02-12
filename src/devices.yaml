@@ -29,7 +29,7 @@ radiators:
 
 
 plugs:
-  - name: bedroomLamp
+  - name: bedRoomLamp
     topic: bedroomLamp
     room: bedRoom
 
@@ -39,6 +39,7 @@ plugs:
 
   - name: heating
     topic: Heating
+    room: printerRoom
 
   # - name: computerPower
   #   topic: Computer Power
