@@ -14,7 +14,6 @@ export default class ZigbeeBulb {
   room: string | undefined;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
-    console.log("Here");
     this.client = client;
     this.socket = socket;
 
@@ -22,7 +21,7 @@ export default class ZigbeeBulb {
     this.room = deviceConfig.room;
     this.name = deviceConfig.name;
 
-    this.data = {} as any;
+    this.data = {} as Data;
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
   }
@@ -30,7 +29,7 @@ export default class ZigbeeBulb {
   async handleIncoming(topic: String, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const { brightness, state, linkquality, color_mode, color_temp }: any = JSON.parse(rawPayload.toString());
+        const { brightness, state, linkquality, color_mode, color_temp }: MQTTPayload = JSON.parse(rawPayload.toString());
 
         this.data = {
           brightness,
@@ -42,9 +41,7 @@ export default class ZigbeeBulb {
           colour_temp: color_temp,
           type: "zigbeeBulb",
           connected: true,
-        };
-
-        console.log(this.data);
+        } as Data;
 
         this.writeToMongo(this.data);
         clearTimeout(this.timer);
@@ -76,16 +73,20 @@ export default class ZigbeeBulb {
 interface MQTTPayload {
   brightness: number;
   linkquality: number;
+  color_mode: string;
+  color_temp: number;
   state: "OFF" | "ON" | boolean;
 }
 
 export interface Data extends MQTTPayload {
-  connected: boolean;
-  room: string | undefined;
+  brightness: number;
   state: boolean;
+  linkQuality: number;
   name: string;
-  red: number;
-  green: number;
-  blue: number;
+  room: string | undefined;
+  colour_mode: string;
+  colour_temp: number;
+  connected: boolean;
+  type: string;
   _id?: string | null;
 }
