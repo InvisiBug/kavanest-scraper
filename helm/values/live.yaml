@@ -2,7 +2,7 @@ name: kavanest-scraper
 
 namespace: kavanest
 env:
-  APP_VERSION: 2dea95b2cd2b2543c06f47702d85e11180b70cbf
+  APP_VERSION: 34db24a3964a890e1e5796ef6037a4c6dcc5301f
 
 deployment:
   - name: kavanest-scraper
