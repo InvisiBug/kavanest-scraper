@@ -13,6 +13,7 @@ export { default as computerAudio } from "./wifiDevices/computerAudio";
 export { default as zigbeeSensor } from "./zigbeeDevices/sensor";
 export { default as zigbeePlug } from "./zigbeeDevices/plug";
 export { default as zigbeeRGBStrip } from "./zigbeeDevices/rgbStrip";
+export { default as zigbeeBulb } from "./zigbeeDevices/bulb";
 
 export interface DeviceConfig {
   topic: string;

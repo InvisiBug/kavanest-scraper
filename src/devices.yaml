@@ -66,6 +66,10 @@ zigbeePlugs:
     topic: zigbee2mqtt/trainingRoomLamp
     room: study
 
+  - name: kitchenLamp
+    topic: zigbee2mqtt/kitchenLamp
+    room: kitchen
+
 
 #  These lights have alternate modes
 rgbLights:
@@ -84,6 +88,12 @@ rgbLights:
   # - name: hexagons
   #   topic: Hexagon Lights
   #   room: study
+
+
+zigbeeBulbs:
+  - name: landingLight
+    topic: zigbee2mqtt/landingLight
+    room: landing
 
 
 specials:
