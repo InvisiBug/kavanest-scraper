@@ -4,7 +4,7 @@ import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../../devices";
 
-export default class RGBStrip {
+export default class ZigbeeRGBStrip {
   // timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;

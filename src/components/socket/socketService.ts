@@ -13,7 +13,7 @@ export const startSocket = () => {
   socketServer.listen(3100);
 
   io.on("connection", () => {
-    console.log("Something connected");
+    console.log("Client connected");
   });
 
   console.log("📡  Socket server started");

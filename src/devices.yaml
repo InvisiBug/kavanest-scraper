@@ -1,4 +1,7 @@
 # Sorting actually happens at the API level, but it's set here
+
+#####################
+# Standard wifi devices
 valves:
   - name: bedRoom
     topic: Bed Room Valve
@@ -53,23 +56,6 @@ plugs:
     topic: Study Lamp
     room: study
 
-zigbeePlugs:
-  - name: livingRoomLamp
-    topic: zigbee2mqtt/livingRoomLamp
-    room: livingRoom
-
-  - name: eggChair
-    topic: zigbee2mqtt/eggChair
-    room: study
-
-  - name: trainingRoomLamp
-    topic: zigbee2mqtt/trainingRoomLamp
-    room: study
-
-  - name: kitchenLamp
-    topic: zigbee2mqtt/kitchenLamp
-    room: kitchen
-
 
 #  These lights have alternate modes
 rgbLights:
@@ -90,16 +76,41 @@ rgbLights:
   #   room: study
 
 
+specials:
+  - name: computerAudio
+    topic: Computer Audio
+    room: study
+
+#####################
+# Zigbee Devices
+
+zigbeePlugs:
+  - name: livingRoomLamp
+    topic: zigbee2mqtt/livingRoomLamp
+    room: livingRoom
+
+  - name: eggChair
+    topic: zigbee2mqtt/eggChair
+    room: study
+
+  - name: trainingRoomLamp
+    topic: zigbee2mqtt/trainingRoomLamp
+    room: study
+
+  - name: kitchenLamp
+    topic: zigbee2mqtt/kitchenLamp
+    room: kitchen
+
+
 zigbeeBulbs:
   - name: landingLight
     topic: zigbee2mqtt/landingLight
     room: landing
 
+  - name: printerRoomLight
+    topic: zigbee2mqtt/printerRoomLight
+    room: printerRoom
 
-specials:
-  - name: computerAudio
-    topic: Computer Audio
-    room: study
 
 
 zigbeeSensors:
@@ -122,6 +133,8 @@ zigbeeSensors:
   - name: bedRoom
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
+
+
 
 
 zigbeeRGBStrips:
