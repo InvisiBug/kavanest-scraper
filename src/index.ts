@@ -2,8 +2,7 @@ import DeviceCreator from "./components/deviceCreator";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import path from "path";
-import { connectToMQTT } from "./components/mqtt/mqttService";
-import { startSocket } from "./components/socket/socketService";
+import { connectToMQTT, startSocket } from "./components/services";
 
 const client = connectToMQTT();
 const socket = startSocket();

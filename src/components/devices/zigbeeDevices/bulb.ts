@@ -30,6 +30,7 @@ export default class ZigbeeBulb {
     if (topic === this.topic) {
       try {
         const { brightness, state, linkquality, color_mode, color_temp }: MQTTPayload = JSON.parse(rawPayload.toString());
+        // console.log(this.topic, JSON.parse(rawPayload.toString()));
 
         this.data = {
           brightness,

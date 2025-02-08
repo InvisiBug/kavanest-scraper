@@ -13,10 +13,10 @@ valves:
     sort: 2
     room: trainingRoom
 
-  - name: printerRoom
-    topic: Printer Room Valve
-    sort: 4
-    room: printerRoom
+  # - name: printerRoom
+  #   topic: Printer Room Valve
+  #   sort: 4
+  #   room: printerRoom
 
 
 radiators:
@@ -44,10 +44,6 @@ plugs:
     topic: Heating
     room: printerRoom
 
-  # - name: computerPower
-  #   topic: Computer Power
-  #   room: study
-
   - name: mattress
     topic: Mattress
     room: bedRoom
@@ -71,19 +67,15 @@ rgbLights:
     topic: Screen LEDs
     room: study
 
-  # - name: hexagons
-  #   topic: Hexagon Lights
-  #   room: study
-
 
 specials:
   - name: computerAudio
     topic: Computer Audio
     room: study
 
+
 #####################
 # Zigbee Devices
-
 zigbeePlugs:
   - name: livingRoomLamp
     topic: zigbee2mqtt/livingRoomLamp
@@ -126,14 +118,13 @@ zigbeeSensors:
     topic: zigbee2mqtt/studySensor
     room: study
 
-  - name: printerRoom
-    topic: zigbee2mqtt/printerRoomSensor
-    room: printerRoom
+  # - name: printerRoom
+  #   topic: zigbee2mqtt/printerRoomSensor
+  #   room: printerRoom
 
   - name: bedRoom
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
-
 
 
 
