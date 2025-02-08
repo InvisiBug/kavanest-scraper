@@ -1,4 +1,7 @@
 # Sorting actually happens at the API level, but it's set here
+
+#####################
+# Standard wifi devices
 valves:
   - name: bedRoom
     topic: Bed Room Valve
@@ -10,10 +13,10 @@ valves:
     sort: 2
     room: trainingRoom
 
-  - name: printerRoom
-    topic: Printer Room Valve
-    sort: 4
-    room: printerRoom
+  # - name: printerRoom
+  #   topic: Printer Room Valve
+  #   sort: 4
+  #   room: printerRoom
 
 
 radiators:
@@ -29,24 +32,17 @@ radiators:
 
 
 plugs:
-  - name: bedroomLamp
-    topic: bedroomLamp
+  - name: bedRoomLamp
+    topic: Bed Room Lamp
     room: bedRoom
 
   - name: floodlight
     topic: Floodlight
     room: livingRoom
 
-  - name: eggChair
-    topic: Egg Chair
-    room: study
-
   - name: heating
     topic: Heating
-
-  # - name: computerPower
-  #   topic: Computer Power
-  #   room: study
+    room: printerRoom
 
   - name: mattress
     topic: Mattress
@@ -56,9 +52,6 @@ plugs:
     topic: Study Lamp
     room: study
 
-  - name: sun
-    topic: Sun
-    room: bedRoom
 
 #  These lights have alternate modes
 rgbLights:
@@ -74,15 +67,42 @@ rgbLights:
     topic: Screen LEDs
     room: study
 
-  # - name: hexagons
-  #   topic: Hexagon Lights
-  #   room: study
-
 
 specials:
   - name: computerAudio
     topic: Computer Audio
     room: study
+
+
+#####################
+# Zigbee Devices
+zigbeePlugs:
+  - name: livingRoomLamp
+    topic: zigbee2mqtt/livingRoomLamp
+    room: livingRoom
+
+  - name: eggChair
+    topic: zigbee2mqtt/eggChair
+    room: study
+
+  - name: trainingRoomLamp
+    topic: zigbee2mqtt/trainingRoomLamp
+    room: study
+
+  - name: kitchenLamp
+    topic: zigbee2mqtt/kitchenLamp
+    room: kitchen
+
+
+zigbeeBulbs:
+  - name: landingLight
+    topic: zigbee2mqtt/landingLight
+    room: landing
+
+  - name: printerRoomLight
+    topic: zigbee2mqtt/printerRoomLight
+    room: printerRoom
+
 
 
 zigbeeSensors:
@@ -98,24 +118,17 @@ zigbeeSensors:
     topic: zigbee2mqtt/studySensor
     room: study
 
-  - name: printerRoom
-    topic: zigbee2mqtt/printerRoomSensor
-    room: printerRoom
+  # - name: printerRoom
+  #   topic: zigbee2mqtt/printerRoomSensor
+  #   room: printerRoom
 
   - name: bedRoom
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
 
 
-zigbeePlugs:
-  - name: livingRoomLamp
-    topic: zigbee2mqtt/livingRoomLamp
-    room: livingRoom
 
-  - name: eggChair
-    topic: zigbee2mqtt/eggChair
-    room: study
-
-  - name: bedRoomLamp
-    topic: zigbee2mqtt/bedRoomLamp
-    room: bedRoom
+zigbeeRGBStrips:
+  - name: kitchenStrip
+    topic: zigbee2mqtt/kitchenStrip
+    room: kitchen

@@ -2,8 +2,7 @@ import DeviceCreator from "./components/deviceCreator";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import path from "path";
-import { connectToMQTT } from "./components/mqtt/mqttService";
-import { startSocket } from "./components/socket/socketService";
+import { connectToMQTT, startSocket } from "./components/services";
 
 const client = connectToMQTT();
 const socket = startSocket();
@@ -26,7 +25,7 @@ for (let deviceType in deviceConfig) {
   Handle incoming messages
 */
 client.on("message", (topic: String, payload: Object) => {
-  console.log(topic, payload.toString());
+  // console.log(topic, payload.toString());
   try {
     for (let i = 0; i < devices.length; i++) {
       devices[i].handleIncoming(topic, payload);

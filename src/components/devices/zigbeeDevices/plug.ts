@@ -4,7 +4,7 @@ import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../../devices";
 
-export default class InnrPlug {
+export default class ZigbeePlug {
   client: MqttClient;
   data: Data;
   topic: string;
@@ -21,6 +21,7 @@ export default class InnrPlug {
       state: null,
       room: deviceConfig.room,
       connected: null,
+      type: "zigbee",
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -70,6 +71,7 @@ interface Data {
   state: boolean | null;
   connected: boolean | null;
   room: string | undefined;
+  type: string;
 }
 
 interface PayloadData {

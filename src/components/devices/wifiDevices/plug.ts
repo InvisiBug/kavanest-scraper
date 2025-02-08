@@ -21,6 +21,7 @@ export default class Plug {
       room: deviceConfig.room,
       state: null,
       connected: null,
+      type: "wifi",
     };
 
     this.timer = disconnectWatchdog(this.data, `${this.data.name} disconnected`, this.writeToMongo);
@@ -70,6 +71,7 @@ interface Data {
   room: string | undefined;
   state: boolean | null;
   connected: boolean | null;
+  type: string;
 }
 
 interface PayloadData {

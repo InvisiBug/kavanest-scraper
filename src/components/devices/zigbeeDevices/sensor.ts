@@ -1,10 +1,10 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../../helpers";
-import { sensorStore, options, zigbeeSensorStore } from "../../database";
+import { sensorStore, options } from "../../database";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "..";
 
-export default class HeatingSensor {
+export default class ZigbeeSensor {
   timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
