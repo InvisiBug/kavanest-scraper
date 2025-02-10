@@ -103,8 +103,6 @@ zigbeeBulbs:
     topic: zigbee2mqtt/printerRoomLight
     room: printerRoom
 
-
-
 zigbeeSensors:
   - name: livingRoom
     topic: zigbee2mqtt/livingRoomSensor
@@ -118,17 +116,25 @@ zigbeeSensors:
     topic: zigbee2mqtt/studySensor
     room: study
 
-  # - name: printerRoom
-  #   topic: zigbee2mqtt/printerRoomSensor
-  #   room: printerRoom
-
   - name: bedRoom
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
-
-
 
 zigbeeRGBStrips:
   - name: kitchenStrip
     topic: zigbee2mqtt/kitchenStrip
     room: kitchen
+
+
+zigbeeMotionSensors:
+  - name: landing
+    topic: zigbee2mqtt/landingMotion
+    room: landing
+
+  - name: trainingRoom
+    topic: zigbee2mqtt/trainingRoomMotion
+    room: trainingRoom
+
+  - name: printerRoom
+    topic: zigbee2mqtt/printerRoomMotion
+    room: printerRoom
