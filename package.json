@@ -10,7 +10,7 @@
     "test": "exit 0",
     "dev": "nodemon --exec \"ts-node \" ./src/index.ts --trace-warnings",
     "run": "yarn build && node ./dist/index.js",
-    "build": "tsc && cp ./src/devices.yaml ./dist",
+    "build": "tsc && tsc-alias && cp ./src/devices.yaml ./dist",
     "push--live": "clear && ./bin/push--live.sh",
     "push--test": "clear && ./bin/push--test.sh",
     "deploy--live": "./bin/deploy--live.sh",
@@ -26,7 +26,8 @@
     "mongodb": "^4.2.0",
     "mqtt": "^4.2.8",
     "nodemon": "^2.0.20",
-    "socket.io": "^4.4.0"
+    "socket.io": "^4.4.0",
+    "tsc-alias": "^1.8.10"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.4",
