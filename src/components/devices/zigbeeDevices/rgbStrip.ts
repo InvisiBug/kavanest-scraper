@@ -40,7 +40,6 @@ export default class ZigbeeRGBStrip {
       const mongoData = await rgbLightStore.findOne<Data>({ name: this.name });
       if (!mongoData) return;
       const { red, green, blue } = mongoData;
-      // console.log(this.topic, red, green, blue);
 
       try {
         const { brightness, state, linkquality }: MQTTPayload = JSON.parse(rawPayload.toString());
