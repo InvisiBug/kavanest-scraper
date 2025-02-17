@@ -43,5 +43,8 @@ export default (client: MqttClient, deviceConfig: { name: string; topic: string 
 
     case "zigbeeMotionSensors":
       return new zigbeeMotionSensor(client, deviceConfig, socket);
+
+    case "zigbeeBulbs":
+      return new zigbeeBulb(client, deviceConfig, socket);
   }
 };
