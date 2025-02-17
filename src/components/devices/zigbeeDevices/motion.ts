@@ -1,17 +1,15 @@
 import { MqttClient } from "mqtt";
 import { disconnectWatchdog, camelRoomName } from "../../helpers";
-import { sensorStore, options } from "../../database";
+import { sensorStore, options, motionStore } from "../../database";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "..";
 
-export default class ZigbeeSensor {
+export default class ZigbeeMotion {
   timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
   topic: string;
   data: Data;
-
-  offset: number = 0;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
     this.client = client;
@@ -19,13 +17,14 @@ export default class ZigbeeSensor {
     this.topic = deviceConfig.topic;
 
     this.data = {
+      name: deviceConfig.name,
       room: deviceConfig.room,
-      temperature: null,
       battery: null,
+      battery_low: null,
       linkquality: null,
-      humidity: null,
-      connected: false,
+      occupancy: null,
       voltage: null,
+      connected: false,
     };
 
     this.timer = disconnectWatchdog(this.data, "sensor disconnect", this.writeToMongo, 60 /* second timeout */);
@@ -34,36 +33,36 @@ export default class ZigbeeSensor {
   async handleIncoming(topic: string, rawPayload: Object) {
     if (topic === this.topic) {
       try {
-        const { temperature, humidity, battery, linkquality, voltage }: PayloadData = JSON.parse(rawPayload.toString());
-        // console.log(topic, temperature, humidity, battery, linkquality);
+        const { battery, battery_low, linkquality, occupancy, voltage }: PayloadData = JSON.parse(rawPayload.toString());
 
         this.data = {
           ...this.data,
-
-          temperature: Number(temperature.toFixed(1)),
-          humidity,
+          name: this.data.name,
           linkquality,
           battery,
           voltage,
+          battery_low,
+          occupancy,
           connected: true,
         };
 
         this.writeToMongo(this.data);
 
         clearTimeout(this.timer);
-        this.timer = disconnectWatchdog(this.data, `${this.data.room} sensor disconnected`, this.writeToMongo, 60 /* second timeout */);
+        this.timer = disconnectWatchdog(this.data, `${this.data.name} sensor disconnected`, this.writeToMongo, 60 /* second timeout */);
       } catch (error) {
-        console.log(`${this.data.room} sensor disconnected`);
+        console.log(`${this.data.name} sensor disconnected`);
       }
     }
   }
 
   writeToMongo = async (data: Data) => {
     try {
-      await sensorStore.findOneAndUpdate({ room: data.room }, { $set: data }, options).then(async (mongoDoc) => {
+      await motionStore.findOneAndUpdate({ room: data.name }, { $set: data }, options).then(async (mongoDoc) => {
         if (mongoDoc.value) {
           if (Object(mongoDoc).constructor !== Promise) {
-            const id: string = mongoDoc.value._id.toString();
+            const id = mongoDoc.value._id.toString() as string;
+
             this.socket.emit(id, {
               ...data,
               _id: id,
@@ -79,34 +78,21 @@ export default class ZigbeeSensor {
   };
 }
 
-const getOffsets = async (room: string) => {
-  try {
-    const sensorData: any = await sensorStore.findOne({ room });
-    if (sensorData.offset) {
-      return sensorData.offset;
-    } else {
-      return 0;
-    }
-  } catch (error) {
-    // console.log("Sensor object doesnt exist");
-    return 0;
-  }
-};
-
 interface Data {
+  name: string | undefined;
   room: string | undefined;
-  temperature: number | null;
-  humidity: number | null;
-  connected: Boolean | null;
-  linkquality: number | null;
-  voltage: number | null;
   battery: number | null;
+  battery_low: boolean | null;
+  linkquality: number | null;
+  occupancy: boolean | null;
+  voltage: number | null;
+  connected: boolean;
 }
 
 interface PayloadData {
   battery: number;
-  humidity: number;
+  battery_low: boolean;
   linkquality: number;
-  temperature: number;
+  occupancy: boolean;
   voltage: number;
 }

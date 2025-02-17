@@ -1,4 +1,7 @@
 # Sorting actually happens at the API level, but it's set here
+
+#####################
+# Standard wifi devices
 valves:
   - name: bedRoom
     topic: Bed Room Valve
@@ -10,10 +13,10 @@ valves:
     sort: 2
     room: trainingRoom
 
-  - name: printerRoom
-    topic: Printer Room Valve
-    sort: 4
-    room: printerRoom
+  # - name: printerRoom
+  #   topic: Printer Room Valve
+  #   sort: 4
+  #   room: printerRoom
 
 
 radiators:
@@ -41,10 +44,6 @@ plugs:
     topic: Heating
     room: printerRoom
 
-  # - name: computerPower
-  #   topic: Computer Power
-  #   room: study
-
   - name: mattress
     topic: Mattress
     room: bedRoom
@@ -53,6 +52,30 @@ plugs:
     topic: Study Lamp
     room: study
 
+
+#  These lights have alternate modes
+rgbLights:
+  - name: deskLEDs
+    topic: Desk LEDs
+    room: study
+
+  - name: tableLamp
+    topic: Table Lamp
+    room: livingRoom
+
+  - name: screenLEDs
+    topic: Screen LEDs
+    room: study
+
+
+specials:
+  - name: computerAudio
+    topic: Computer Audio
+    room: study
+
+
+#####################
+# Zigbee Devices
 zigbeePlugs:
   - name: livingRoomLamp
     topic: zigbee2mqtt/livingRoomLamp
@@ -71,36 +94,14 @@ zigbeePlugs:
     room: kitchen
 
 
-#  These lights have alternate modes
-rgbLights:
-  - name: deskLEDs
-    topic: Desk LEDs
-    room: study
-
-  - name: tableLamp
-    topic: Table Lamp
-    room: livingRoom
-
-  - name: screenLEDs
-    topic: Screen LEDs
-    room: study
-
-  # - name: hexagons
-  #   topic: Hexagon Lights
-  #   room: study
-
-
 zigbeeBulbs:
   - name: landingLight
     topic: zigbee2mqtt/landingLight
     room: landing
 
-
-specials:
-  - name: computerAudio
-    topic: Computer Audio
-    room: study
-
+  - name: printerRoomLight
+    topic: zigbee2mqtt/printerRoomLight
+    room: printerRoom
 
 zigbeeSensors:
   - name: livingRoom
@@ -115,16 +116,25 @@ zigbeeSensors:
     topic: zigbee2mqtt/studySensor
     room: study
 
-  - name: printerRoom
-    topic: zigbee2mqtt/printerRoomSensor
-    room: printerRoom
-
   - name: bedRoom
     topic: zigbee2mqtt/bedRoomSensor
     room: bedRoom
-
 
 zigbeeRGBStrips:
   - name: kitchenStrip
     topic: zigbee2mqtt/kitchenStrip
     room: kitchen
+
+
+zigbeeMotionSensors:
+  - name: landing
+    topic: zigbee2mqtt/landingMotion
+    room: landing
+
+  - name: trainingRoom
+    topic: zigbee2mqtt/trainingRoomMotion
+    room: trainingRoom
+
+  - name: printerRoom
+    topic: zigbee2mqtt/printerRoomMotion
+    room: printerRoom

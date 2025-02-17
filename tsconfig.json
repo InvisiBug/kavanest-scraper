@@ -11,8 +11,10 @@
     "resolveJsonModule": true,
     "strict": true,
     "declaration": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-    "src/*"  ]
+  "include": ["src/*"  ]
 }

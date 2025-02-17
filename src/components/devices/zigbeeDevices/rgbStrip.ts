@@ -4,7 +4,7 @@ import { disconnectWatchdog } from "../../helpers";
 import { Socket } from "socket.io";
 import { DeviceConfig } from "../../devices";
 
-export default class RGBStrip {
+export default class ZigbeeRGBStrip {
   // timer: NodeJS.Timeout;
   client: MqttClient;
   socket: Socket;
@@ -14,7 +14,6 @@ export default class RGBStrip {
   room: string | undefined;
 
   constructor(client: MqttClient, deviceConfig: DeviceConfig, socket: Socket) {
-    console.log("Here");
     this.client = client;
     this.socket = socket;
 
@@ -33,7 +32,7 @@ export default class RGBStrip {
     And i think the device reports the colour wrong as all attempts at converting failed
 
     We rely on the colour data stored in the mongo database, not great I know but it works
-    Every time the socket emits it was using only the payload data without the colour data
+    Every time the socket emits, it was using only the payload data without the colour data
   */
 
   async handleIncoming(topic: String, rawPayload: Object) {
@@ -41,7 +40,7 @@ export default class RGBStrip {
       const mongoData = await rgbLightStore.findOne<Data>({ name: this.name });
       if (!mongoData) return;
       const { red, green, blue } = mongoData;
-      console.log(red, green, blue);
+      // console.log(this.topic, red, green, blue);
 
       try {
         const { brightness, state, linkquality }: MQTTPayload = JSON.parse(rawPayload.toString());
