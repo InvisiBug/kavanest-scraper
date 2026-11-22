@@ -2,30 +2,51 @@ name: kavanest-scraper
 
 namespace: kavanest
 env:
-  APP_VERSION: 1af8f71bdebae027dcb67fa9028bf1e5f861e95e
+  APP_VERSION: f391b6e112526efc32ba91e8693be4f5dfc32cc2
 
 deployment:
   - name: kavanest-scraper
     image: invisibug/kavanest-scraper
     ports:
-    - port: 27017
+      - port: 27017
     env:
-    - name: MONGO
-      value: mongodb://kavanest-mongo
+      - name: MONGO
+        value: mongodb://kavanest-mongo
 
-    - name: MQTT
-      value: mqtt:mqtt.kavanet.io
+      - name: MQTT
+        value: mqtt:mqtt.kavanet.io
+
+# service:
+#   clusterIP:
+#     - name: kavanest-scraper
+#       selector: kavanest-scraper
+#       ports:
+#         - port: 3100
+
+#   loadBalancer:
+#     - name: kavanest-api
+#       selector: kavanest-api
+#       port: 80
+#       containerPort: 4000
+
+# ingress:
+#   - name: socket.kavanet.io
+#     selector: kavanest-scraper
+#     path: /
+#     port: 3100
+#     host: socket.kavanet.io
+
+httpRoute:
+  name: socket.kavanet.io
+  gatewayName: kavanetes-gateway
+  gatewayNamespace: nginx-gateway
+  host: socket.kavanet.io
+  path: /
+  serviceName: socket.kavanet.io
+  servicePort: 80
 
 service:
-  clusterIP:
-    - name: kavanest-scraper
-      selector: kavanest-scraper
-      ports:
-        - port: 3100
-
-ingress:
-  - name: socket.kavanet.io
-    selector: kavanest-scraper
-    path: /
-    port: 3100
-    host: socket.kavanet.io
+  name: socket.kavanet.io
+  selector: kavanest-scraper
+  port: 80
+  targetPort: 27017
