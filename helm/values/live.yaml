@@ -8,7 +8,7 @@ deployment:
   - name: kavanest-scraper
     image: invisibug/kavanest-scraper
     ports:
-      - port: 27017
+      - port: 3100
     env:
       - name: MONGO
         value: mongodb://kavanest-mongo
@@ -49,4 +49,4 @@ service:
   name: kavanest-socket
   selector: kavanest-scraper
   port: 80
-  targetPort: 27017
+  targetPort: 3100
