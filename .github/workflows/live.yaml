@@ -30,11 +30,14 @@ jobs:
         with:
           platforms: linux/arm64
 
-      - name: Build Docker image
-        run: docker build -f ./Dockerfile.argo -t ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
-
-      - name: Push Docker image
-        run: docker push ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/arm64
+          file: ./Dockerfile.argo
+          push: true
+          tags: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
   update-app-version:
     needs: build-and-push

@@ -2,7 +2,7 @@ name: kavanest-scraper
 
 namespace: kavanest
 env:
-  APP_VERSION: f391b6e112526efc32ba91e8693be4f5dfc32cc2
+  APP_VERSION: 835e1d5d56eba18479396ffa852c61d0dd5450f1
 
 deployment:
   - name: kavanest-scraper
@@ -42,11 +42,11 @@ httpRoute:
   gatewayNamespace: nginx-gateway
   host: socket.kavanet.io
   path: /
-  serviceName: socket.kavanet.io
+  serviceName: kavanest-socket
   servicePort: 80
 
 service:
-  name: socket.kavanet.io
+  name: kavanest-socket
   selector: kavanest-scraper
   port: 80
   targetPort: 27017
