@@ -42,11 +42,11 @@ httpRoute:
   gatewayNamespace: nginx-gateway
   host: socket.kavanet.io
   path: /
-  serviceName: socket.kavanet.io
+  serviceName: kavanest-socket
   servicePort: 80
 
 service:
-  name: socket.kavanet.io
+  name: kavanest-socket
   selector: kavanest-scraper
   port: 80
   targetPort: 27017
