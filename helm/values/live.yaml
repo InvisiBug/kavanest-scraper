@@ -49,4 +49,4 @@ service:
   name: socket.kavanet.io
   selector: kavanest-scraper
   port: 80
-  targetPort: 3100
+  targetPort: 27017
