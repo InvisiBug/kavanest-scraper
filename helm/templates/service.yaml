@@ -1,13 +1,15 @@
+{{- if and .Values.service .Values.service.name }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: { { .Values.service.name } }
-  namespace: { { .Values.namespace } }
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   type: ClusterIP
   selector:
-    app: { { .Values.service.selector } }
+    app: {{ .Values.service.selector }}
   ports:
     - name: http
-      port: { { .Values.service.port } }
-      targetPort: { { .Values.service.targetPort } }
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+{{- end }}
