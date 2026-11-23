@@ -48,9 +48,7 @@ plugs:
     topic: Mattress
     room: bedRoom
 
-  - name: studyLamp
-    topic: Study Lamp
-    room: study
+
 
 
 #  These lights have alternate modes
@@ -92,6 +90,10 @@ zigbeePlugs:
   - name: kitchenLamp
     topic: zigbee2mqtt/kitchenLamp
     room: kitchen
+
+  - name: studyLamp
+    topic: zigbee2mqtt/studyLamp
+    room: study
 
 
 zigbeeBulbs:
